@@ -23,8 +23,8 @@
 
 :root{
 
-    --primary:#6c63ff;
-    --primary-dark:#554cf2;
+    --primary:#C4A265;
+    --primary-dark:#B8904A;
 
     --text:#222;
 
@@ -37,12 +37,7 @@ body{
 
     min-height:100vh;
 
-    background:
-    linear-gradient(
-        135deg,
-        #eef1ff,
-        #f7f8ff
-    );
+    background: #faf8f3;
 
     display:flex;
 
@@ -81,14 +76,9 @@ body{
 
     width:45%;
 
-    background:
-    linear-gradient(
-        135deg,
-        #6c63ff,
-        #554cf2
-    );
+    background: #F2E8D5;
 
-    color:white;
+    color: #4A3728;
 
     display:flex;
 
@@ -122,6 +112,8 @@ body{
     margin-bottom:18px;
 
     font-weight:800;
+
+    color: #4A3728;
 }
 
 .welcome-content p{
@@ -133,6 +125,8 @@ body{
     opacity:0.92;
 
     margin-bottom:35px;
+
+    color: #5a4a3a;
 }
 
 .welcome-btn{
@@ -141,11 +135,11 @@ body{
 
     height:52px;
 
-    border:1px solid rgba(255,255,255,0.5);
+    border:1px solid #4A3728;
 
     background:transparent;
 
-    color:white;
+    color:#4A3728;
 
     border-radius:10px;
 
@@ -154,13 +148,15 @@ body{
     cursor:pointer;
 
     transition:0.3s;
+
+    font-weight: bold;
 }
 
 .welcome-btn:hover{
 
-    background:white;
+    background:#4A3728;
 
-    color:var(--primary);
+    color:#F2E8D5;
 }
 
 /* ================= LOGIN SIDE ================= */
@@ -283,9 +279,9 @@ body{
 
     height:56px;
 
-    border:none;
+    border:1px solid #e0e0e0;
 
-    background:#f3f4f8;
+    background:#fff;
 
     border-radius:8px;
 
@@ -300,12 +296,9 @@ body{
 
     outline:none;
 
-    background:white;
+    border-color:#C4A265;
 
-    box-shadow:
-    0 0 0 3px rgba(108,99,255,0.12);
-
-    border:1px solid rgba(108,99,255,0.2);
+    box-shadow:0 0 0 3px rgba(196, 162, 101, 0.15);
 }
 
 .login-btn{
@@ -318,12 +311,7 @@ body{
 
     border-radius:8px;
 
-    background:
-    linear-gradient(
-        135deg,
-        var(--primary),
-        var(--primary-dark)
-    );
+    background: #C4A265;
 
     color:white;
 
@@ -337,13 +325,14 @@ body{
 
     margin-top:5px;
 
-    box-shadow:
-    0 10px 20px rgba(108,99,255,0.18);
+    box-shadow: 0 10px 20px rgba(196, 162, 101, 0.25);
 }
 
 .login-btn:hover{
 
     transform:translateY(-2px);
+
+    background: #B8904A;
 }
 
 /* ================= TERMS ================= */
@@ -363,7 +352,7 @@ body{
 
 .terms a{
 
-    color:var(--primary);
+    color:#C4A265;
 
     text-decoration:none;
 
@@ -457,12 +446,7 @@ body{
 
         height:220px;
 
-        background:
-        linear-gradient(
-            135deg,
-            #6c63ff,
-            #554cf2
-        );
+        background: #F2E8D5;
 
         border-bottom-left-radius:35px;
         border-bottom-right-radius:35px;
@@ -480,15 +464,6 @@ body{
     .mobile-logo{
 
         width:240px;
-
-        {% comment %} background:white;
-
-        padding:14px;
-
-        border-radius:14px;
-
-        box-shadow:
-        0 10px 30px rgba(0,0,0,0.10); {% endcomment %}
     }
 
     .mobile-form{
@@ -547,12 +522,12 @@ body{
 
 <div class="auth-container">
 
-    <!-- پنل بنفش دسکتاپ -->
+    <!-- پنل کرم روشن دسکتاپ -->
     <div class="welcome-side">
 
         <div class="welcome-content">
 
-            <h1>سلام دوست من!</h1>
+            <h1>!سلام دوست من</h1>
 
             <p>
                 برای استفاده از امکانات سایت
@@ -574,12 +549,7 @@ body{
         <div class="mobile-top">
 
             <!-- لوگو جای ورود -->
-            <img
-                src="{% static 'images/new_ai/ComfyUI_00285_.png'%}"
-                class="mobile-logo"
-                alt=""
-            >
-
+            <img src="/static/images/new_ai/ComfyUI_00286_.png" class="mobile-logo" alt="نیلپر">
         </div>
 
         <div class="mobile-form">
@@ -592,7 +562,7 @@ body{
                     <img
                         src="{% static 'images/new_ai/ComfyUI_00286_.png'%}"
                         class="site-logo"
-                        alt=""
+                        alt="نیلپر"
                     >
 
                 </div>
