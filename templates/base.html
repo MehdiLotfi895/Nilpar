@@ -628,7 +628,19 @@
             </div>
         </nav>
     </header>
-    
+    <div class="mobile-header-wrapper">
+        <div class="mobile-header-container">
+            <div class="mobile-header-menu">
+                <i class="fas fa-bars"></i>
+            </div>
+            <a class="mobile-header-logo">
+                <img src="/static/images/new_ai/ComfyUI_00286_.png" alt="logo">
+            </a>
+            <div class="mobile-header-search">
+                <i class="fas fa-search"></i>
+            </div>
+        </div>
+    </div>
     <main>
         {% block content %}
         {% endblock %}
@@ -791,7 +803,7 @@
     <div class="bottom-nav">
         <div class="nav-container">
             <!-- خانه -->
-            <a href="#" class="nav-item" id="nav-home">
+            <a href="#" class="nav-item active" id="nav-home">
                 <i class="fas fa-home"></i>
                 <span class="nav-label">خانه</span>
             </a>

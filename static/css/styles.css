@@ -104,6 +104,7 @@ ul { list-style: none; }
     z-index: 1000;
     border-bottom: 1px solid var(--gray-200);
     padding: 0 10px;
+    display: none;
 
 }
 
@@ -2628,7 +2629,7 @@ footer {
     flex-direction: column;
     align-items: center;
     text-decoration: none;
-    color: #8e9aaf;
+    color: #A9A9A9;
     gap: 5px;
     flex: 1;
     transition: color 0.2s;
@@ -2645,7 +2646,7 @@ footer {
 
 /* حالت فعال (اختیاری) */
 .nav-item.active {
-    color: #3b82f6;
+    color: #3a3a3a;
 }
 
 /* ============================================= */
@@ -2774,6 +2775,10 @@ footer {
     }
     .header-main{
         padding: 0 30px;
+        display: block;
+    }
+    .mobile-header-wrapper {
+        display: none !important;
     }
     .logo img{
         width:240px;
@@ -2968,3 +2973,39 @@ footer {
         transform:translateY(25px) scale(.92);
     }
 }
+
+
+/* فقط برای موبایل */
+@media (max-width: 1024px) {
+    .mobile-header-wrapper {
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+        transition: transform .35s ease;
+    }
+
+    .mobile-header-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background: #fff;
+        padding: 12px 20px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        border-bottom: 1px solid #ececec;
+    }
+
+    .mobile-header-menu i,
+    .mobile-header-search i {
+        font-size: 22px;
+        color: #3a3a3a;
+        cursor: pointer;
+    }
+    .mobile-header-logo{
+        height: 40px;
+    }
+    .mobile-header-logo img {
+        height: 100%;
+        object-fit: contain;
+    }
+}
+
