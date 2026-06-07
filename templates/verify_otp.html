@@ -1,0 +1,723 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+{% load static %}
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>تأیید کد | نیل چوب</title>
+
+<style>
+
+@font-face{
+    font-family:'shabnam';
+    src:url('{% static "fonts/Shabnam-FD.woff2" %}');
+}
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'shabnam',Tahoma,sans-serif;
+}
+
+:root{
+
+    --primary:#6c63ff;
+    --primary-dark:#554cf2;
+
+    --text:#222;
+
+    --gray:#777;
+
+    --bg:#f4f5fb;
+}
+
+body{
+
+    min-height:100vh;
+
+    background:
+    linear-gradient(
+        135deg,
+        #eef1ff,
+        #f7f8ff
+    );
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    padding:30px;
+}
+
+/* ================= MAIN BOX ================= */
+
+.verify-container{
+
+    width:100%;
+
+    max-width:460px;
+
+    background:white;
+
+    border-radius:5px;
+
+    padding:40px;
+
+    box-shadow:
+    0 20px 60px rgba(0,0,0,0.08);
+}
+
+/* ================= HEADER ================= */
+
+.top-back{
+
+    margin-bottom:20px;
+}
+
+.top-back a{
+
+    width:42px;
+    height:42px;
+
+    border-radius:12px;
+
+    background:#f3f4f8;
+
+    display:flex;
+
+    align-items:center;
+    justify-content:center;
+
+    transition:0.3s;
+}
+
+.top-back a:hover{
+
+    background:#eceef7;
+}
+
+.top-back img{
+
+    width:18px;
+}
+
+/* ================= LOGO ================= */
+
+.logo-wrap{
+
+    width:100%;
+
+    display:flex;
+
+    justify-content:center;
+
+    margin:50px 0;
+}
+
+.site-logo{
+
+    width:250px;
+}
+
+/* ================= TEXT ================= */
+
+.verify-title{
+
+    text-align:center;
+
+    margin-bottom:30px;
+}
+
+.verify-title p{
+
+    font-size:14px;
+
+    color:var(--gray);
+
+    line-height:2;
+}
+
+.phone-number{
+
+    color:var(--primary);
+
+    font-weight:700;
+}
+
+/* ================= OTP INPUTS ================= */
+
+.otp-form{
+
+    display:flex;
+
+    flex-direction:column;
+
+    align-items:center;
+
+    gap:24px;
+}
+
+.otp-inputs{
+
+    display:flex;
+
+    justify-content:center;
+
+    gap:12px;
+
+    direction:ltr;
+}
+
+.otp-input{
+
+    width:58px;
+
+    height:62px;
+
+    border:none;
+
+    background:#f3f4f8;
+
+    border-radius:5px;
+
+    text-align:center;
+
+    font-size:24px;
+
+    font-weight:700;
+
+    color:#222;
+
+    transition:0.3s;
+}
+
+.otp-input:focus{
+
+    outline:none;
+
+    background:white;
+
+    border:1px solid rgba(108,99,255,0.2);
+
+    box-shadow:
+    0 0 0 4px rgba(108,99,255,0.10);
+}
+
+/* ================= BUTTON ================= */
+
+.verify-btn{
+
+    width:408px;
+
+    height:56px;
+
+    border:none;
+
+    border-radius:5px;
+
+    background:
+    linear-gradient(
+        135deg,
+        var(--primary),
+        var(--primary-dark)
+    );
+
+    color:white;
+
+    font-size:15px;
+
+    font-weight:700;
+
+    cursor:pointer;
+
+    transition:0.3s;
+
+    box-shadow:
+    0 10px 20px rgba(108,99,255,0.18);
+}
+
+.verify-btn:hover{
+
+    transform:translateY(-2px);
+
+    box-shadow:
+    0 14px 28px rgba(108,99,255,0.25);
+}
+
+/* ================= MESSAGES ================= */
+
+.messages{
+
+    list-style:none;
+
+    margin-bottom:20px;
+
+    display: flex;
+
+    flex-direction: column;
+    
+    gap: 5px;
+
+
+    align-items: center;
+}
+
+
+
+.messages li{
+    
+    width:408px;
+
+    padding:14px;
+
+    border-radius:5px;
+
+    font-size:13px;
+}
+
+.messages .error{
+
+    background:#fff0f0;
+
+    color:#e74c3c;
+}
+
+.messages .success{
+
+    background:#f0fff5;
+
+    color:#2ecc71;
+}
+
+/* ================= RESEND ================= */
+
+.resend{
+
+    margin-top:24px;
+
+    text-align:center;
+
+    font-size:14px;
+
+    color:var(--gray);
+}
+
+.resend a{
+
+    color:var(--primary);
+
+    text-decoration:none;
+
+    font-weight:700;
+}
+
+/* ================= MOBILE ================= */
+
+@media (max-width:576px){
+
+    body{
+
+        padding:0;
+
+        background:white;
+    }
+
+    .verify-container{
+
+        width:100%;
+
+        max-width:100%;
+
+        min-height:100vh;
+
+        padding:32px 22px;
+
+        border:none;
+
+        border-radius:0;
+
+        box-shadow:none;
+
+        background:white;
+    }
+
+    .top-back{
+
+        margin-bottom:28px;
+    }
+
+    .top-back a{
+
+        width:40px;
+
+        height:40px;
+
+        border-radius:10px;
+
+        background:#f3f4f8;
+    }
+
+    .site-logo{
+
+        width:200px;
+    }
+
+    .verify-title{
+
+        margin-bottom:26px;
+    }
+
+    .verify-title p{
+
+        font-size:13px;
+
+        line-height:2;
+    }
+
+    .otp-inputs{
+
+        gap:8px;
+    }
+
+    .otp-input{
+
+        width:48px;
+
+        height:54px;
+
+        font-size:20px;
+
+        background:#f5f6fb;
+    }
+
+    .verify-btn{
+
+        width:328px;
+
+        height:54px;
+
+        box-shadow:none;
+    }
+
+    .resend{
+
+        font-size:13px;
+    }
+    .messages li{
+        width:328px;
+    }
+}
+
+/* ================= SMALL MOBILE ================= */
+
+@media (max-width:350px){
+
+    .otp-inputs{
+
+        gap:6px;
+    }
+
+    .otp-input{
+
+        width:42px;
+
+        height:50px;
+
+        font-size:18px;
+    }
+
+    .verify-btn{
+
+        width:282px;
+    }
+    .messages li{
+        width:282px;
+    }
+}
+
+/* ================= DESKTOP ================= */
+
+@media (min-width:577px){
+
+    body{
+
+        padding:30px;
+
+        background:
+        linear-gradient(
+            135deg,
+            #eef1ff,
+            #f7f8ff
+        );
+    }
+
+    .verify-container{
+
+        max-width:460px;
+
+        background:white;
+
+        border:1px solid #ececff;
+
+        border-radius:5px;
+
+        padding:40px;
+
+        box-shadow:
+        0 20px 60px rgba(0,0,0,0.08);
+    }
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="verify-container">
+
+    <div class="top-back">
+
+        <a href="{% url 'send_otp' %}">
+
+            <img src="{% static 'images/flesh.png'%}" alt="">
+
+        </a>
+
+    </div>
+
+    <div class="logo-wrap">
+
+        <img
+            src="{% static 'images/new_ai/ComfyUI_00286_.png'%}"
+            class="site-logo"
+            alt=""
+        >
+
+    </div>
+
+    <div class="verify-title">
+
+        <p>
+
+            کد ارسال شده به
+
+            <span class="phone-number">
+
+                {{ phone }}
+
+            </span>
+
+            را وارد کنید
+
+        </p>
+
+    </div>
+
+    {% if messages %}
+
+    <ul class="messages">
+
+        {% for message in messages %}
+
+        <li class="{{ message.tags }}">
+
+            {{ message }}
+
+        </li>
+
+        {% endfor %}
+
+    </ul>
+
+    {% endif %}
+
+    <form method="POST" class="otp-form">
+
+        {% csrf_token %}
+
+        <input type="hidden" name="code" id="final-code">
+
+        <div class="otp-inputs">
+
+            <input type="text" maxlength="1" class="otp-input">
+
+            <input type="text" maxlength="1" class="otp-input">
+
+            <input type="text" maxlength="1" class="otp-input">
+
+            <input type="text" maxlength="1" class="otp-input">
+
+            <input type="text" maxlength="1" class="otp-input">
+
+            <input type="text" maxlength="1" class="otp-input">
+
+        </div>
+
+        <button type="submit" class="verify-btn">
+
+            تأیید کد
+
+        </button>
+
+    </form>
+    
+
+    <div class="resend">
+    
+        <p id="timer-text">
+    
+        </p>
+    
+        <a
+            href="{% url 'resend_otp' %}"
+            id="resend-btn"
+            style="display:none;"
+        >
+    
+            ارسال مجدد کد
+    
+        </a>
+    
+    </div>
+
+
+
+</div>
+
+
+<script>
+
+    const inputs = document.querySelectorAll('.otp-input')
+    
+    const finalCode = document.getElementById('final-code')
+    
+    inputs[0].focus()
+    
+    inputs.forEach((input, index) => {
+    
+        input.addEventListener('input', () => {
+    
+            input.value =
+                input.value.replace(/[^0-9]/g, '')
+    
+            if (
+                input.value &&
+                index < inputs.length - 1
+            ) {
+    
+                inputs[index + 1].focus()
+            }
+    
+            updateCode()
+        })
+    
+        input.addEventListener('keydown', (e) => {
+    
+            if (
+                e.key === 'Backspace' &&
+                !input.value &&
+                index > 0
+            ) {
+    
+                inputs[index - 1].focus()
+            }
+        })
+    
+        input.addEventListener('paste', (e) => {
+    
+            e.preventDefault()
+    
+            const pastedData =
+                (
+                    e.clipboardData ||
+                    window.clipboardData
+                )
+                .getData('text')
+                .replace(/\D/g, '')
+                .slice(0, 6)
+    
+            pastedData.split('').forEach((char, i) => {
+    
+                if (inputs[i]) {
+    
+                    inputs[i].value = char
+                }
+            })
+    
+            updateCode()
+        })
+    })
+    
+    function updateCode() {
+    
+        let code = ''
+    
+        inputs.forEach(input => {
+    
+            code += input.value
+        })
+    
+        finalCode.value = code
+    }
+    
+    
+    let timeLeft = {{ cooldown }}
+    
+    const timerText =
+        document.getElementById('timer-text')
+    
+    const resendBtn =
+        document.getElementById('resend-btn')
+    
+    function updateTimer() {
+    
+        if (timeLeft <= 0) {
+    
+            timerText.innerHTML =
+                'کد دریافت نکردید؟'
+    
+            resendBtn.style.display =
+                'inline-block'
+    
+            return
+        }
+    
+        const minutes =
+            Math.floor(timeLeft / 60)
+    
+        const seconds =
+            timeLeft % 60
+    
+        timerText.innerHTML =
+            `ارسال مجدد تا ${minutes}:${seconds
+                .toString()
+                .padStart(2, '0')}`
+    
+        timeLeft--
+    }
+    
+    updateTimer()
+    
+    const timerInterval =
+        setInterval(() => {
+    
+            updateTimer()
+    
+            if (timeLeft <= 0) {
+    
+                clearInterval(timerInterval)
+            }
+    
+        }, 1000)
+    
+    </script>
+
+
+
+</body>
+</html>

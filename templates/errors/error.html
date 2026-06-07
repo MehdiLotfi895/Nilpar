@@ -1,0 +1,301 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ title }} - کابینت رزمی</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Tahoma', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            padding: 20px;
+        }
+
+        .error-container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15);
+            overflow: hidden;
+            max-width: 600px;
+            width: 100%;
+            text-align: center;
+        }
+
+        .error-header {
+            padding: 60px 40px 40px;
+            background: linear-gradient(135deg, #3f4064 0%, #282c34 100%);
+            color: white;
+            position: relative;
+        }
+
+        .error-icon {
+            width: 120px;
+            height: 120px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .error-icon i {
+            font-size: 50px;
+            color: #ef394e;
+        }
+
+        .error-code {
+            font-size: 80px;
+            font-weight: 900;
+            line-height: 1;
+            margin-bottom: 10px;
+            opacity: 0.3;
+            position: absolute;
+            top: 20px;
+            left: 30px;
+        }
+
+        .error-title {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+
+        .error-message {
+            font-size: 16px;
+            opacity: 0.9;
+            line-height: 1.8;
+            color: rgba(255,255,255,0.9);
+        }
+
+        .error-body {
+            padding: 40px;
+        }
+
+        .error-suggestion {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 30px;
+            text-align: right;
+        }
+
+        .error-suggestion h3 {
+            font-size: 16px;
+            color: #3f4064;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .error-suggestion h3 i {
+            color: #ef394e;
+        }
+
+        .error-suggestion ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .error-suggestion ul li {
+            padding: 8px 0;
+            color: #62666d;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .error-suggestion ul li i {
+            color: #a1a3a8;
+            font-size: 12px;
+        }
+
+        .error-actions {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+        }
+
+        .btn {
+            padding: 14px 30px;
+            border-radius: 10px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #ef394e, #d6303c);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(239, 57, 78, 0.35);
+        }
+
+        .btn-secondary {
+            background: #f0f0f1;
+            color: #3f4064;
+            border: 1px solid #e1e2e3;
+        }
+
+        .btn-secondary:hover {
+            background: #e1e2e3;
+        }
+
+        .footer {
+            padding: 20px;
+            border-top: 1px solid #e1e2e3;
+            background: #f8f9fa;
+        }
+
+        .footer p {
+            font-size: 13px;
+            color: #62666d;
+        }
+
+        .footer a {
+            color: #ef394e;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        /* برای صفحه 500 یه استایل متفاوت */
+        .error-container.server-error .error-header {
+            background: linear-gradient(135deg, #ef394e 0%, #d6303c 100%);
+        }
+
+        /* برای صفحه 404 یه استایل متفاوت */
+        .error-container.not-found .error-header {
+            background: linear-gradient(135deg, #62666d 0%, #3f4064 100%);
+        }
+
+        /* برای صفحه 403 */
+        .error-container.forbidden .error-header {
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+        }
+
+        @media (max-width: 600px) {
+            .error-code {
+                font-size: 50px;
+            }
+
+            .error-title {
+                font-size: 22px;
+            }
+
+            .error-header {
+                padding: 40px 25px 30px;
+            }
+
+            .error-body {
+                padding: 25px;
+            }
+
+            .error-actions {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="error-container 
+        {% if status_code == 500 %}server-error{% endif %}
+        {% if status_code == 404 %}not-found{% endif %}
+        {% if status_code == 403 %}forbidden{% endif %}">
+        
+        <!-- هدر -->
+        <div class="error-header">
+            <div class="error-code">{{ status_code }}</div>
+            <div class="error-icon">
+                <i class="fas {{ icon }}"></i>
+            </div>
+            <h1 class="error-title">{{ title }}</h1>
+            <p class="error-message">{{ message }}</p>
+        </div>
+
+        <!-- بدنه -->
+        <div class="error-body">
+            <!-- پیشنهادات -->
+            <div class="error-suggestion">
+                <h3>
+                    <i class="fas fa-lightbulb"></i>
+                    چه کاری می‌توانید انجام دهید؟
+                </h3>
+                <ul>
+                    <li>
+                        <i class="fas fa-check"></i>
+                        آدرس صفحه را بررسی کنید و دوباره تلاش کنید
+                    </li>
+                    <li>
+                        <i class="fas fa-check"></i>
+                        از منوی بالا به صفحه اصلی بروید
+                    </li>
+                    <li>
+                        <i class="fas fa-check"></i>
+                        با استفاده از دکمه بازگشت به صفحه قبل برگردید
+                    </li>
+                    {% if status_code == 500 %}
+                    <li>
+                        <i class="fas fa-check"></i>
+                        صفحه را رفرش کنید، احتمالاً مشکل موقتی است
+                    </li>
+                    {% endif %}
+                    <li>
+                        <i class="fas fa-check"></i>
+                        در صورت نیاز با پشتیبانی تماس بگیرید
+                    </li>
+                </ul>
+            </div>
+
+            <!-- دکمه‌ها -->
+            <div class="error-actions">
+                <a href="{% url 'home' %}" class="btn btn-primary">
+                    <i class="fas fa-home"></i>
+                    صفحه اصلی
+                </a>
+                <button onclick="history.back()" class="btn btn-secondary">
+                    <i class="fas fa-arrow-right"></i>
+                    بازگشت
+                </button>
+            </div>
+        </div>
+
+        <!-- فوتر -->
+        <div class="footer">
+            <p>
+                در صورت نیاز به کمک با 
+                <a href="tel:09926169004">09926169004</a> 
+                تماس بگیرید
+            </p>
+        </div>
+    </div>
+</body>
+</html>

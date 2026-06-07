@@ -1,0 +1,313 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-04-22 12:31-0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: .\admin.py:87
+msgid "Personal info"
+msgstr "اطلاعات شخصی"
+
+#: .\admin.py:89
+msgid "Permissions"
+msgstr "دسترسی‌ها"
+
+#: .\admin.py:100
+msgid "Important dates"
+msgstr "تاریخ‌های مهم"
+
+#: .\admin.py:101
+msgid "MoreInfo"
+msgstr "اطلاعات بیشتر"
+
+#: .\models.py:31
+msgid "nat_code"
+msgstr "کد ملی"
+
+#: .\models.py:33 .\models.py:34
+msgid "nat_code_must_be_10_digits"
+msgstr "کد ملی باید ده رقمی باشد"
+
+#: .\models.py:40 .\oldmodel.py:30
+msgid "birth_date"
+msgstr "تاریخ تولد"
+
+#: .\models.py:59 .\models.py:81 .\oldmodel.py:40
+msgid "title"
+msgstr "عنوان"
+
+#: .\models.py:63 .\models.py:191 .\models.py:229 .\models.py:262
+#: .\oldmodel.py:41
+msgid "description"
+msgstr "توضیحات"
+
+#: .\models.py:67 .\models.py:85 .\oldmodel.py:42
+msgid "created"
+msgstr "تاریخ ایجاد"
+
+#: .\models.py:74
+msgid "feature"
+msgstr "ویژگی"
+
+#: .\models.py:75 .\models.py:119
+msgid "features"
+msgstr "ویژگی‌ها"
+
+#: .\models.py:92 .\models.py:132
+msgid "category"
+msgstr "دسته‌بندی"
+
+#: .\models.py:93
+msgid "categories"
+msgstr "دسته‌بندی‌ها"
+
+#: .\models.py:96 .\models.py:168
+msgid "color"
+msgstr "رنگ"
+
+#: .\models.py:100 .\models.py:101
+msgid "color_products"
+msgstr "رنگ محصولات"
+
+#: .\models.py:110
+msgid "name"
+msgstr "نام"
+
+#: .\models.py:113
+msgid "introduction"
+msgstr "معرفی"
+
+#: .\models.py:122
+msgid "weight"
+msgstr "وزن"
+
+#: .\models.py:126
+msgid "dimensions"
+msgstr "ابعاد"
+
+#: .\models.py:135
+msgid "more_details"
+msgstr "جزئیات بیشتر"
+
+#: .\models.py:138
+#, fuzzy
+#| msgid "price"
+msgid "oldprice"
+msgstr "قیمت قدیم"
+
+#: .\models.py:142 .\models.py:473
+msgid "price"
+msgstr "قیمت"
+
+#: .\models.py:145
+msgid "stock"
+msgstr "موجودی"
+
+#: .\models.py:150
+msgid "wood_kind"
+msgstr "نوع چوب"
+
+#: .\models.py:154 .\models.py:206 .\models.py:244 .\models.py:271
+#: .\models.py:338 .\models.py:392 .\models.py:441 .\models.py:495
+msgid "created_at"
+msgstr "تاریخ ایجاد"
+
+#: .\models.py:158 .\models.py:275 .\models.py:334 .\models.py:399
+#: .\models.py:445
+msgid "updated_at"
+msgstr "تاریخ ویرایش"
+
+#: .\models.py:161
+msgid "off"
+msgstr "تخفیف"
+
+#: .\models.py:174 .\models.py:196 .\models.py:234 .\models.py:295
+msgid "product"
+msgstr "محصول"
+
+#: .\models.py:175 .\models.py:357 .\models.py:431
+msgid "products"
+msgstr "محصولات"
+
+#: .\models.py:181 .\models.py:219
+msgid "confirmed"
+msgstr "تایید شده"
+
+#: .\models.py:182 .\models.py:220
+msgid "pending"
+msgstr "در انتظار"
+
+#: .\models.py:183 .\models.py:221
+msgid "rejected"
+msgstr "رد شده"
+
+#: .\models.py:188 .\models.py:226 .\models.py:311 .\models.py:362
+#: .\models.py:437
+msgid "user"
+msgstr "کاربر"
+
+#: .\models.py:202 .\models.py:240 .\models.py:405
+msgid "state"
+msgstr "وضعیت"
+
+#: .\models.py:213
+msgid "comment"
+msgstr "نظر"
+
+#: .\models.py:214
+msgid "comments"
+msgstr "نظرات"
+
+#: .\models.py:251 .\models.py:267
+msgid "question"
+msgstr "سوال"
+
+#: .\models.py:252
+msgid "questions"
+msgstr "سوالات"
+
+#: .\models.py:259
+msgid "admin_answer"
+msgstr "پاسخ‌دهنده"
+
+#: .\models.py:282
+msgid "answer"
+msgstr "پاسخ"
+
+#: .\models.py:283
+msgid "answers"
+msgstr "پاسخ‌ها"
+
+#: .\models.py:289
+msgid "image"
+msgstr "تصویر"
+
+#: .\models.py:302
+msgid "product_image"
+msgstr "تصویر محصول"
+
+#: .\models.py:303
+msgid "product_images"
+msgstr "تصاویر محصول"
+
+#: .\models.py:316 .\models.py:345 .\models.py:367
+msgid "address"
+msgstr "آدرس"
+
+#: .\models.py:322 .\models.py:373
+msgid "address_code"
+msgstr "کد پستی"
+
+#: .\models.py:326 .\models.py:377
+msgid "phone_number"
+msgstr "شماره تلفن"
+
+#: .\models.py:330 .\models.py:381
+msgid "receiver"
+msgstr "گیرنده"
+
+#: .\models.py:346
+msgid "addresses"
+msgstr "آدرس‌ها"
+
+#: .\models.py:351
+msgid "payed"
+msgstr "پرداخت شده"
+
+#: .\models.py:352
+msgid "paying"
+msgstr "در حال پرداخت"
+
+#: .\models.py:353
+msgid "unpaid"
+msgstr "پرداخت نشده"
+
+#: .\models.py:384
+msgid "delivery_date"
+msgstr "تاریخ تحویل"
+
+#: .\models.py:388
+msgid "delivery_time"
+msgstr "ساعت تحویل"
+
+#: .\models.py:395
+msgid "total_price"
+msgstr "قیمت کل"
+
+#: .\models.py:411
+msgid "authority"
+msgstr "شناسه پرداخت"
+
+#: .\models.py:417
+msgid "ref_id"
+msgstr "کد پیگیری"
+
+#: .\models.py:424 .\models.py:469
+msgid "order"
+msgstr "سفارش"
+
+#: .\models.py:425
+msgid "orders"
+msgstr "سفارشات"
+
+#: .\models.py:452
+msgid "order_basket"
+msgstr "سبد سفارش"
+
+#: .\models.py:453
+msgid "order_baskets"
+msgstr "سبدهای سفارش"
+
+#: .\models.py:458
+msgid "date"
+msgstr "تاریخ"
+
+#: .\models.py:462
+msgid "time"
+msgstr "ساعت"
+
+#: .\models.py:480
+msgid "handover_order"
+msgstr "تحویل سفارش"
+
+#: .\models.py:481
+msgid "handover_orders"
+msgstr "تحویل سفارشات"
+
+#: .\models.py:487
+msgid "phone"
+msgstr "تلفن"
+
+#: .\models.py:491
+msgid "code"
+msgstr "کد"
+
+#: .\models.py:499
+msgid "is_used"
+msgstr "استفاده شده"
+
+#: .\models.py:504
+msgid "otp"
+msgstr "کد یکبار مصرف"
+
+#: .\models.py:505
+msgid "otps"
+msgstr "کدهای یکبار مصرف"
+
+#: .\oldmodel.py:25
+msgid "nate_code"
+msgstr "کد ملی"

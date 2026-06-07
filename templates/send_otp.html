@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+{% load static %}
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>ورود | ثبت نام</title>
+
+<style>
+
+@font-face{
+    font-family:'shabnam';
+    src:url('../static/fonts/Shabnam-FD.woff2');
+}
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'shabnam',Tahoma,sans-serif;
+}
+
+:root{
+
+    --primary:#6c63ff;
+    --primary-dark:#554cf2;
+
+    --text:#222;
+
+    --gray:#777;
+
+    --bg:#f4f5fb;
+}
+
+body{
+
+    min-height:100vh;
+
+    background:
+    linear-gradient(
+        135deg,
+        #eef1ff,
+        #f7f8ff
+    );
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    padding:30px;
+}
+
+/* ================= DESKTOP CONTAINER ================= */
+
+.auth-container{
+
+    width:100%;
+
+    max-width:1200px;
+
+    height:600px;
+
+    background:white;
+
+    border-radius:5px;
+
+    overflow:hidden;
+
+    display:flex;
+
+    box-shadow:
+    0 20px 60px rgba(0,0,0,0.08);
+}
+
+/* ================= LEFT PANEL ================= */
+
+.welcome-side{
+
+    width:45%;
+
+    background:
+    linear-gradient(
+        135deg,
+        #6c63ff,
+        #554cf2
+    );
+
+    color:white;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    padding:60px;
+
+    position:relative;
+
+    overflow:hidden;
+
+    border-top-left-radius:120px;
+    border-bottom-left-radius:120px;
+}
+
+.welcome-content{
+
+    text-align:center;
+
+    position:relative;
+
+    z-index:2;
+}
+
+.welcome-content h1{
+
+    font-size:42px;
+
+    margin-bottom:18px;
+
+    font-weight:800;
+}
+
+.welcome-content p{
+
+    line-height:2.2;
+
+    font-size:15px;
+
+    opacity:0.92;
+
+    margin-bottom:35px;
+}
+
+.welcome-btn{
+
+    width:180px;
+
+    height:52px;
+
+    border:1px solid rgba(255,255,255,0.5);
+
+    background:transparent;
+
+    color:white;
+
+    border-radius:10px;
+
+    font-size:15px;
+
+    cursor:pointer;
+
+    transition:0.3s;
+}
+
+.welcome-btn:hover{
+
+    background:white;
+
+    color:var(--primary);
+}
+
+/* ================= LOGIN SIDE ================= */
+
+.login-side{
+
+    width:55%;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    padding:40px;
+}
+
+/* ================= LOGIN BOX ================= */
+
+.login-box{
+
+    width:100%;
+
+    max-width:420px;
+
+    min-width:360px;
+}
+
+.login-title{
+
+    text-align:center;
+
+    margin-bottom:25px;
+}
+
+.login-title h2{
+
+    font-size:38px;
+
+    color:var(--text);
+
+    margin-bottom:10px;
+}
+
+.login-title p{
+
+    color:var(--gray);
+
+    font-size:14px;
+}
+
+/* ================= LOGO ================= */
+
+.logo-wrap{
+
+    width:100%;
+
+    display:flex;
+
+    justify-content:center;
+
+    margin-bottom:20px;
+}
+
+.site-logo{
+
+    width:250px;
+}
+/* ================= MESSAGES ================= */
+
+.messages{
+
+    list-style:none;
+
+    margin-bottom:20px;
+
+    display: flex;
+
+    flex-direction: column;
+    
+    gap: 5px;
+}
+
+.messages li{
+
+    padding:14px;
+
+    border-radius:5px;
+
+    font-size:13px;
+}
+
+.messages .error{
+
+    background:#fff0f0;
+
+    color:#e74c3c;
+}
+
+.messages .success{
+
+    background:#f0fff5;
+
+    color:#2ecc71;
+}
+/* ================= FORM ================= */
+
+.login-form{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:16px;
+}
+
+.form-input{
+
+    width:100%;
+
+    height:56px;
+
+    border:none;
+
+    background:#f3f4f8;
+
+    border-radius:8px;
+
+    padding:0 18px;
+
+    font-size:15px;
+
+    transition:0.3s;
+}
+
+.form-input:focus{
+
+    outline:none;
+
+    background:white;
+
+    box-shadow:
+    0 0 0 3px rgba(108,99,255,0.12);
+
+    border:1px solid rgba(108,99,255,0.2);
+}
+
+.login-btn{
+
+    width:100%;
+
+    height:56px;
+
+    border:none;
+
+    border-radius:8px;
+
+    background:
+    linear-gradient(
+        135deg,
+        var(--primary),
+        var(--primary-dark)
+    );
+
+    color:white;
+
+    font-size:15px;
+
+    font-weight:700;
+
+    cursor:pointer;
+
+    transition:0.3s;
+
+    margin-top:5px;
+
+    box-shadow:
+    0 10px 20px rgba(108,99,255,0.18);
+}
+
+.login-btn:hover{
+
+    transform:translateY(-2px);
+}
+
+/* ================= TERMS ================= */
+
+.terms{
+
+    margin-top:20px;
+
+    text-align:center;
+
+    color:var(--gray);
+
+    font-size:13px;
+
+    line-height:2;
+}
+
+.terms a{
+
+    color:var(--primary);
+
+    text-decoration:none;
+
+    font-weight:700;
+}
+
+/* ================= MESSAGES ================= */
+
+.messages{
+
+    list-style:none;
+}
+
+.messages li{
+
+    font-size:13px;
+}
+
+.messages .error{
+
+    color:#e74c3c;
+}
+
+.messages .success{
+
+    color:#2ecc71;
+}
+
+/* ================= MOBILE DESIGN ================= */
+
+.mobile-top{
+
+    display:none;
+}
+
+/* ================= RESPONSIVE ================= */
+
+@media (max-width:992px){
+
+    body{
+
+        padding:0;
+
+        background:white;
+    }
+
+    .auth-container{
+
+        max-width:100%;
+
+        min-height:100vh;
+
+        height:auto;
+
+        border-radius:0;
+
+        display:block;
+
+        box-shadow:none;
+    }
+
+    /* حذف پنل چپ */
+    .welcome-side{
+
+        display:none;
+    }
+
+    /* فرم موبایل */
+    .login-side{
+
+        width:100%;
+
+        min-height:100vh;
+
+        padding:0;
+
+        display:block;
+    }
+
+    .login-box{
+
+        max-width:100%;
+
+        min-width:auto;
+    }
+
+    /* هدر موبایل */
+    .mobile-top{
+
+        width:100%;
+
+        height:220px;
+
+        background:
+        linear-gradient(
+            135deg,
+            #6c63ff,
+            #554cf2
+        );
+
+        border-bottom-left-radius:35px;
+        border-bottom-right-radius:35px;
+
+        display:flex;
+
+        justify-content:center;
+
+        align-items:center;
+
+        position:relative;
+    }
+
+    /* لوگوی موبایل */
+    .mobile-logo{
+
+        width:240px;
+
+        {% comment %} background:white;
+
+        padding:14px;
+
+        border-radius:14px;
+
+        box-shadow:
+        0 10px 30px rgba(0,0,0,0.10); {% endcomment %}
+    }
+
+    .mobile-form{
+
+        padding:35px 24px;
+    }
+
+    /* لوگوی اصلی پایین تو موبایل حذف */
+    .logo-wrap{
+
+        display:none;
+    }
+
+    .login-title{
+
+        margin-top:10px;
+    }
+
+    .login-title h2{
+
+        font-size:28px;
+    }
+
+    .login-title p{
+
+        font-size:13px;
+
+        line-height:2;
+    }
+
+    .form-input{
+
+        height:54px;
+
+        font-size:14px;
+
+    }
+
+    .login-btn{
+
+        height:54px;
+
+        font-size:14px;
+    }
+
+    .terms{
+
+        font-size:12px;
+    }
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="auth-container">
+
+    <!-- پنل بنفش دسکتاپ -->
+    <div class="welcome-side">
+
+        <div class="welcome-content">
+
+            <h1>سلام دوست من!</h1>
+
+            <p>
+                برای استفاده از امکانات سایت
+                وارد حساب کاربری خود شوید
+            </p>
+
+            <button class="welcome-btn">
+                صنایع چوبی نیلپر
+            </button>
+
+        </div>
+
+    </div>
+
+    <!-- فرم -->
+    <div class="login-side">
+
+        <!-- موبایل -->
+        <div class="mobile-top">
+
+            <!-- لوگو جای ورود -->
+            <img
+                src="{% static 'images/new_ai/ComfyUI_00285_.png'%}"
+                class="mobile-logo"
+                alt=""
+            >
+
+        </div>
+
+        <div class="mobile-form">
+
+            <div class="login-box">
+
+                <!-- لوگو دسکتاپ -->
+                <div class="logo-wrap">
+
+                    <img
+                        src="{% static 'images/new_ai/ComfyUI_00286_.png'%}"
+                        class="site-logo"
+                        alt=""
+                    >
+
+                </div>
+
+                <div class="login-title">
+
+                    <p>
+                        شماره موبایل خود را وارد کنید
+                    </p>
+
+                </div>
+                {% if messages %}
+
+                    <ul class="messages">
+                
+                        {% for message in messages %}
+                
+                        <li class="{{ message.tags }}">
+                
+                            {{ message }}
+                
+                        </li>
+                
+                        {% endfor %}
+                
+                    </ul>
+
+                {% endif %}
+                <form method="POST" class="login-form">
+
+                    {% csrf_token %}
+
+                    <input
+                        type="tel"
+                        name="phone"
+                        class="form-input"
+                        placeholder="شماره موبایل"
+                        required
+                        autofocus
+                        pattern="09[0-9]{9}"
+                    >
+
+                    <button type="submit" class="login-btn">
+
+                        ورود
+
+                    </button>
+
+                </form>
+
+                <div class="terms">
+
+                    ورود شما به معنای پذیرش
+
+                    <a href="#">شرایط</a>
+
+                    و
+
+                    <a href="#">قوانین</a>
+
+                    است
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+</html>

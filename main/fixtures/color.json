@@ -1,0 +1,282 @@
+[
+    {
+      "model": "main.colorproduct",
+      "pk": 1,
+      "fields": {
+        "color_name": "سفید مات (آردنت)",
+        "color_code": "#F8F9FA"
+      }
+    },
+    {
+      "model": "main.colorproduct",
+      "pk": 2,
+      "fields": {
+        "color_name": "سفید براق (هایگلاس)",
+        "color_code": "#FFFFFF"
+      }
+    },
+    {
+      "model": "main.colorproduct",
+      "pk": 3,
+      "fields": {
+        "color_name": "سفید استخوانی",
+        "color_code": "#F5F5DC"
+      }
+    },
+    {
+      "model": "main.colorproduct",
+      "pk": 4,
+      "fields": {
+        "color_name": "سفید شیری",
+        "color_code": "#F0F8FF"
+      }
+    },
+    {
+      "model": "main.colorproduct",
+      "pk": 5,
+      "fields": {
+        "color_name": "مشکی مات",
+        "color_code": "#1C1C1C"
+      }
+    },
+    {
+      "model": "main.colorproduct",
+      "pk": 6,
+      "fields": {
+        "color_name": "مشکی براق (هایگلاس)",
+        "color_code": "#000000"
+      }
+    },
+    {
+      "model": "main.colorproduct",
+      "pk": 7,
+      "fields": {
+        "color_name": "طوسی روشن (نقره‌ای)",
+        "color_code": "#C0C0C0"
+      }
+    },
+    {
+      "model": "main.colorproduct",
+      "pk": 8,
+      "fields": {
+        "color_name": "طوسی متوسط",
+        "color_code": "#808080"
+      }
+    },
+    {
+      "model": "main.colorproduct",
+      "pk": 9,
+      "fields": {
+        "color_name": "طوسی تیره (آنتراسایت)",
+        "color_code": "#4A4A4A"
+      }
+    },
+    {
+      "model": "main.colorproduct",
+      "pk": 10,
+      "fields": {
+        "color_name": "گردویی (مدرن)",
+        "color_code": "#8B5A2B"
+      }
+    },
+    {
+      "model": "main.colorproduct",
+      "pk": 11,
+      "fields": {
+        "color_name": "گردویی تیره (لیون)",
+        "color_code": "#5C4033"
+      }
+    },
+    {
+      "model": "main.colorproduct",
+      "pk": 12,
+      "fields": {
+        "color_name": "بلوطی روشن",
+        "color_code": "#DEB887"
+      }
+    },
+    {
+      "model": "main.colorproduct",
+      "pk": 13,
+      "fields": {
+        "color_name": "بلوطی تیره",
+        "color_code": "#8B7355"
+      }
+    },
+    {
+      "model": "main.colorproduct",
+      "pk": 14,
+      "fields": {
+        "color_name": "فندقی",
+        "color_code": "#7851A9"
+      }
+    },
+    {
+      "model": "main.colorproduct",
+      "pk": 15,
+      "fields": {
+        "color_name": "قهوه‌ای شکلاتی",
+        "color_code": "#4B0082"
+      }
+    },
+    {
+      "model": "main.colorproduct",
+      "pk": 16,
+      "fields": {
+        "color_name": "قهوه‌ای سوخته",
+        "color_code": "#3E2723"
+      }
+    },
+    {
+      "model": "main.colorproduct",
+      "pk": 17,
+      "fields": {
+        "color_name": "آبی نفتی",
+        "color_code": "#000080"
+      }
+    },
+    {
+      "model": "main.colorproduct",
+      "pk": 18,
+      "fields": {
+        "color_name": "آبی فیروزه‌ای",
+        "color_code": "#00CED1"
+      }
+    },
+    {
+      "model": "main.colorproduct",
+      "pk": 19,
+      "fields": {
+        "color_name": "سبز زیتونی",
+        "color_code": "#556B2F"
+      }
+    },
+    {
+      "model": "main.colorproduct",
+      "pk": 20,
+      "fields": {
+        "color_name": "سبز سدری",
+        "color_code": "#8FBC8F"
+      }
+    },
+    {
+      "model": "main.colorproduct",
+      "pk": 21,
+      "fields": {
+        "color_name": "کرم",
+        "color_code": "#FFFDD0"
+      }
+    },
+    {
+      "model": "main.colorproduct",
+      "pk": 22,
+      "fields": {
+        "color_name": "بژ",
+        "color_code": "#F5F5DC"
+      }
+    },
+    {
+      "model": "main.colorproduct",
+      "pk": 23,
+      "fields": {
+        "color_name": "خاکستری (پودرال)",
+        "color_code": "#D3D3D3"
+      }
+    },
+    {
+      "model": "main.colorproduct",
+      "pk": 24,
+      "fields": {
+        "color_name": "نارنجی سوخته",
+        "color_code": "#CC5500"
+      }
+    },
+    {
+      "model": "main.colorproduct",
+      "pk": 25,
+      "fields": {
+        "color_name": "قرمز آجری",
+        "color_code": "#B22222"
+      }
+    },
+    {
+      "model": "main.colorproduct",
+      "pk": 26,
+      "fields": {
+        "color_name": "سرمه‌ای",
+        "color_code": "#000080"
+      }
+    },
+    {
+      "model": "main.colorproduct",
+      "pk": 27,
+      "fields": {
+        "color_name": "یاسی",
+        "color_code": "#D8BFD8"
+      }
+    },
+    {
+      "model": "main.colorproduct",
+      "pk": 28,
+      "fields": {
+        "color_name": "هلویی",
+        "color_code": "#FFDAB9"
+      }
+    },
+    {
+      "model": "main.colorproduct",
+      "pk": 29,
+      "fields": {
+        "color_name": "چوب گردو (طبیعی)",
+        "color_code": "#5D4037"
+      }
+    },
+    {
+      "model": "main.colorproduct",
+      "pk": 30,
+      "fields": {
+        "color_name": "چوب راش",
+        "color_code": "#D2B48C"
+      }
+    },
+    {
+      "model": "main.colorproduct",
+      "pk": 31,
+      "fields": {
+        "color_name": "چوب ماهون",
+        "color_code": "#4A2C2A"
+      }
+    },
+    {
+      "model": "main.colorproduct",
+      "pk": 32,
+      "fields": {
+        "color_name": "پلی‌گلاس سفید",
+        "color_code": "#FAFAFA"
+      }
+    },
+    {
+      "model": "main.colorproduct",
+      "pk": 33,
+      "fields": {
+        "color_name": "پلی‌گلاس مشکی",
+        "color_code": "#212121"
+      }
+    },
+    {
+      "model": "main.colorproduct",
+      "pk": 34,
+      "fields": {
+        "color_name": "پلی‌گلاس طوسی",
+        "color_code": "#9E9E9E"
+      }
+    },
+    {
+      "model": "main.colorproduct",
+      "pk": 35,
+      "fields": {
+        "color_name": "ترموود (دکوراسیون)",
+        "color_code": "#8B4513"
+      }
+    }
+  ]

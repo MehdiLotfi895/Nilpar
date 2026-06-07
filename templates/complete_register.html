@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+{% load static %}
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>ثبت نام | نیلپر</title>
+
+<style>
+
+@font-face{
+    font-family:'shabnam';
+    src:url('{% static "fonts/Shabnam-FD.woff2" %}');
+}
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'shabnam',Tahoma,sans-serif;
+}
+
+:root{
+
+    --primary:#6c63ff;
+    --primary-dark:#554cf2;
+
+    --text:#222;
+
+    --gray:#777;
+
+    --bg:#f4f5fb;
+}
+
+body{
+
+    min-height:100vh;
+
+    background:
+    linear-gradient(
+        135deg,
+        #eef1ff,
+        #f7f8ff
+    );
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    padding:30px;
+}
+
+/* ================= MAIN CONTAINER ================= */
+
+.auth-container{
+
+    width:100%;
+
+    max-width:1300px;
+
+    min-height:600px;
+
+    background:white;
+
+    border-radius:10px;
+
+    overflow:hidden;
+
+    display:flex;
+
+    box-shadow:
+    0 20px 60px rgba(0,0,0,0.08);
+}
+
+/* ================= LEFT SIDE ================= */
+
+.welcome-side{
+
+    width:45%;
+
+    background:
+    linear-gradient(
+        135deg,
+        #6c63ff,
+        #554cf2
+    );
+
+    color:white;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    padding:60px;
+
+    position:relative;
+
+    overflow:hidden;
+
+    border-top-left-radius:120px;
+    border-bottom-left-radius:120px;
+}
+
+.welcome-content{
+
+    text-align:center;
+
+    position:relative;
+
+    z-index:2;
+}
+
+.welcome-content h1{
+
+    font-size:42px;
+
+    margin-bottom:18px;
+
+    font-weight:800;
+}
+
+.welcome-content p{
+
+    line-height:2.2;
+
+    font-size:15px;
+
+    opacity:0.92;
+
+    margin-bottom:35px;
+}
+
+.welcome-btn{
+
+    width:180px;
+
+    height:52px;
+
+    border:1px solid rgba(255,255,255,0.5);
+
+    background:transparent;
+
+    color:white;
+
+    border-radius:10px;
+
+    font-size:15px;
+
+    cursor:pointer;
+
+    transition:0.3s;
+}
+
+.welcome-btn:hover{
+
+    background:white;
+
+    color:var(--primary);
+}
+
+/* ================= RIGHT SIDE ================= */
+
+.register-side{
+
+    width:55%;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    padding:40px;
+}
+
+/* ================= REGISTER BOX ================= */
+
+.register-box{
+
+    width:100%;
+
+    max-width:430px;
+
+    min-width:360px;
+}
+
+/* ================= MOBILE TOP ================= */
+
+.mobile-top{
+
+    display:none;
+}
+
+/* ================= LOGO ================= */
+
+.logo-wrap{
+
+    width:100%;
+
+    display:flex;
+
+    justify-content:center;
+
+    margin-bottom:20px;
+}
+
+.site-logo{
+
+    width:250px;
+}
+
+/* ================= TITLE ================= */
+
+.register-title{
+
+    text-align:center;
+
+    margin-bottom:28px;
+}
+
+.register-title h2{
+
+    font-size:36px;
+
+    color:var(--text);
+
+    margin-bottom:10px;
+}
+
+.register-title p{
+
+    color:var(--gray);
+
+    font-size:14px;
+
+    line-height:2;
+}
+
+/* ================= FORM ================= */
+
+.register-form{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:16px;
+}
+
+.form-input{
+
+    width:100%;
+
+    height:56px;
+
+    border:none;
+
+    background:#f3f4f8;
+
+    border-radius:5px;
+
+    padding:0 18px;
+
+    font-size:15px;
+
+    transition:0.3s;
+}
+
+.form-input:focus{
+
+    outline:none;
+
+    background:white;
+
+    box-shadow:
+    0 0 0 3px rgba(108,99,255,0.12);
+
+    border:1px solid rgba(108,99,255,0.2);
+}
+
+/* ================= BUTTON ================= */
+
+.register-btn{
+
+    width:100%;
+
+    height:56px;
+
+    border:none;
+
+    border-radius:8px;
+
+    background:
+    linear-gradient(
+        135deg,
+        var(--primary),
+        var(--primary-dark)
+    );
+
+    color:white;
+
+    font-size:15px;
+
+    font-weight:700;
+
+    cursor:pointer;
+
+    transition:0.3s;
+
+    margin-top:5px;
+
+    box-shadow:
+    0 10px 20px rgba(108,99,255,0.18);
+}
+
+.register-btn:hover{
+
+    transform:translateY(-2px);
+}
+
+/* ================= MESSAGES ================= */
+
+.messages{
+
+    list-style:none;
+
+    margin-bottom:16px;
+
+    display: flex;
+
+    flex-direction: column;
+    
+    gap: 5px;
+}
+
+.messages li{
+
+    padding:12px;
+
+    border-radius:10px;
+
+    font-size:13px;
+
+    margin-bottom:8px;
+}
+
+.messages .error{
+
+    background:#fff0f0;
+
+    color:#e74c3c;
+}
+
+.messages .success{
+
+    background:#eefbf3;
+
+    color:#2ecc71;
+}
+
+/* ================= LOGIN LINK ================= */
+
+.login-link{
+
+    margin-top:20px;
+
+    text-align:center;
+
+    color:var(--gray);
+
+    font-size:13px;
+}
+
+.login-link a{
+
+    color:var(--primary);
+
+    text-decoration:none;
+
+    font-weight:700;
+}
+
+/* ================= TERMS ================= */
+
+.terms{
+
+    margin-top:18px;
+
+    text-align:center;
+
+    color:var(--gray);
+
+    font-size:12px;
+
+    line-height:2;
+}
+
+.terms a{
+
+    color:var(--primary);
+
+    text-decoration:none;
+
+    font-weight:700;
+}
+
+/* ================= RESPONSIVE ================= */
+
+@media (max-width:992px){
+
+    body{
+
+        padding:0;
+
+        background:white;
+    }
+
+    .auth-container{
+
+        max-width:100%;
+
+        min-height:100vh;
+
+        border-radius:0;
+
+        display:block;
+
+        box-shadow:none;
+    }
+
+    .welcome-side{
+
+        display:none;
+    }
+
+    .register-side{
+
+        width:100%;
+
+        min-height:100vh;
+
+        padding:0;
+
+        display:block;
+    }
+
+    .mobile-top{
+
+        width:100%;
+
+        height:220px;
+
+        background:
+        linear-gradient(
+            135deg,
+            #6c63ff,
+            #554cf2
+        );
+
+        border-bottom-left-radius:35px;
+        border-bottom-right-radius:35px;
+
+        display:flex;
+
+        justify-content:center;
+
+        align-items:center;
+
+        position:relative;
+    }
+
+    .mobile-top img{
+
+        width:240px;
+
+    }
+
+    .mobile-form{
+
+        padding:35px 24px;
+    }
+
+    .register-box{
+
+        max-width:100%;
+
+        min-width:auto;
+    }
+
+    .logo-wrap{
+
+        display:none;
+    }
+
+    .register-title h2{
+
+        font-size:28px;
+    }
+
+    .register-title p{
+
+        font-size:13px;
+    }
+
+    .form-input{
+
+        height:54px;
+
+        font-size:14px;
+
+    }
+
+    .register-btn{
+
+        height:54px;
+
+        border-radius:12px;
+
+        font-size:14px;
+    }
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="auth-container">
+
+    <!-- LEFT SIDE -->
+    <div class="welcome-side">
+
+        <div class="welcome-content">
+
+            <h1>به نیلپر خوش اومدی</h1>
+
+            <p>
+                برای تکمیل ثبت نام،
+                اطلاعات حساب کاربری خود را وارد کنید
+            </p>
+
+            <button class="welcome-btn">
+                صنایع چوبی نیلپر
+            </button>
+
+        </div>
+
+    </div>
+
+    <!-- RIGHT SIDE -->
+    <div class="register-side">
+
+        <!-- MOBILE HEADER -->
+        <div class="mobile-top">
+
+            <img
+                src="{% static 'images/new_ai/ComfyUI_00285_.png'%}"
+                alt=""
+            >
+
+        </div>
+
+        <div class="mobile-form">
+
+            <div class="register-box">
+
+                <!-- DESKTOP LOGO -->
+                <div class="logo-wrap">
+
+                    <img
+                        src="{% static 'images/new_ai/ComfyUI_00286_.png'%}"
+                        class="site-logo"
+                        alt=""
+                    >
+
+                </div>
+
+                <!-- TITLE -->
+                <div class="register-title">
+
+
+                    <p>
+                        لطفاً اطلاعات حساب کاربری خود را وارد کنید
+                    </p>
+
+                </div>
+
+                <!-- MESSAGES -->
+                {% if messages %}
+                    <ul class="messages">
+                        {% for message in messages %}
+                            <li class="{{ message.tags }}">
+                                {{ message }}
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+
+                <!-- FORM -->
+                <form method="POST" class="register-form">
+
+                    {% csrf_token %}
+
+                    <input
+                        type="text"
+                        name="first_name"
+                        class="form-input"
+                        placeholder="نام"
+                        required
+                    >
+
+                    <input
+                        type="text"
+                        name="last_name"
+                        class="form-input"
+                        placeholder="نام خانوادگی"
+                        required
+                    >
+
+                    <input
+                        type="email"
+                        name="email"
+                        class="form-input"
+                        placeholder="ایمیل"
+                    >
+
+
+                    <button type="submit" class="register-btn">
+
+                        ثبت نام
+
+                    </button>
+
+                </form>
+
+                <!-- LOGIN -->
+                <div class="login-link">
+
+                    حساب کاربری دارید؟
+
+                    <a href="{% url 'send_otp' %}">
+                        وارد شوید
+                    </a>
+
+                </div>
+
+                <!-- TERMS -->
+                <div class="terms">
+
+                    ثبت نام شما به معنای پذیرش
+
+                    <a href="#">شرایط</a>
+
+                    و
+
+                    <a href="#">قوانین</a>
+
+                    است
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+</html>

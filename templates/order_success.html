@@ -1,0 +1,508 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load humanize %}
+{% load my_filters %}
+
+{% block content %}
+
+<style>
+    /* ======================
+    کانتینر اصلی
+    ====================== */
+    .success-container {
+        width: 95%;
+        margin: 30px auto;
+        font-family: sans-serif;
+    }
+
+    .success-content {
+        display: flex;
+        gap: 20px;
+        align-items: flex-start;
+        flex-wrap: nowrap;
+    }
+
+    /* ======================
+    بخش اصلی (سمت راست)
+    ====================== */
+    .success-main {
+        flex: 1 1 70%;
+        min-width: 600px;
+        background: #fff;
+        border: 1px solid #ececec;
+        border-radius: 5px;
+        overflow: hidden;
+    }
+
+    /* ======================
+    جدول محصولات (مثل بسکتبال)
+    ====================== */
+    .products-table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    .products-table thead {
+        background: #fafafa;
+        font-size: 14px;
+    }
+
+    .products-table th,
+    .products-table td {
+        padding: 20px 15px;
+        text-align: center;
+        border-bottom: 1px solid #f1f1f1;
+    }
+
+    .product-cell {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        text-align: right;
+    }
+
+    .product-image {
+        width: 120px;
+        height: 120px;
+        border-radius: 8px;
+        border: 1px solid #eee;
+        overflow: hidden;
+    }
+
+    .product-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+    }
+
+    .product-info {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+        text-align: right;
+    }
+
+    .product-name {
+        font-size: 14px;
+        font-weight: 600;
+        color: #333;
+    }
+
+    .product-meta {
+        font-size: 13px;
+        color: #666;
+    }
+
+    .color-box {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 8px;
+        font-size: 14px;
+    }
+
+    .color-dot {
+        display: inline-block;
+        width: 25px;
+        height: 25px;
+        border-radius: 50%;
+        border: 1px solid #ddd;
+    }
+
+    .price {
+        color: #4a4a4a;
+        font-weight: 600;
+        font-size: 14px;
+    }
+
+    /* بخش هدر موفقیت */
+    .success-header {
+        text-align: center;
+        padding: 40px 30px 30px;
+        border-bottom: 1px solid #f1f1f1;
+    }
+
+    .success-icon {
+        width: 90px;
+        height: 90px;
+        border-radius: 50%;
+        background: #eafaf0;
+        color: #1fa855;
+        font-size: 45px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 20px;
+    }
+
+    .success-title {
+        font-size: 22px;
+        font-weight: 700;
+        color: #222;
+        margin-bottom: 10px;
+    }
+
+    .success-subtitle {
+        color: #666;
+        font-size: 14px;
+    }
+
+    /* بخش اطلاعات سفارش */
+    .info-section {
+        padding: 20px 25px;
+        border-bottom: 1px solid #f1f1f1;
+    }
+
+    .section-title {
+        font-size: 16px;
+        font-weight: 600;
+        margin-bottom: 15px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .info-grid {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 15px;
+    }
+
+    .info-item {
+        flex: 1;
+        min-width: 150px;
+        background: #fafafa;
+        padding: 12px 15px;
+        border-radius: 5px;
+    }
+
+    .info-label {
+        font-size: 12px;
+        color: #888;
+        margin-bottom: 5px;
+    }
+
+    .info-value {
+        font-size: 15px;
+        font-weight: 600;
+        color: #222;
+    }
+
+    .tracking-code {
+        color: #1fa855;
+        font-size: 16px;
+        font-weight: 700;
+    }
+
+    .payment-status {
+        display: inline-block;
+        padding: 4px 12px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 600;
+    }
+
+    .status-paid {
+        background: #eafaf0;
+        color: #1fa855;
+    }
+
+    .status-cod {
+        background: #fff8e1;
+        color: #ff8f00;
+    }
+
+    .status-unpay {
+        background: #ffebee;
+        color: #d63031;
+    }
+
+    /* بخش اطلاعات تحویل */
+    .delivery-section {
+        padding: 20px 25px;
+        border-top: 1px solid #f1f1f1;
+    }
+
+    .delivery-grid {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 15px;
+    }
+
+    .delivery-item {
+        flex: 1;
+        min-width: 200px;
+    }
+
+    .delivery-label {
+        font-size: 12px;
+        color: #888;
+        margin-bottom: 5px;
+    }
+
+    .delivery-value {
+        font-size: 14px;
+        font-weight: 500;
+        color: #333;
+    }
+
+    /* ======================
+    ستون کناری (سمت چپ) مثل بسکتبال
+    ====================== */
+    .success-sidebar {
+        flex: 0 0 25%;
+        min-width: 250px;
+        position: sticky;
+        top: 180px;
+        align-self: flex-start;
+    }
+
+    .action-card {
+        background: #fff;
+        border: 1px solid #ececec;
+        border-radius: 5px;
+        padding: 20px;
+    }
+
+    .action-title {
+        font-size: 17px;
+        font-weight: 600;
+        margin-bottom: 20px;
+        text-align: center;
+    }
+
+    .notice-box {
+        background: #fafafa;
+        border-radius: 5px;
+        padding: 15px;
+        font-size: 13px;
+        color: #666;
+        line-height: 1.8;
+        margin-bottom: 20px;
+    }
+
+    .btn {
+        width: 100%;
+        height: 50px;
+        border: none;
+        border-radius: 5px;
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 14px;
+        font-weight: 600;
+        transition: 0.3s;
+        cursor: pointer;
+        margin-bottom: 12px;
+    }
+
+    .btn:last-child {
+        margin-bottom: 0;
+    }
+
+    .btn-primary {
+        background: #747667;
+        color: #fff;
+    }
+
+    .btn-primary:hover {
+        opacity: 0.85;
+    }
+
+    .btn-outline {
+        border: 1px solid #747667;
+        color: #747667;
+        background: #fff;
+    }
+
+    .btn-outline:hover {
+        background: #faf8f3;
+    }
+
+    /* ======================
+    ریسپانسیو
+    ====================== */
+    @media (max-width: 992px) {
+        .success-content {
+            flex-direction: column;
+        }
+        .success-main,
+        .success-sidebar {
+            width: 100%;
+            min-width: 0;
+            position: relative;
+            top: 0;
+        }
+        .products-table {
+            display: block;
+            overflow-x: auto;
+        }
+        .product-cell {
+            min-width: 200px;
+        }
+    }
+</style>
+
+<div class="success-container">
+    <div class="success-content">
+        <!-- بخش اصلی (سمت راست) -->
+        <div class="success-main">
+            <!-- هدر موفقیت -->
+            <div class="success-header">
+                <div class="success-icon">
+                    ✓
+                </div>
+                <div class="success-title">
+                    سفارش شما با موفقیت ثبت شد
+                </div>
+                <div class="success-subtitle">
+                    از خرید شما متشکریم. اطلاعات سفارش در ادامه نمایش داده شده است.
+                </div>
+            </div>
+
+            <!-- لیست محصولات (مثل بسکتبال) -->
+            <table class="products-table">
+                <thead>
+                    <tr>
+                        <th>محصول</th>
+                        <th>رنگ</th>
+                        <th>قیمت واحد</th>
+                        <th>تعداد</th>
+                        <th>جمع</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in order.order_items.all %}
+                    <tr>
+                        <td>
+                            <div class="product-cell">
+                                <div class="product-image">
+                                    {% if item.product.images.first %}
+                                        <img src="{{ item.product.images.first.image.url }}" alt="{{ item.product.name }}">
+                                    {% else %}
+                                        <img src="{% static 'images/no-image.png' %}" alt="بدون تصویر">
+                                    {% endif %}
+                                </div>
+                                <div class="product-info">
+                                    <div class="product-name">{{ item.product.name }}</div>
+                                    <div class="product-meta">سایز: {{ item.product.dimensions|default:"-" }}</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="color-box">
+                                {% if item.color %}
+                                    <span class="color-dot" style="background: {{ item.color.color_code|default:'#cccccc' }}"></span>
+                                    {{ item.color.name }}
+                                {% else %}
+                                    -
+                                {% endif %}
+                            </div>
+                        </td>
+                        <td class="price">{{ item.price|intcomma }} تومان</td>
+                        <td>{{ item.number }}</td>
+                        <td class="price">{{ item.total_price|intcomma }} تومان</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+            <!-- اطلاعات سفارش -->
+            <div class="info-section">
+                <div class="section-title">
+                    📋 اطلاعات سفارش
+                </div>
+                <div class="info-grid">
+                    <div class="info-item">
+                        <div class="info-label">شماره سفارش</div>
+                        <div class="info-value">#{{ order.id }}</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">کد رهگیری</div>
+                        <div class="info-value tracking-code">
+                            {{ order.tracking_code|default:"در حال صدور" }}
+                        </div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">مبلغ سفارش</div>
+                        <div class="info-value">{{ order.total_price|intcomma }} تومان</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">وضعیت سفارش</div>
+                        <div class="info-value">
+                            <span class="payment-status 
+                                {% if order.state == 'payed' %}status-paid
+                                {% elif order.state == 'cash_on_delivery' %}status-cod
+                                {% else %}status-unpay{% endif %}">
+                                {% if order.state == 'payed' %}
+                                    پرداخت شده
+                                {% elif order.state == '' %}
+                                    پرداخت در محل
+                                {% elif order.state == 'paying' %}
+                                    در انتظار پرداخت
+                                {% else %}
+                                   پرداخت نشده
+                                {% endif %}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- اطلاعات تحویل -->
+            <div class="delivery-section">
+                <div class="section-title">
+                     اطلاعات تحویل
+                </div>
+                <div class="delivery-grid">
+                    <div class="delivery-item">
+                        <div class="delivery-label">زمان تحویل</div>
+                        <div class="delivery-value">{{ order.date|date:"l d F" }} - {{ order.clock }}</div>
+                    </div>
+                    <div class="delivery-item">
+                        <div class="delivery-label">گیرنده</div>
+                        <div class="delivery-value">{{ order.receiver }}</div>
+                    </div>
+                    <div class="delivery-item">
+                        <div class="delivery-label">شماره تماس</div>
+                        <div class="delivery-value">{{ order.phonenumber }}</div>
+                    </div>
+                    <div class="delivery-item">
+                        <div class="delivery-label">کد پستی</div>
+                        <div class="delivery-value">{{ order.address_code|default:"-" }}</div>
+                    </div>
+                    <div class="delivery-item" style="flex: 2; min-width: 250px;">
+                        <div class="delivery-label">آدرس</div>
+                        <div class="delivery-value">{{ order.address }}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ستون کناری (سمت چپ) مثل بسکتبال -->
+        <div class="success-sidebar">
+            <div class="action-card">
+                <h3 class="action-title"> راهنمای بعدی</h3>
+
+                <div class="notice-box">
+                    <strong>توجه:</strong>
+                    لطفاً کد رهگیری سفارش را نزد خود نگه دارید.
+                    تمامی مراحل بررسی، آماده‌سازی و ارسال سفارش از طریق پنل کاربری شما قابل مشاهده خواهد بود.
+                    <br><br>
+                    در صورت نیاز به پشتیبانی، با شماره تماس ما ارتباط بگیرید.
+                </div>
+
+                <a href="{% url 'home' %}" class="btn btn-primary">
+                     بازگشت به فروشگاه
+                </a>
+
+                <a href="" class="btn btn-outline">
+                     مشاهده سفارش‌ها
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,245 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="main-container" id="mainContainer">
+    <!-- سایدبار فیلتر -->
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-title">
+            <i class="fas fa-filter"></i>
+            فیلترها
+        </div>
+        
+        <!-- فیلتر قیمت با اسلایدر -->
+        <div class="filter-group">
+            <h4>محدوده قیمت (تومان)</h4>
+            <div class="price-range-slider">
+                <div class="range-slider">
+                    <input type="range" id="rangeMin" min="0" max="100000000" step="1000000" value="0">
+                    <input type="range" id="rangeMax" min="0" max="100000000" step="1000000" value="50000000">
+                </div>
+                <div class="price-labels">
+                    <span id="minPriceLabel">0 تومان</span>
+                    <span id="maxPriceLabel">50,000,000 تومان</span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- فیلتر جنس -->
+        <div class="filter-group">
+            <h4>جنس</h4>
+            <div class="filter-option">
+                <input type="checkbox" id="mat1">
+                <label for="mat1">MDF</label>
+            </div>
+            <div class="filter-option">
+                <input type="checkbox" id="mat2">
+                <label for="mat2">هایگلاس</label>
+            </div>
+            <div class="filter-option">
+                <input type="checkbox" id="mat3">
+                <label for="mat3">چوب طبیعی</label>
+            </div>
+            <div class="filter-option">
+                <input type="checkbox" id="mat4">
+                <label for="mat4">PVC</label>
+            </div>
+        </div>
+        
+        <!-- فیلتر سبک -->
+        <div class="filter-group">
+            <h4>سبک</h4>
+            <div class="filter-option">
+                <input type="checkbox" id="style1">
+                <label for="style1">کلاسیک</label>
+            </div>
+            <div class="filter-option">
+                <input type="checkbox" id="style2">
+                <label for="style2">مدرن</label>
+            </div>
+            <div class="filter-option">
+                <input type="checkbox" id="style3">
+                <label for="style3">نئوکلاسیک</label>
+            </div>
+            <div class="filter-option">
+                <input type="checkbox" id="style4">
+                <label for="style4">مینیمال</label>
+            </div>
+        </div>
+        
+        <button class="apply-filter">اعمال فیلتر</button>
+    </aside>
+    
+    <!-- محتوای اصلی -->
+    <div class="content">
+        <!-- هدر محصولات -->
+        <div class="products-header">
+            <div class="sort-options">
+                <button style="color: black;">مرتب سازی</button>
+                <button class="active">پرفروش‌ترین</button>
+                <button>گران‌ترین</button>
+                <button>ارزان‌ترین</button>
+                <button>جدیدترین</button>
+            </div>
+        </div>
+        
+        <!-- شبکه محصولات -->
+        <div class="products-grid">
+            <div class="product-card">
+                <div class="product-image">🗄️</div>
+                <h3 class="product-title">کابینت آشپزخانه کلاسیک سفید با روکش PVC</h3>
+                <div class="product-features">
+                    <span class="feature-tag">MDF درجه یک</span>
+                    <span class="feature-tag">5 سال گارانتی</span>
+                </div>
+                <div class="product-price">
+                    <div class="price-value">15,000,000 <span>تومان</span></div>
+                    <div class="add-to-cart"><i class="fas fa-plus"></i></div>
+                </div>
+            </div>
+            
+            <!-- محصول 2 -->
+            <div class="product-card">
+                <div class="product-image">🗄️</div>
+                <h3 class="product-title">کابینت آشپزخانه مدرن هایگلاس براق</h3>
+                <div class="product-features">
+                    <span class="feature-tag">هایگلاس</span>
+                    <span class="feature-tag">آنتی باکتریال</span>
+                </div>
+                <div class="product-price">
+                    <div class="price-value">18,500,000 <span>تومان</span></div>
+                    <div class="add-to-cart"><i class="fas fa-plus"></i></div>
+                </div>
+            </div>
+            
+            <!-- محصول 3 -->
+            <div class="product-card">
+                <div class="product-image">🗄️</div>
+                <h3 class="product-title">کابینت نئوکلاسیک چوبی با روکش طبیعی</h3>
+                <div class="product-features">
+                    <span class="feature-tag">چوب راش</span>
+                    <span class="feature-tag">رنگ پلی‌اورتان</span>
+                </div>
+                <div class="product-price">
+                    <div class="price-value">25,000,000 <span>تومان</span></div>
+                    <div class="add-to-cart"><i class="fas fa-plus"></i></div>
+                </div>
+            </div>
+            
+            <!-- محصول 4 -->
+            <div class="product-card">
+                <div class="product-image">🚪</div>
+                <h3 class="product-title">کمد دیواری سفارشی با جک آسان‌بازشو</h3>
+                <div class="product-features">
+                    <span class="feature-tag">جک Blum</span>
+                    <span class="feature-tag">نصب رایگان</span>
+                </div>
+                <div class="product-price">
+                    <div class="price-value">8,500,000 <span>تومان</span></div>
+                    <div class="add-to-cart"><i class="fas fa-plus"></i></div>
+                </div>
+            </div>
+            
+            <!-- محصول 5 -->
+            <div class="product-card">
+                <div class="product-image">👔</div>
+                <h3 class="product-title">کمد لباس تمام‌اتوماتیک با آینه</h3>
+                <div class="product-features">
+                    <span class="feature-tag">LED داخلی</span>
+                    <span class="feature-tag">جک‌های آلمانی</span>
+                </div>
+                <div class="product-price">
+                    <div class="price-value">12,000,000 <span>تومان</span></div>
+                    <div class="add-to-cart"><i class="fas fa-plus"></i></div>
+                </div>
+            </div>
+            
+            <!-- محصول 6 -->
+            <div class="product-card">
+                <div class="product-image">📚</div>
+                <h3 class="product-title">کتابخانه سفارشی با نورپردازی LED</h3>
+                <div class="product-features">
+                    <span class="feature-tag">قابلیت تنظیم</span>
+                    <span class="feature-tag">بدون محدودیت</span>
+                </div>
+                <div class="product-price">
+                    <div class="price-value">6,500,000 <span>تومان</span></div>
+                    <div class="add-to-cart"><i class="fas fa-plus"></i></div>
+                </div>
+            </div>
+            
+            <!-- محصول 7 -->
+            <div class="product-card">
+                <div class="product-image">🗄️</div>
+                <h3 class="product-title">کابینت جزیره مدرن</h3>
+                <div class="product-features">
+                    <span class="feature-tag">طراحی خاص</span>
+                    <span class="feature-tag">فضای کافی</span>
+                </div>
+                <div class="product-price">
+                    <div class="price-value">20,000,000 <span>تومان</span></div>
+                    <div class="add-to-cart"><i class="fas fa-plus"></i></div>
+                </div>
+            </div>
+            
+            <!-- محصول 8 -->
+            <div class="product-card">
+                <div class="product-image">🗄️</div>
+                <h3 class="product-title">کابینت یخچالی مخفی</h3>
+                <div class="product-features">
+                    <span class="feature-tag">مدرن</span>
+                    <span class="feature-tag">فضای کم</span>
+                </div>
+                <div class="product-price">
+                    <div class="price-value">5,500,000 <span>تومان</span></div>
+                    <div class="add-to-cart"><i class="fas fa-plus"></i></div>
+                </div>
+            </div>
+            
+            <!-- محصول 9 -->
+            <div class="product-card">
+                <div class="product-image">🗄️</div>
+                <h3 class="product-title">کابینت کلاسیک طلایی</h3>
+                <div class="product-features">
+                    <span class="feature-tag">کلاسیک</span>
+                    <span class="feature-tag">لوکس</span>
+                </div>
+                <div class="product-price">
+                    <div class="price-value">28,000,000 <span>تومان</span></div>
+                    <div class="add-to-cart"><i class="fas fa-plus"></i></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // اسلایدر قیمت
+    const rangeMin = document.getElementById('rangeMin');
+    const rangeMax = document.getElementById('rangeMax');
+    const minPriceLabel = document.getElementById('minPriceLabel');
+    const maxPriceLabel = document.getElementById('maxPriceLabel');
+    
+    function formatPrice(num) {
+        return num.toLocaleString('fa-IR') + ' تومان';
+    }
+    
+    rangeMin.addEventListener('input', function() {
+        const minVal = parseInt(rangeMin.value);
+        const maxVal = parseInt(rangeMax.value);
+        
+        if (minVal > maxVal) {
+            rangeMin.value = maxVal;
+        }
+        minPriceLabel.textContent = formatPrice(parseInt(rangeMin.value));
+    });
+    
+    rangeMax.addEventListener('input', function() {
+        const minVal = parseInt(rangeMin.value);
+        const maxVal = parseInt(rangeMax.value);
+        
+        if (maxVal < minVal) {
+            rangeMax.value = minVal;
+        }
+        maxPriceLabel.textContent = formatPrice(parseInt(rangeMax.value));
+    });
+</script>
+{% endblock %}

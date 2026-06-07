@@ -1,0 +1,227 @@
+{% extends 'base.html' %}
+{% block content %}
+{% load static %}
+{% load humanize %}
+
+<div class="main-container container" id="mainContainer">
+    <!-- سایدبار فیلتر -->
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-title">
+            <i class="fas fa-filter"></i>
+            فیلترها
+        </div>
+        <form action="" method="GET" id="filterForm">
+            <!-- فیلتر قیمت -->
+            <div class="filter-group">
+                <h4>محدوده قیمت (تومان)</h4>
+                <div class="price-range-slider">
+                    <div class="range-slider">
+                        <input type="range" id="rangeMin" min="0" max="100000000" step="1000000" 
+                               value="{{ selected_min_price|default:'0' }}" name="rangeMin">
+                        <input type="range" id="rangeMax" min="0" max="100000000" step="1000000" 
+                               value="{{ selected_max_price|default:'50000000' }}" name="rangeMax">
+                    </div>
+                    <div class="price-labels">
+                        <span id="minPriceLabel">{{ selected_min_price|default:'0'|intcomma }} تومان</span>
+                        <span id="maxPriceLabel">{{ selected_max_price|default:'50000000'|intcomma }} تومان</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- فیلتر جنس -->
+            <div class="filter-group">
+                <h4>جنس</h4>
+                <div class="filter-option">
+                    <input type="checkbox" id="mat1" name="MDF" {% if selected_mdf %}checked{% endif %}>
+                    <label for="mat1">MDF</label>
+                </div>
+                <div class="filter-option">
+                    <input type="checkbox" id="mat2" name="hayglas" {% if selected_hayglas %}checked{% endif %}>
+                    <label for="mat2">هایگلاس</label>
+                </div>
+                <div class="filter-option">
+                    <input type="checkbox" id="mat3" name="natural" {% if selected_natural %}checked{% endif %}>
+                    <label for="mat3">چوب طبیعی</label>
+                </div>
+                <div class="filter-option">
+                    <input type="checkbox" id="mat4" name="PVC" {% if selected_pvc %}checked{% endif %}>
+                    <label for="mat4">PVC</label>
+                </div>
+            </div>
+            
+            <!-- فیلتر رنگ -->
+            <div class="filter-group">
+                <h4>رنگ</h4>
+                <div class="multi-color-selector" id="multiColorSelector">
+                    {% for color in colors %}
+                    <div class="color-item">
+                        <div class="color-circle" 
+                             data-color-id="{{ color.id }}"
+                             data-color-name="{{ color.color_name }}"
+                             data-color-code="{{ color.color_code }}"
+                             style="background-color: {{ color.color_code }};">
+                            <span class="checkmark">✓</span>
+                        </div>
+                        <span class="color-name">{{ color.color_name }}</span>
+                    </div>
+                    {% endfor %}
+                </div>
+                <input type="hidden" name="selected_colors" id="selectedColorsInput" value="{{ selected_colors|default:'' }}">
+            </div>
+            
+            <button class="apply-filter" type="submit">اعمال فیلتر</button>
+        </form>
+    </aside>
+    
+    <!-- محتوای اصلی -->
+    <div class="content">
+        <!-- هدر محصولات -->
+        <form action="" method="GET" id="sortForm">
+            {% for key, value in request.GET.items %}
+                {% if key != 'sort_action' and key != 'page' %}
+                    <input type="hidden" name="{{ key }}" value="{{ value }}">
+                {% endif %}
+            {% endfor %}
+            
+            <div class="sort-options">
+                <button style="color: black;"> <i class="fa-solid fa-arrow-down-wide-short"></i> مرتب سازی</button>
+                <button class="{% if current_sort == '1' %}active{% endif %}" type='submit' name="sort_action" value="1">جدیدترین</button>
+                <button class="{% if current_sort == '2' %}active{% endif %}" type='submit' name="sort_action" value="2">گران‌ترین</button>
+                <button class="{% if current_sort == '3' %}active{% endif %}" type='submit' name="sort_action" value="3">ارزان‌ترین</button>
+                <button class="{% if current_sort == '4' %}active{% endif %}" type='submit' name="sort_action" value="4">پرفروش ترین</button>
+            </div>
+        </form>
+        
+        <!-- شبکه محصولات -->
+        <!-- شبکه محصولات -->
+        <div class="products-grid">
+            {% for product in products %}
+            <a class="product-card" href="{% url 'detail' slug=product.slug %}" target="_blank">
+                
+                <!-- فروش ویژه (فقط متن، بدون بک‌گراند) -->
+                {% if product.off != 0 %}
+                    <div class="special-offer-text">فروش ویژه</div>
+                {% endif %}
+                
+                <!-- تصویر -->
+                <div class="product-image" style="--img1: url('{{ product.images.first.image.url }}'); --img2: url('{{ product.images.all.1.image.url }}');"></div>
+                
+                <!-- عنوان -->
+                <h3 class="product-title">{{ product.name }}</h3>
+                
+                <!-- قیمت‌ها (یکدست) -->
+                <div class="product-price">
+                    <!-- سطر اول: تخفیف در چپ، قیمت در راست -->
+                    <div class="price-first-row">
+                        {% if product.off != 0 %}
+                            <div class="product-off-badge">{{ product.off }}% تخفیف</div>
+                        {% else %}
+                            <div class="off-placeholder">0%</div>  <!-- placeholder برای حفظ فضا -->
+                        {% endif %}
+                        <div class="product-current-price">
+                            {{ product.price|intcomma }} <span>تومان</span>
+                        </div>
+                    </div>
+                    
+                    <!-- سطر دوم: قیمت قدیم (فقط اگه تخفیف داشته باشه) -->
+                    {% if product.off != 0 %}
+                        <div class="product-old-price-row">
+                            <del class="product-old-price">
+                                {{ product.old_price|intcomma }} <span>تومان</span>
+                            </del>
+                        </div>
+                    {% else %}
+                        <div class="product-old-price-row">
+                            <!-- فضای خالی برای حفظ ارتفاع یکدست -->
+                        </div>
+                    {% endif %}
+                </div>
+                
+            </a>
+            {% endfor %}
+        </div>
+        {% if is_paginated %}
+        <div class="pagination-container">
+            <div class="pagination">
+                <!-- دکمه صفحه اول -->
+                {% if page_obj.has_previous %}
+                    <a href="?page=1" class="pagination-first">
+                        <i class="fas fa-angle-double-right"></i>
+                    </a>
+                {% endif %}
+                
+                <!-- دکمه قبلی -->
+                {% if page_obj.has_previous %}
+                    <a href="?page={{ page_obj.previous_page_number }}" class="pagination-prev">
+                        <i class="fas fa-angle-right"></i>
+                    </a>
+                {% endif %}
+                
+                <!-- شماره صفحات -->
+                {% for num in page_obj.paginator.page_range %}
+                    {% if page_obj.number == num %}
+                        <span class="pagination-current">{{ num }}</span>
+                    {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+                        <a href="?page={{ num }}" class="pagination-num">{{ num }}</a>
+                    {% endif %}
+                {% endfor %}
+                
+                <!-- دکمه بعدی -->
+                {% if page_obj.has_next %}
+                    <a href="?page={{ page_obj.next_page_number }}" class="pagination-next">
+                        <i class="fas fa-angle-left"></i>
+                    </a>
+                {% endif %}
+                
+                <!-- دکمه صفحه آخر -->
+                {% if page_obj.has_next %}
+                    <a href="?page={{ page_obj.paginator.num_pages }}" class="pagination-last">
+                        <i class="fas fa-angle-double-left"></i>
+                    </a>
+                {% endif %}
+            </div>
+            
+            <!-- نمایش اطلاعات صفحات -->
+            <div class="pagination-info">
+                صفحه {{ page_obj.number }} از {{ page_obj.paginator.num_pages }}
+                ({{ page_obj.paginator.count }} محصول)
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+<script>
+    // اسلایدر قیمت
+    const rangeMin = document.getElementById('rangeMin');
+    const rangeMax = document.getElementById('rangeMax');
+    const minPriceLabel = document.getElementById('minPriceLabel');
+    const maxPriceLabel = document.getElementById('maxPriceLabel');
+    
+    function formatPrice(num) {
+        return num.toLocaleString('fa-IR') + ' تومان';
+    }
+    
+    rangeMin.addEventListener('input', function() {
+        const minVal = parseInt(rangeMin.value);
+        const maxVal = parseInt(rangeMax.value);
+        
+        if (minVal > maxVal) {
+            rangeMin.value = maxVal;
+        }
+        minPriceLabel.textContent = formatPrice(parseInt(rangeMin.value));
+    });
+    
+    rangeMax.addEventListener('input', function() {
+        const minVal = parseInt(rangeMin.value);
+        const maxVal = parseInt(rangeMax.value);
+        
+        if (maxVal < minVal) {
+            rangeMax.value = minVal;
+        }
+        maxPriceLabel.textContent = formatPrice(parseInt(rangeMax.value));
+    });
+    function TopContent(params) {
+         
+    }
+</script>
+{% endblock %}

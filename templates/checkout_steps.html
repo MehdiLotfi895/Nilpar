@@ -1,0 +1,39 @@
+<div class="checkout-steps">
+
+    <!-- خط ابتدا -->
+    <div class="step-line edge-line {% if current_step >= 1 %}active{% endif %}"></div>
+
+    <!-- سبد خرید -->
+    <div class="step {% if current_step >= 1 %}active{% endif %}">
+        <div class="step-icon">
+            <i class="fas fa-shopping-bag"></i>
+        </div>
+        <span>سبد خرید</span>
+    </div>
+
+    <!-- خط بین 1 و 2 -->
+    <div class="step-line {% if current_step >= 2 %}active{% endif %}"></div>
+
+    <!-- پرداخت -->
+    <div class="step {% if current_step >= 2 %}active{% endif %}">
+        <div class="step-icon">
+            <i class="fas fa-receipt"></i>
+        </div>
+        <span>جزئیات پرداخت</span>
+    </div>
+
+    <!-- خط بین 2 و 3 -->
+    <div class="step-line {% if current_step >= 3 %}active{% endif %}"></div>
+
+    <!-- تکمیل سفارش -->
+    <div class="step {% if current_step >= 3 %}active{% endif %}">
+        <div class="step-icon">
+            <i class="fas fa-check"></i>
+        </div>
+        <span>تکمیل سفارش</span>
+    </div>
+
+    <!-- خط انتها -->
+    <div class="step-line edge-line {% if current_step >= 3 %}active{% endif %}"></div>
+
+</div>

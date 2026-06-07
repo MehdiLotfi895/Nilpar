@@ -1,0 +1,520 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load my_filters %}
+
+{% block content %}
+
+<style>
+    /* ======================
+    کانتینر اصلی
+    ====================== */
+    .address-page-container {
+        width: 95%;
+        margin: 30px auto;
+        font-family: sans-serif;
+    }
+
+    .address-content {
+        display: flex;
+        gap: 20px;
+        align-items: flex-start;
+        flex-wrap: nowrap;
+    }
+
+    /* ======================
+    فرم ثبت آدرس
+    ====================== */
+    .address-form-section {
+        flex: 1 1 70%;
+        min-width: 600px;
+        background: #fff;
+        border: 1px solid #ececec;
+        border-radius: 5px;
+        overflow: hidden;
+    }
+
+    .form-header {
+        padding: 20px 25px;
+        border-bottom: 1px solid #f1f1f1;
+        display: flex;
+        align-items: center;
+        gap: 15px;
+    }
+
+    .back-link {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        color: #666;
+        font-size: 14px;
+        text-decoration: none;
+        transition: color 0.3s;
+    }
+
+    .back-link:hover {
+        color: #747667;
+    }
+
+    .form-title {
+        font-size: 18px;
+        font-weight: 600;
+        color: #333;
+        margin: 0;
+    }
+
+    .form-body {
+        padding: 25px;
+    }
+
+    /* ======================
+    فیلدهای فرم
+    ====================== */
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    .form-label {
+        display: block;
+        font-size: 14px;
+        font-weight: 600;
+        color: #333;
+        margin-bottom: 8px;
+    }
+
+    .form-label .required {
+        color: #d63031;
+        margin-right: 3px;
+    }
+
+    .form-input,
+    .form-textarea,
+    .form-select {
+        width: 100%;
+        padding: 12px 15px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        font-size: 14px;
+        color: #333;
+        background: #fff;
+        transition: border-color 0.3s;
+        font-family: inherit;
+        direction: rtl;
+    }
+
+    .form-input:focus,
+    .form-textarea:focus,
+    .form-select:focus {
+        outline: none;
+        border-color: #747667;
+    }
+
+    .form-textarea {
+        resize: vertical;
+        min-height: 100px;
+        line-height: 1.6;
+    }
+
+    .form-input[readonly] {
+        background: #f5f5f5;
+        color: #666;
+    }
+
+    /* ======================
+    ردیف دو ستونه
+    ====================== */
+    .input-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+    }
+
+    /* ======================
+    باکس اطلاعات
+    ====================== */
+    .info-box {
+        background: #faf8f3;
+        border: 1px solid #e1dcd0;
+        border-radius: 5px;
+        padding: 15px;
+        margin-bottom: 25px;
+        font-size: 14px;
+        color: #666;
+        display: flex;
+        gap: 10px;
+        align-items: flex-start;
+    }
+
+    .info-box i {
+        color: #747667;
+    }
+
+    /* ======================
+    خطاها
+    ====================== */
+    .error-message {
+        font-size: 12px;
+        color: #d63031;
+        margin-top: 5px;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+    }
+
+    .form-input.is-invalid,
+    .form-textarea.is-invalid,
+    .form-select.is-invalid {
+        border-color: #d63031;
+    }
+
+    /* ======================
+    ستون کناری (سمت راست)
+    ====================== */
+    .address-sidebar {
+        flex: 0 0 25%;
+        min-width: 250px;
+        position: sticky;
+        top: 180px;
+        align-self: flex-start;
+    }
+
+    .info-card {
+        background: #fff;
+        border: 1px solid #ececec;
+        border-radius: 5px;
+        padding: 20px;
+    }
+
+    .info-title {
+        font-size: 16px;
+        font-weight: 600;
+        margin-bottom: 15px;
+        padding-bottom: 10px;
+        border-bottom: 1px solid #eee;
+    }
+
+    .info-text {
+        font-size: 14px;
+        color: #666;
+        line-height: 1.8;
+        margin-bottom: 15px;
+    }
+
+    .info-list {
+        list-style: none;
+        padding: 0;
+    }
+
+    .info-list li {
+        font-size: 13px;
+        color: #888;
+        padding: 5px 0;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    /* ======================
+    دکمه‌ها
+    ====================== */
+    .btn {
+        height: 50px;
+        border-radius: 5px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: 0.3s;
+        font-size: 14px;
+        padding: 0 25px;
+        border: none;
+        font-family: inherit;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        text-decoration: none;
+    }
+
+    .btn-submit {
+        background: #747667;
+        color: #fff;
+        width: 100%;
+    }
+
+    .btn-submit:hover {
+        opacity: 0.85;
+    }
+
+    .btn-cancel {
+        background: #fff;
+        color: #666;
+        border: 1px solid #ddd;
+    }
+
+    .btn-cancel:hover {
+        background: #f5f5f5;
+        border-color: #747667;
+        color: #747667;
+    }
+
+    .form-footer {
+        padding: 20px 25px;
+        border-top: 1px solid #f1f1f1;
+        display: flex;
+        gap: 15px;
+    }
+
+    /* ======================
+    Select2 استایل
+    ====================== */
+    .select2-container--default .select2-selection--single {
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        height: 46px;
+        padding: 5px;
+    }
+
+    .select2-container--default .select2-selection--single .select2-selection__rendered {
+        line-height: 32px;
+        color: #333;
+    }
+
+    .select2-container--default .select2-selection--single .select2-selection__arrow {
+        height: 44px;
+    }
+
+    .select2-dropdown {
+        border-color: #ddd;
+    }
+
+    /* ======================
+    ریسپانسیو
+    ====================== */
+    @media (max-width: 992px) {
+        .address-content {
+            flex-direction: column;
+        }
+        .address-form-section,
+        .address-sidebar {
+            width: 100%;
+            min-width: 0;
+            position: relative;
+            top: 0;
+        }
+        .input-row {
+            grid-template-columns: 1fr;
+            gap: 0;
+        }
+    }
+</style>
+
+<div class="address-page-container">
+    <div class="address-content">
+        <!-- فرم ثبت آدرس -->
+        <div class="address-form-section">
+            <div class="form-header">
+                <a href="{% url 'ordering' %}" class="back-link">
+                    <img src="{% static 'images/flesh.png' %}" alt="" style="width: 18px;">
+                    بازگشت به ثبت سفارش
+                </a>
+                <h2 class="form-title">ثبت آدرس جدید</h2>
+            </div>
+
+            <form method="POST" action="{% url 'add_address' %}">
+                {% csrf_token %}
+                <div class="form-body">
+
+                    <!-- باکس اطلاعات -->
+                    <div class="info-box">
+                        <span>📦</span>
+                        <span>
+                            در حال حاضر ارسال سفارش فقط برای 
+                            <strong>شهرهای استان تهران</strong>
+                            امکان‌پذیر است.
+                        </span>
+                    </div>
+
+                    <!-- استان (مقدار ثابت) -->
+                    <div class="form-group">
+                        <label class="form-label">
+                            استان
+                            <span class="required">*</span>
+                        </label>
+                        <input
+                        type="text"
+                        class="form-input"
+                        value="تهران"
+                        readonly
+                        >
+                    </div>
+
+                    <!-- شهر -->
+                    <div class="form-group">
+                        <label class="form-label">
+                            شهر
+                            <span class="required">*</span>
+                        </label>
+                    
+                        <select name="city" id="id_city" class="form-select" required>
+                            <option value="">انتخاب شهر...</option>
+                    
+                            {% for city in form.city.field.queryset %}
+                                <option
+                                    value="{{ city.id }}"
+                                    {% if form.city.value|stringformat:"s" == city.id|stringformat:"s" %}
+                                        selected
+                                    {% endif %}
+                                >
+                                    {{ city.name }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    
+                        {% if form.city.errors %}
+                            <div class="error-message">
+                                ⚠️ {{ form.city.errors.0 }}
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <!-- آدرس کامل -->
+                    <div class="form-group">
+                        <label class="form-label">
+                            آدرس کامل
+                            <span class="required">*</span>
+                        </label>
+                        <textarea 
+                            name="address" 
+                            class="form-textarea" 
+                            placeholder="خیابان، کوچه، پلاک، طبقه، واحد..."
+                            required
+                        >{{ form.address.value|default:'' }}</textarea>
+                        <div class="error-message" style="color:#888; margin-top:5px;">
+                            📍 آدرس را به صورت کامل و دقیق وارد کنید
+                        </div>
+                        {% if form.address.errors %}
+                            <div class="error-message">
+                                ⚠️ {{ form.address.errors.0 }}
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <!-- ردیف کد پستی و شماره تماس -->
+                    <div class="input-row">
+                        <div class="form-group">
+                            <label class="form-label">
+                                کد پستی
+                                <span class="required">*</span>
+                            </label>
+                            <input 
+                                type="text" 
+                                name="address_code" 
+                                class="form-input" 
+                                placeholder="۱۲۳۴۵۶۷۸۹۰"
+                                maxlength="10"
+                                value="{{ form.address_code.value|default:'' }}"
+                                required
+                            >
+                            {% if form.address_code.errors %}
+                                <div class="error-message">
+                                    ⚠️ {{ form.address_code.errors.0 }}
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">
+                                شماره تماس گیرنده
+                                <span class="required">*</span>
+                            </label>
+                            <input 
+                                type="tel" 
+                                name="phonenumber" 
+                                class="form-input" 
+                                placeholder="۰۹۱۲۳۴۵۶۷۸۹"
+                                maxlength="11"
+                                value="{{ form.phonenumber.value|default:'' }}"
+                                required
+                            >
+                            {% if form.phonenumber.errors %}
+                                <div class="error-message">
+                                    ⚠️ {{ form.phonenumber.errors.0 }}
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <!-- نام گیرنده -->
+                    <div class="form-group">
+                        <label class="form-label">
+                            نام گیرنده
+                            <span class="required">*</span>
+                        </label>
+                        <input 
+                            type="text" 
+                            name="receiver" 
+                            class="form-input" 
+                            placeholder="نام و نام خانوادگی گیرنده"
+                            value="{{ form.receiver.value|default:'' }}"
+                            required
+                        >
+                        {% if form.receiver.errors %}
+                            <div class="error-message">
+                                ⚠️ {{ form.receiver.errors.0 }}
+                            </div>
+                        {% endif %}
+                    </div>
+
+                </div>
+
+                <div class="form-footer">
+                    <a href="{% url 'ordering' %}" class="btn btn-cancel">
+                        انصراف
+                    </a>
+                    <button type="submit" class="btn btn-submit">
+                        ثبت آدرس
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <!-- ستون کناری اطلاعات -->
+        <div class="address-sidebar">
+            <div class="info-card">
+                <h3 class="info-title">نکات مهم</h3>
+                <div class="info-text">
+                    برای تحویل سریع و دقیق سفارش، لطفاً به موارد زیر توجه کنید:
+                </div>
+                <ul class="info-list">
+                    <li>✓ آدرس را کامل و دقیق وارد کنید</li>
+                    <li>✓ کد پستی صحیح ۱۰ رقمی باشد</li>
+                    <li>✓ شماره تماس معتبر وارد شود</li>
+                    <li>✓ نام گیرنده کامل باشد</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Select2 Scripts -->
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet">
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+<script>
+    $(document).ready(function() {
+        $('#id_city').select2({
+            placeholder: "شهر مورد نظر را جستجو کنید",
+            width: '100%',
+            dir: 'rtl',
+            language: {
+                noResults: function() {
+                    return "شهری یافت نشد";
+                },
+                searching: function() {
+                    return "در حال جستجو...";
+                }
+            }
+        });
+    });
+</script>
+
+{% endblock %}

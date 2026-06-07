@@ -1,0 +1,510 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load my_filters %}
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/x.css' %}">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+<!-- اسلایدر تصاویر بزرگ -->
+<div class="image-slider-section" >
+  <div class="image-slider-container">
+    <div class="image-slider-wrapper">
+      {% for item in slider_image%}
+        <a href='{% if item.category_main %} {% url 'products' item.category_main %} {% else %} {%url 'products'%}{% endif %}' >
+          <img src="{{item.image.url}}" alt="Slide" class="slider-image {% if forloop.first %}active{% endif %}">
+        </a>
+        {% endfor%}
+
+      <!-- <img src="{% static 'images/new_ai/ComfyUI_00095_.png' %}" alt="Slide 1" class="slider-image active">
+      <img src="{% static 'images/new_ai/ComfyUI_0010_.png' %}" alt="Slide 2" class="slider-image">
+      <img src="{% static 'images/new_ai/ComfyUI_8_.png' %}" alt="Slide 3" class="slider-image">
+      <img src="{% static 'images/new_ai/ComfyUI_004_.png' %}" alt="Slide 4" class="slider-image">
+      <img src="{% static 'images/new_ai/ComfyUI_111_.png' %}" alt="Slide 5" class="slider-image"> -->
+    </div>
+    <button class="slider-nav slider-prev" id="sliderPrevBtn"><i class="fas fa-chevron-right"></i></button>
+    <button class="slider-nav slider-next" id="sliderNextBtn"><i class="fas fa-chevron-left"></i></button>
+    <div class="slider-dots" id="sliderDots">
+      {% for item in  slider_image%}
+        <span class="dot {% if forloop.first %}active{% endif%}" data-index="{{forloop.counter0}}"></span>
+      {% endfor%}
+      <!-- <span class="dot active" data-index="0"></span>
+      <span class="dot" data-index="1"></span>
+      <span class="dot" data-index="2"></span>
+      <span class="dot" data-index="3"></span>
+      <span class="dot" data-index="4"></span> -->
+    </div>
+  </div>
+</div>
+<div class="container">
+    <div class="category-scroller-title">
+      دسته بندی محصولات
+    </div>
+    <div class="category-scroller" id="categoryScroller" dir="rtl">
+      <button class="scroll-btn scroll-btn-right" id="scrollRightBtn" aria-label="اسکرول به راست">
+        <i class="fas fa-chevron-right"></i>
+      </button>
+      <div class="scroll-container" id="scrollContainer">
+          <div class="categories-track" id="categoriesTrack">
+            {% for category in main_category %}
+               {% if category.image%}
+                <a class="category-card" href={% url 'products' category.title %}>
+                    <div class="card-img-category">
+                        <img src="{{ category.image.url }}" alt="" loading="lazy">
+                    </div>
+                    <span class="card-title">{{category.title}}</span>
+                </a> 
+              {% endif%}
+            {% endfor%}
+            
+              <!-- <div class="category-card">
+                  <div class="card-img-category">
+                      <img src="{% static 'images/new_ai/ComfyUI_00128_.png'%}" alt="طبیعت" loading="lazy">
+                  </div>
+                  <span class="card-title">کمد لباس</span>
+              </div>
+              <div class="category-card">
+                  <div class="card-img-category">
+                      <img src="{% static 'images/new_ai/ComfyUI_00130_.png'%}" alt="شهر" loading="lazy">
+                  </div>
+                  <span class="card-title">میز تحریر</span>
+              </div>
+              <div class="category-card">
+                  <div class="card-img-category">
+                      <img src="{% static 'images/new_ai/ComfyUI_00136_.png'%}" alt="قهوه" loading="lazy">
+                  </div>
+                  <span class="card-title">دراور</span>
+              </div>
+              <div class="category-card">
+                <div class="card-img-category">
+                    <img src="{% static 'images/new_ai/ComfyUI_00154_.png'%}" alt="موسیقی" loading="lazy">
+                </div>
+                <span class="card-title">کنسول</span>
+              </div>
+              <div class="category-card">
+                <div class="card-img-category">
+                    <img src="{% static 'images/new_ai/ComfyUI_00147_.png'%}" alt="ورزش" loading="lazy">
+                </div>
+                <span class="card-title">زونکن اداری</span>
+            </div>
+            
+              <div class="category-card">
+                <div class="card-img-category">
+                    <img src="{% static 'images/new_ai/ComfyUI_00143_.png'%}" alt="خودرو" loading="lazy">
+                </div>
+                <span class="card-title"> میز تلویزیون</span>
+              </div>
+              <div class="category-card">
+                <div class="card-img-category">
+                    <img src="{% static 'images/new_ai/ComfyUI_00160_.png'%}" alt="مد" loading="lazy">
+                </div>
+                <span class="card-title">میز ارایش</span>
+            </div>
+              <div class="category-card">
+                  <div class="card-img-category">
+                      <img src="{% static 'images/new_ai/ComfyUI_00158_.png'%}" alt="گردشگری" loading="lazy">
+                  </div>
+                  <span class="card-title">پاتختی</span>
+              </div>
+              <div class="category-card">
+                <div class="card-img-category">
+                    <img src="{% static 'images/new_ai/ComfyUI_00144_.png'%}" alt="فناوری" loading="lazy">
+                </div>
+                <span class="card-title">جاکفشی</span>
+            </div> -->
+          </div>
+      </div>
+      <button class="scroll-btn scroll-btn-left" id="scrollLeftBtn" aria-label="اسکرول به چپ">
+        <i class="fas fa-chevron-left"></i>
+      </button>
+    </div>
+    <div class="Ad_section_full " style="background-image: url('{% static "images/new_ai/ComfyUI_00269_.png"%}');">
+    </div>
+    {% if ad_section_first %}
+        <div class="suggest-section-header">
+            <span>{{ad_section_first.title}}</span>
+            <a href="{% url 'products' ad_section_first.category_main %}">
+                <!-- <i class="fas fa-chevron-left"></i> -->
+                مشاهده همه 
+            </a>
+        </div>
+        <div class="suggest_section">
+          {% for item in ad_section_first.image.all %}
+               <a href="{% url 'detail' item.product.slug %}"  class="box" style="background-image: url('{{item.image.url}}');"></a>
+          {% endfor%}
+        </div>
+    {% else %}
+        <div class="suggest-section-header">
+            <span>انواع میز برای هر کاربردی</span>
+            <a href="">
+                <!-- <i class="fas fa-chevron-left"></i> -->
+                مشاهده همه 
+            </a>
+        </div>
+        <div class="suggest_section">
+          <div class="box" style="background-image: url('{% static "images/new_ai/1779313383467.png"%}');"></div>
+          <div class="box" style="background-image: url('{% static "images/new_ai/ComfyUI_00204_.png"%}');"></div>
+          <div class="box" style="background-image: url('{% static "images/new_ai/1779312572220.png"%}');"></div>
+        </div>
+    {% endif%}
+    <div style="font-size:22px;color:black;margin:50px 0;">منتخب تخفیف و حراج</div>
+    <div class="offer_products_section">
+        <div class="brand_offer_section">
+            <img src="{% static 'images/new_ai/ComfyUI_00285_.png' %}" alt="brand offer image">
+        </div>
+        <div class="offer_products_grid_wrapper" id="offerScrollContainer">
+            {% for product in products %}
+            <div class="product_card_item">
+                <div class="offer-product-colors">
+                    {% for color in product.color.all|slice:":4" %}
+                    <span style="background:{{ color.color_code }}"></span>
+                    {% endfor %}
+                    {% if product.color.count > 4 %}
+                    <span class="more-colors">+{{ product.color.count|add:"-4" }}</span>
+                    {% endif %}
+                </div>
+                <div class="product_card_image">
+                    <img  src="{{ product.images.all.0.image.url }}" alt="{{ product.name }}">
+                </div>
+                {% if product.off != 0 %}
+                <div class="product_price_wrapper">
+                    <span class="product_card_price">{{ product.price|persian_intcomma }} تومان</span>
+                    <del class="product-offer-old-price">{{ product.old_price|persian_intcomma }} تومان</del>
+                </div>
+                {% else %}
+                <span class="product_card_price">{{ product.old_price|persian_intcomma }} تومان</span>
+                {% endif %}
+                <span class="product_card_title">{{ product.name|truncatechars:45 }}</span>
+                <form class="product_card_action_form" method="post" action="">
+                    {% csrf_token %}
+                    <input type="hidden" name="product" value="{{ product.id }}">
+                    <button class="product_favorite_button" type="submit" name="action" value="add_favorite_product">
+                        <i class="far fa-heart"></i>
+                    </button>
+                    <a class="product_detail_link" href="{% url 'detail' product.slug %}">
+                        <i class="fas fa-search"></i>
+                    </a>
+                </form>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    <!-- <div class="suggest-section-header">
+        <span>انواع میز تلویزیون</span>
+        <a href="">
+            مشاهده همه 
+        </a>
+    </div> -->
+    {% if ad_section_second %}
+       <div class="flex-row" style='margin-top:230px;'>
+            {% for item in ad_section_second.image.all%}
+                <a href="{% url 'detail' item.product.slug%}" style="background-image: url('{{item.image.url}}');"></a>
+            {% endfor%}
+       </div>
+    {% else %}
+        <div class="flex-row">
+          <a  style="background-image: url('{% static "images/new_ai/61809025-60bc-4518-8c09-12cc7902a8ba.jpg"%}');"></a>
+          <a  style="background-image: url('{% static "images/new_ai/1779289852746.png"%}');"></a>
+        </div>
+    {% endif%}
+    <div class="last-product-container">
+      <!-- header با عنوان و دکمه‌های اسکرول -->
+      <div class="last-product-header">
+          <span>جدید ترین محصولات</span>
+          <div class="last-product-btn">
+              <button class="scroll-btn" id="scrollRightBtnLast" aria-label="اسکرول به راست">
+                  <i class="fas fa-chevron-right"></i>
+              </button>
+              <button class="scroll-btn" id="scrollLeftBtnLast" aria-label="اسکرول به چپ">
+                  <i class="fas fa-chevron-left"></i>
+              </button>
+          </div>
+      </div>
+    
+      <!-- محفظه اسکرول افقی (مرتبط با کلاس last-prodcut-container که شما خواستید) -->
+      <div class="last-prodcut-container last-product-scroll" id="scrollWrapper">
+          <div class="last-product-grid" id="productGrid">
+              <!-- کارت‌های محصولات با عرض و ارتفاع ثابت 250px شامل تصویر + نام + قیمت -->
+              <!-- سعی شده تصاویر معتبر و متنوع باشند (از picsum و placeholder با id‌های مختلف) -->
+              
+              <!-- product 1 -->
+               {% for product in products%}
+
+             <div class="last-product-card">
+                  <div class="last-product-image">
+                    <form class="product-actions" method="POST" >
+                        {% csrf_token %}
+                        <input type="hidden" value="{{product.id}}" name="product">
+                        <button type="submit" class="action-icon wishlist-icon" name="action" value="add_favorite_product">
+                            <i class="far fa-heart"></i>
+                        </button>
+                        <a href="{% url 'detail' product.slug %}" class="action-icon search-icon" >
+                            <i class="fas fa-search"></i>
+                        </a>
+                        
+                    </form>
+                       {% if product.off != 0 %}
+                      <span class="offer-button">20%</span>
+                      {% endif %}
+                      {% with product.images.all|first as first_image %}
+                      {% if first_image %}
+                          <img src="{{ first_image.image.url }}" alt="{{ product.name }}" loading="lazy">
+                      {% endif %}
+                      {% endwith %}                  </div>
+                  <div class="last-product-info">
+                      <div class="last-product-name">{{product.name}}</div>
+                      {% if product.off != 0 %}
+                        <div class="last-product-price"><span class="last-price-number new-price-color" >{{product.price|persian_intcomma}}<span class="new-price-color"> تومان</span></span> {% if product.off != 0%}<del class="old-price-color">{{product.old_price|persian_intcomma}}</del>{% endif%}</div>
+                      {% else %}
+                        <div class="last-product-price"><span class="last-price-number">{{product.price|persian_intcomma}}<span> تومان</span></span> </div>
+                    {% endif %}
+                    </div>
+              </div>
+              {% endfor%}
+          </div>
+      </div>
+    </div>
+    
+    <!-- <div class="tv-header">
+        <div class="tv-title">
+            <span>انواع محصولات چوبی</span>
+            <a href="#">مشاهده همه</a>
+        </div>
+        
+        <div class="tv-row">
+            <div class="tv-sidebar" style="background-image: url('{% static "images/new_ai/ComfyUI_00226_.png"%}');">
+                
+            </div>
+
+            <div class="tv-main">
+                <div class="big-box">
+                    <div class="half-box" style="background-image: url('{% static "images/new_ai/ComfyUI_00203_.png"%}');">
+                       
+                    </div>
+                    <div class="half-box" style="background-image: url('{% static "images/new_ai/ComfyUI_00236_.png"%}');">
+                        
+                    </div>
+                </div>
+                
+                <div class="bottom-box" style="background-image: url('{% static "images/new_ai/ComfyUI_00233_.png"%}');">
+                    
+                </div>
+            </div>
+        </div>
+        
+    </div> -->
+</div>
+<<div class="about-section container" style="background-image: url('{% static "images/new_ai/ChatGPT Image Jun 1, 2026, 01_03_32 PM.png"%}');">
+
+</div> 
+<div class="container">
+    <div class="last-product-container">
+        <!-- header با عنوان و دکمه‌های اسکرول -->
+        <div class="last-product-header">
+            <span>پر فروش ترینا</span>
+            <div class="last-product-btn">
+                <button class="scroll-btn" id="scrollRightBtnOffer" aria-label="اسکرول به راست">
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+                <button class="scroll-btn" id="scrollLeftBtnOffer" aria-label="اسکرول به چپ">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+            </div>
+        </div>
+      
+        <!-- محفظه اسکرول افقی (مرتبط با کلاس last-prodcut-container که شما خواستید) -->
+        <div class="last-prodcut-container last-product-scroll" id="offerScrollWrapper">
+            <div class="last-product-grid" id="productGrid">
+                <!-- کارت‌های محصولات با عرض و ارتفاع ثابت 250px شامل تصویر + نام + قیمت -->
+                <!-- سعی شده تصاویر معتبر و متنوع باشند (از picsum و placeholder با id‌های مختلف) -->
+                
+                <!-- product 1 -->
+                 {% for product in products%}
+                   {% if  1  %}
+                        <div class="last-product-card">
+                            <div class="last-product-image">
+                              <form class="product-actions" method="POST" >
+                                  {% csrf_token %}
+                                  <input type="hidden" value="{{product.id}}" name="product">
+                                  <button type="submit" class="action-icon wishlist-icon" name="action" value="add_favorite_product">
+                                      <i class="far fa-heart"></i>
+                                  </button>
+                                  <a href="{% url 'detail' product.slug %}" class="action-icon search-icon" >
+                                      <i class="fas fa-search"></i>
+                                  </a>
+                                  
+                              </form>
+                                 {% if product.off != 0 %}
+                                <span class="offer-button">20%</span>
+                                {% endif %}
+                                {% with product.images.all|first as first_image %}
+                                {% if first_image %}
+                                    <img src="{{ first_image.image.url }}" alt="{{ product.name }}" loading="lazy">
+                                {% endif %}
+                                {% endwith %}                  </div>
+                            <div class="last-product-info">
+                                <div class="last-product-name">{{product.name}}</div>
+                                {% if product.off != 0%}
+                                  <div class="last-product-price"><span class="last-price-number new-price-color" >{{product.price|persian_intcomma}}<span class="new-price-color"> تومان</span></span> {% if product.off != 0%}<del class="old-price-color">{{product.old_price|persian_intcomma}}</del>{% endif%}</div>
+                                {% else %}
+                                  <div class="last-product-price"><span class="last-price-number">{{product.price|persian_intcomma}}<span> تومان</span></span> </div>
+                              {% endif %}
+                              </div>
+                        </div>
+                   {% endif %}
+                 {% endfor %}
+                
+            </div>
+            
+            
+        </div>
+    </div>
+</div>
+
+<div class="testimonial-master">
+    <!-- هدر با عنوان و دکمه space-between -->
+    <div class="header-row">
+        <h1 class="title">نظرات مشتری ها</h1>
+        <div class="view-all-testimonial"> همه نظرات </div>
+    </div>
+
+    <!-- کاروسل خودکار (غیرقابل اسکرول توسط کاربر) -->
+    <div class="carousel-cage" id="carouselCage">
+        <div class="slider-track" id="sliderTrack">
+            {% for comment in comments %}
+            <a class="card-item" href="{% url 'detail' comment.product.slug %}">
+                <div class="product-img">
+                   <img src="{{ comment.product.images.first.image.url }}" alt="عکس محصول - قابل تعویض">
+                </div>
+                <div class="comment-section">
+                    <div class="comment-text">{{comment.description}}</div>
+                    <div class="customer-name"><span>✦ {{comment.user.first_name}} {{comment.user.last_name}} ✦</span></div>
+                </div>
+            </a>
+            {% endfor %}
+            {% comment %} <!-- ۱۰ کارت به صورت استاتیک در HTML قرار داده شده (از بک‌اند بعداً جایگزین می‌شود) -->
+            <!-- هر کارت شامل یک تصویر با src خالی (placeholder) و کامنت مشتری -->
+            <div class="card-item">
+                <img class="product-img" src="{% static 'images/new_ai/ComfyUI_00261_.png'%}" alt="عکس محصول - قابل تعویض">
+                <div class="comment-section">
+                    <div class="comment-text">کیفیت فوق‌العاده عالی! دقیقاً مطابق توضیحات. خیلی راضی هستم و به دوستان هم پیشنهاد می‌کنم.</div>
+                    <div class="customer-name"><span>✦ فاطمه کریمی ✦</span></div>
+                </div>
+            </div>
+            <div class="card-item">
+                <img class="product-img" src="{% static 'images/new_ai/ComfyUI_00140_.png'%}" alt="عکس محصول - قابل تعویض">
+                <div class="comment-section">
+                    <div class="comment-text">ارسال سریع و بسته‌بندی حرفه‌ای. محصول بی‌نظیر بود، حتماً دوباره خرید می‌کنم.</div>
+                    <div class="customer-name"><span>✦ امیرحسین نادری ✦</span></div>
+                </div>
+            </div>
+            <div class="card-item">
+                <img class="product-img" src="{% static 'images/new_ai/1779290230836 (1).png'%}" alt="عکس محصول - قابل تعویض">
+                <div class="comment-section">
+                    <div class="comment-text">واقعاً عالی بود! از کیفیت ساخت تا طراحی، همه‌چیز بی‌نقص. ممنون از تیم راز.</div>
+                    <div class="customer-name"><span>✦ سارا محمدیان ✦</span></div>
+                </div>
+            </div>
+            <div class="card-item">
+                <img class="product-img" src="{% static 'images/new_ai/ComfyUI_00190_.png'%}" alt="عکس محصول - قابل تعویض">
+                <div class="comment-section">
+                    <div class="comment-text">خرید لذت‌بخشی بود. جنس مرغوب و قیمت مناسب، پشتیبانی عالی. دلم می‌خواهد دوباره سفارش بدم.</div>
+                    <div class="customer-name"><span>✦ رضا میرزایی ✦</span></div>
+                </div>
+            </div>
+            <div class="card-item">
+                <img class="product-img" src="{% static 'images/new_ai/ComfyUI_00158_.png'%}" alt="عکس محصول - قابل تعویض">
+                <div class="comment-section">
+                    <div class="comment-text">از هر نظر عالی، حتی از تصوراتم بهتر بود. ممنون بابت مشاوره عالی و محصول باکیفیت.</div>
+                    <div class="customer-name"><span>✦ زهرا احمدی ✦</span></div>
+                </div>
+            </div>
+            <div class="card-item">
+                <img class="product-img" src="{% static 'images/new_ai/ComfyUI_00136_.png'%}" alt="عکس محصول - قابل تعویض">
+                <div class="comment-section">
+                    <div class="comment-text">سرعت ارسال شگفت‌انگیز! محصول دقیقاً مطابق توضیحات. خوشحالم این انتخاب رو داشتم.</div>
+                    <div class="customer-name"><span>✦ علی حسنی ✦</span></div>
+                </div>
+            </div>
+            <div class="card-item">
+                <img class="product-img" src="{% static 'images/new_ai/ComfyUI_00144_.png'%}" alt="عکس محصول - قابل تعویض">
+                <div class="comment-section">
+                    <div class="comment-text">طراحی زیبا و کیفیت ساخت بالا. ارزش خرید را دارد. تیم راز حرفه‌ای عمل می‌کند. ممنونم.</div>
+                    <div class="customer-name"><span>✦ مهدی طهماسبی ✦</span></div>
+                </div>
+            </div>
+            <div class="card-item">
+                <img class="product-img" src="{% static 'images/new_ai/1779290322391.png'%}" alt="عکس محصول - قابل تعویض">
+                <div class="comment-section">
+                    <div class="comment-text">اولین خریدم بود و تجربه فوق‌العاده! بسته‌بندی شکیل و محصول بی‌نقص، دوباره سفارش میدم.</div>
+                    <div class="customer-name"><span>✦ لیلا قاسمی ✦</span></div>
+                </div>
+            </div>
+            <div class="card-item">
+                <img class="product-img" src="{% static 'images/new_ai/ComfyUI_00279_.png'%}" alt="عکس محصول - قابل تعویض">
+                <div class="comment-section">
+                    <div class="comment-text">خیلی خوشحالم که این محصول رو خریدم. کارایی عالی و مطابق نیازم. تشکر از تیم حرفه‌ای.</div>
+                    <div class="customer-name"><span>✦ پریسا موسوی ✦</span></div>
+                </div>
+            </div>
+            <div class="card-item">
+                <img class="product-img" src="{% static 'images/new_ai/ComfyUI_00135_.png'%}" alt="عکس محصول - قابل تعویض">
+                <div class="comment-section">
+                    <div class="comment-text">بهترین تجربه خرید آنلاین! ارسال سریع، پشتیبانی دلسوز و محصول عالی. صد درصد راضی.</div>
+                    <div class="customer-name"><span>✦ نوید رستمی ✦</span></div>
+                </div>
+            </div> {% endcomment %}
+            <!-- برای ایجاد لوپ بینهایت، یک کپی از ۱۰ کارت بالا اضافه می‌شود (با جاوااسکریپت) -->
+        </div>
+    </div>
+</div>
+<div class="container">
+    <div class="blog-simple clean-water-touch">
+        <!-- هدر: عنوان بلاگ در سمت راست، لینک مشاهده همه در سمت چپ -->
+        <div class="blog-header">
+          <span>خواندنی ها</span>
+          <a href="{% url 'blog_list'%}" class="view-all">مشاهده همه</a>
+        </div>
+    
+        <!-- ردیف کارت‌ها: به جای class="flex-row" از نام جدید "blog-row" استفاده شد -->
+        <div class="blog-grid">
+
+            {% for blog in blogs %}
+            <article class="blog-item">
+        
+                <div class="blog-image">
+                    <img src="{{ blog.image.url }}" alt="{{ blog.title }}">
+                </div>
+        
+                <div class="blog-content">
+        
+                    <h3>{{ blog.title|truncatechars:50 }}</h3>
+        
+                    <p>
+                        {{ blog.intro|truncatechars:120 }}
+                    </p>
+        
+                    <a href="{% url 'blog_detail' blog.slug%}" class="read-more">
+                        ادامه مطلب ←
+                    </a>
+                    {% comment %} {% url 'blog_detail' blog.slug %} {% endcomment %}
+                </div>
+        
+                {% comment %} <div class="blog-comment">
+                    <i class="fa-regular fa-comment"></i>
+                    <span>بدون نظر</span>
+                </div> {% endcomment %}
+        
+            </article>
+            {% endfor %}
+        
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/x.js' %}"></script>
+{% endblock %}
+
+

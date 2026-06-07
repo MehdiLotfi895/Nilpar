@@ -1,0 +1,512 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load my_filters %}
+{% load humanize %}
+
+{% block content %}
+
+<style>
+    /* ======================
+    کانتینر اصلی
+    ====================== */
+    .payment-container {
+        width: 95%;
+        margin: 30px auto;
+        font-family: sans-serif;
+    }
+
+    .payment-content {
+        display: flex;
+        gap: 20px;
+        align-items: flex-start;
+        flex-wrap: nowrap;
+    }
+
+    /* ======================
+    ستون روش‌های پرداخت (سمت راست)
+    ====================== */
+    .payment-methods-section {
+        flex: 1 1 70%;
+        min-width: 600px;
+        background: #fff;
+        border: 1px solid #ececec;
+        border-radius: 5px;
+        overflow: hidden;
+    }
+
+    .section-header {
+        padding: 20px 25px;
+        border-bottom: 1px solid #f1f1f1;
+    }
+
+    .section-title {
+        font-size: 18px;
+        font-weight: 600;
+        color: #333;
+        margin: 0;
+    }
+
+    .section-body {
+        padding: 25px;
+    }
+
+    /* ======================
+    گزینه‌های پرداخت
+    ====================== */
+    .payment-options {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .payment-item {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        padding: 15px;
+        border: 1px solid #ececec;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: all 0.3s;
+    }
+
+    .payment-item:hover {
+        border-color: #747667;
+        background: #faf8f3;
+    }
+
+    .payment-item.selected {
+        border-color: #747667;
+        background: #faf8f3;
+    }
+
+    .radio-circle {
+        width: 22px;
+        height: 22px;
+        border-radius: 50%;
+        border: 2px solid #ddd;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+    }
+
+    .radio-circle.active {
+        border-color: #747667;
+    }
+
+    .radio-circle.active::after {
+        content: "";
+        width: 12px;
+        height: 12px;
+        background: #747667;
+        border-radius: 50%;
+        display: block;
+    }
+
+    .payment-icon {
+        width: 45px;
+        height: 45px;
+        background: #f5f5f5;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+    }
+
+    .payment-icon svg {
+        width: 28px;
+        height: 28px;
+        stroke: #666;
+        fill: none;
+    }
+
+    .payment-item.selected .payment-icon svg {
+        stroke: #747667;
+    }
+
+    .payment-info {
+        flex: 1;
+    }
+
+    .payment-label {
+        font-size: 16px;
+        font-weight: 600;
+        color: #333;
+        margin-bottom: 5px;
+    }
+
+    .payment-desc {
+        font-size: 13px;
+        color: #888;
+    }
+
+    /* ======================
+    خلاصه سفارش زیر بخش روش پرداخت
+    ====================== */
+    .order-summary-below {
+        margin-top: 20px;
+        background: #fff;
+        border: 1px solid #ececec;
+        border-radius: 5px;
+        padding: 20px;
+    }
+
+    .summary-title {
+        font-size: 16px;
+        font-weight: 600;
+        margin-bottom: 15px;
+        padding-bottom: 12px;
+        border-bottom: 1px solid #eee;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    /* مرسوله‌ها */
+    .shipment-item {
+        border: 1px solid #ececec;
+        border-radius: 8px;
+        margin-bottom: 12px;
+        background: #fff;
+    }
+
+    .shipment-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 12px 15px;
+        cursor: pointer;
+        transition: background 0.2s;
+    }
+
+    .shipment-header:hover {
+        background: #fafafa;
+    }
+
+    .shipment-info {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+    }
+
+    .shipment-date {
+        font-size: 14px;
+        font-weight: 600;
+        color: #333;
+    }
+
+    .shipment-time {
+        font-size: 12px;
+        color: #888;
+    }
+
+    .shipment-badge {
+        background: #f5f5f5;
+        padding: 4px 12px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 500;
+        color: #666;
+    }
+
+    .toggle-icon {
+        transition: transform 0.2s;
+        color: #999;
+    }
+
+    .shipment-details {
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.3s ease;
+        border-top: none;
+    }
+
+    .shipment-details.open {
+        max-height: 300px;
+        border-top: 1px solid #eee;
+    }
+
+    .product-item {
+        display: flex;
+        justify-content: space-between;
+        padding: 10px 15px;
+        font-size: 13px;
+        border-bottom: 1px solid #f9f9f9;
+    }
+
+    .product-item:last-child {
+        border-bottom: none;
+    }
+
+    .product-name {
+        color: #555;
+    }
+
+    .product-count {
+        font-weight: 600;
+        color: #333;
+    }
+
+    /* ======================
+    ستون خلاصه سفارش (سمت چپ)
+    ====================== */
+    .payment-sidebar {
+        flex: 0 0 25%;
+        min-width: 250px;
+        position: sticky;
+        top: 180px;
+        align-self: flex-start;
+    }
+
+    .price-card {
+        background: #fff;
+        border: 1px solid #ececec;
+        border-radius: 5px;
+        padding: 20px;
+    }
+
+    .price-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 12px 0;
+        font-size: 14px;
+        border-bottom: 1px solid #f5f5f5;
+    }
+
+    .price-row:last-child {
+        border-bottom: none;
+    }
+
+    .price-row.total-row {
+        border-top: 2px dashed #eee;
+        margin-top: 10px;
+        padding-top: 15px;
+        font-weight: 700;
+        font-size: 16px;
+    }
+
+    .discount-badge {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        color: #2e7d32;
+    }
+
+    .final-price {
+        color: #d63031;
+        font-size: 18px;
+        font-weight: 800;
+    }
+
+    .pay-btn {
+        width: 100%;
+        height: 50px;
+        background: #747667;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        margin-top: 20px;
+        font-size: 14px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: 0.3s;
+    }
+
+    .pay-btn:hover {
+        opacity: 0.85;
+    }
+
+    /* ======================
+    ریسپانسیو
+    ====================== */
+    @media (max-width: 992px) {
+        .payment-content {
+            flex-direction: column;
+        }
+        .payment-methods-section,
+        .payment-sidebar {
+            width: 100%;
+            min-width: 0;
+            position: relative;
+            top: 0;
+        }
+    }
+</style>
+{% include 'checkout_steps.html' with current_step=3 %}
+
+<div class="payment-container">
+    <div class="payment-content">
+        <!-- ستون روش‌های پرداخت (سمت راست) -->
+        <div class="payment-methods-section">
+            <div class="section-header">
+                <h2 class="section-title">انتخاب روش پرداخت</h2>
+            </div>
+            <div class="section-body">
+                <div class="payment-options">
+                    <!-- پرداخت آنلاین -->
+                    <div class="payment-item" data-method="online">
+                        <div class="radio-circle active"></div>
+                        <div class="payment-icon">
+                            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <rect x="2" y="5" width="20" height="14" rx="2" stroke="currentColor" stroke-width="1.5"/>
+                                <path d="M2 10H22" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                                <path d="M7 15H10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                            </svg>
+                        </div>
+                        <div class="payment-info">
+                            <div class="payment-label">پرداخت آنلاین</div>
+                            <div class="payment-desc">با تمامی کارت‌های بانکی از طریق زرین پال</div>
+                        </div>
+                    </div>
+
+                    <!-- پرداخت درب منزل -->
+                    <div class="payment-item" data-method="cod">
+                        <div class="radio-circle"></div>
+                        <div class="payment-icon">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                                <path d="M3 9L12 3L21 9V20H3V9Z" stroke="currentColor" fill="white"/>
+                                <path d="M9 20V13H15V20" stroke="currentColor"/>
+                            </svg>
+                        </div>
+                        <div class="payment-info">
+                            <div class="payment-label">پرداخت درب منزل</div>
+                            <div class="payment-desc">پرداخت هنگام تحویل سفارش</div>
+                        </div>
+                    </div>
+                </div>
+                <div style="margin-top: 20px; font-size: 12px; color: #aaa; text-align: center;">
+                    پرداخت امن توسط صنایع چوبی نیلپر
+                </div>
+            </div>
+
+            <!-- خلاصه سفارش زیر بخش روش پرداخت -->
+            <div class="order-summary-below">
+                <div class="summary-title">
+                     خلاصه سفارش
+                </div>
+
+                <!-- اطلاعات زمان تحویل -->
+                <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 20px; padding-bottom: 12px; border-bottom: 1px solid #eee;">
+                    <i class="fas fa-truck" style="font-size: 24px; color: #747667;"></i>
+                    <div>
+                        <div style="font-size: 14px; font-weight: 500;">زمان تحویل انتخاب شده</div>
+                        <div style="font-size: 12px; color: #888;">{{ order.date|date:"l d F" }} - {{ order.clock }}</div>
+                    </div>
+                </div>
+
+                <!-- اطلاعات آدرس -->
+                <div style="margin-bottom: 20px; padding-bottom: 12px; border-bottom: 1px solid #eee;">
+                    <div style="font-size: 14px; font-weight: 500; margin-bottom: 8px;"> آدرس تحویل</div>
+                    <div style="font-size: 13px; color: #555;">{{ order.address }}</div>
+                    <div style="font-size: 12px; color: #888; margin-top: 5px;">گیرنده: {{ order.receiver }} | تلفن: {{ order.phonenumber }}</div>
+                </div>
+
+                <!-- مرسوله‌ها -->
+                <div>
+                    <div style="font-size: 14px; font-weight: 500; margin-bottom: 12px;"> محصولات سفارش</div>
+                    
+                    {% for item in order.order_items.all %}
+                    <div class="shipment-item">
+                        <div class="shipment-header" onclick="toggleShipment({{ forloop.counter }})">
+                            <div class="shipment-info">
+                                <span class="shipment-date">{{ item.product.name }}</span>
+                                <span class="shipment-time">رنگ: {{ item.color.name|default:"بدون رنگ" }}</span>
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 8px;">
+                                <span class="shipment-badge">{{ item.number }} عدد</span>
+                                <i class="fas fa-chevron-down toggle-icon" id="toggleIcon{{ forloop.counter }}"></i>
+                            </div>
+                        </div>
+                        <div class="shipment-details" id="shipmentDetails{{ forloop.counter }}">
+                            <div class="product-item">
+                                <span class="product-name">قیمت واحد</span>
+                                <span class="product-count">{{ item.price|intcomma }} تومان</span>
+                            </div>
+                            <div class="product-item">
+                                <span class="product-name">جمع قیمت</span>
+                                <span class="product-count">{{ item.total_price|intcomma }} تومان</span>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+        <!-- ستون خلاصه سفارش (سمت چپ) -->
+        <div class="payment-sidebar">
+            <div class="price-card">
+                <div class="price-row">
+                    <span>مجموع خرید کالاها</span>
+                    <span>{{ order.total_price|intcomma }} تومان</span>
+                </div>
+                <div class="price-row total-row">
+                    <span>مبلغ قابل پرداخت</span>
+                    <span class="final-price">{{ order.total_price|intcomma }} تومان</span>
+                </div>
+
+                <form method="post" id="paymentForm">
+                    {% csrf_token %}
+                    <input type="hidden" name="payment_method" id="selectedPaymentMethod" value="online">
+                    <button type="submit" class="pay-btn" id="finalPayBtn">پرداخت</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // انتخاب روش پرداخت
+    const paymentItems = document.querySelectorAll('.payment-item');
+    const paymentMethodInput = document.getElementById('selectedPaymentMethod');
+    
+    paymentItems.forEach(item => {
+        item.addEventListener('click', function() {
+            // حذف کلاس selected از همه
+            paymentItems.forEach(i => i.classList.remove('selected'));
+            // اضافه کردن کلاس selected به گزینه انتخاب شده
+            this.classList.add('selected');
+            
+            // آپدیت دایره‌های رادیویی
+            const radioCircles = document.querySelectorAll('.radio-circle');
+            radioCircles.forEach(circle => circle.classList.remove('active'));
+            const selectedCircle = this.querySelector('.radio-circle');
+            if (selectedCircle) selectedCircle.classList.add('active');
+            
+            // تنظیم مقدار روش پرداخت
+            const method = this.getAttribute('data-method');
+            paymentMethodInput.value = method;
+        });
+    });
+    
+    // تابع باز و بسته شدن جزئیات مرسوله
+    function toggleShipment(id) {
+        const details = document.getElementById(`shipmentDetails${id}`);
+        const icon = document.getElementById(`toggleIcon${id}`);
+        
+        if (details.classList.contains('open')) {
+            details.classList.remove('open');
+            icon.classList.remove('fa-chevron-up');
+            icon.classList.add('fa-chevron-down');
+        } else {
+            details.classList.add('open');
+            icon.classList.remove('fa-chevron-down');
+            icon.classList.add('fa-chevron-up');
+        }
+    }
+    
+    // اعتبارسنجی قبل از ارسال
+    document.getElementById('paymentForm').addEventListener('submit', function(e) {
+        if (!paymentMethodInput.value) {
+            e.preventDefault();
+            alert('لطفاً روش پرداخت را انتخاب کنید');
+            return false;
+        }
+        return true;
+    });
+</script>
+
+{% endblock %}

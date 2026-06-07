@@ -1,0 +1,310 @@
+
+:root {
+    --primary: #ef394e;
+    --secondary: #3f4064;
+    --gray-100: #f0f0f1;
+    --gray-200: #e1e2e3;
+    --gray-300: #c0c1c2;
+    --gray-400: #a1a3a8;
+    --gray-500: #62666d;
+    --gray-600: #3f4064;
+    --gray-700: #282c34;
+    --green: #00c853;
+    --blue: #0088ff;
+}
+
+body {
+    color: var(--secondary);
+    line-height: 1.6;
+    min-height: 100vh;
+    background: var(--gray-100);
+}
+
+a { text-decoration: none; color: inherit; }
+
+/* ─────────── Container ─────────── */
+.page-container {
+    max-width: 1200px;
+    margin: 40px auto;
+    padding: 0 20px;
+}
+
+/* ─────────── Card ─────────── */
+.form-card {
+    background: white;
+    border-radius: 16px;
+    border: 2px solid var(--gray-200);
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+}
+
+/* ─────────── Header ─────────── */
+.card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 30px;
+    border-bottom: 2px solid var(--gray-200);
+    background: white;
+}
+
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.back-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--gray-500);
+    font-size: 14px;
+    transition: all 0.3s;
+    padding: 8px 12px;
+    border-radius: 8px;
+}
+
+.back-btn:hover {
+    color: var(--primary);
+    background: #fff5f6;
+}
+
+.page-title {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--secondary);
+}
+
+.site-logo {
+    display: flex;
+    height: 100%;
+    align-items: center;
+}
+
+/* ─────────── Form Body ─────────── */
+.card-body {
+    padding: 30px;
+}
+
+.form-intro {
+    font-size: 14px;
+    color: var(--gray-500);
+    margin-bottom: 25px;
+}
+
+/* ─────────── Field Groups ─────────── */
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-label {
+    display: block;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--secondary);
+    margin-bottom: 8px;
+}
+
+.form-label .required {
+    color: var(--primary);
+    margin-right: 3px;
+}
+
+.form-label .optional {
+    font-size: 12px;
+    font-weight: 400;
+    color: var(--gray-400);
+    margin-right: 8px;
+}
+
+.form-input {
+    width: 100%;
+    padding: 12px 16px;
+    border: 2px solid var(--gray-200);
+    border-radius: 10px;
+    font-size: 15px;
+    color: var(--secondary);
+    background: white;
+    transition: all 0.3s;
+    font-family: inherit;
+    direction: rtl;
+}
+
+.form-input::placeholder {
+    color: var(--gray-400);
+}
+
+.form-input:focus {
+    outline: none;
+    border-color: var(--blue);
+    box-shadow: 0 0 0 4px rgba(0, 136, 255, 0.1);
+}
+
+/* ─────────── Input Row ─────────── */
+.input-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+}
+
+/* ─────────── Helper Text ─────────── */
+.input-hint {
+    font-size: 13px;
+    color: var(--gray-400);
+    margin-top: 6px;
+}
+
+/* ─────────── Error State ─────────── */
+.form-input.is-invalid {
+    border-color: var(--primary);
+    background: #fff5f6;
+}
+
+.error-message {
+    font-size: 12px;
+    color: var(--primary);
+    margin-top: 5px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+/* ─────────── Footer ─────────── */
+/* ─────────── Footer ─────────── */
+.card-footer {
+    padding: 20px 30px;
+    border-top: 1px solid var(--gray-200);
+    display: flex;
+    gap: 12px;
+    background: var(--gray-50);
+    border-radius: 0 0 20px 20px;
+}
+
+/* ─────────── Buttons ─────────── */
+.btn {
+    padding: 12px 20px;
+    border-radius: 12px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border: none;
+    font-family: inherit;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    text-decoration: none;
+}
+
+.btn-submit {
+    background: linear-gradient(135deg, var(--primary) 0%, #e74c3c 100%);
+    color: white;
+    flex: 1;
+    box-shadow: 0 2px 4px rgba(239, 57, 78, 0.2);
+}
+
+
+
+.btn-submit:active {
+    transform: translateY(0);
+}
+
+.btn-cancel {
+    background: white;
+    color: var(--gray-600);
+    border: 1.5px solid var(--gray-200);
+    gap: 6px;
+    padding: 12px 16px;
+}
+
+.btn-cancel:hover {
+    background: #fef2f2;
+    border-color: #fecaca;
+    color: var(--primary);
+}
+
+.btn-cancel:hover i {
+    transform: rotate(90deg);
+}
+
+.btn-cancel i {
+    transition: transform 0.2s ease;
+    font-size: 16px;
+}
+
+.btn-text {
+    font-size: 14px;
+}
+
+/* برای موبایل که فقط آیکون نمایش داده بشه */
+@media (max-width: 480px) {
+    .btn-cancel .btn-text {
+        display: none;
+    }
+    
+    .btn-cancel {
+        padding: 12px 18px;
+    }
+    
+    .btn-cancel i {
+        font-size: 18px;
+        margin: 0;
+    }
+    
+    .btn-submit {
+        padding: 12px 16px;
+    }
+}
+/* ─────────── Info Box ─────────── */
+.info-box {
+    background: #f8f9ff;
+    border: 1px solid #d0e4ff;
+    border-radius: 10px;
+    padding: 15px;
+    margin-bottom: 25px;
+    font-size: 14px;
+    color: var(--gray-600);
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+}
+
+.info-box i {
+    color: var(--blue);
+    font-size: 16px;
+    margin-top: 2px;
+    flex-shrink: 0;
+}
+
+/* ─────────── Responsive ─────────── */
+@media (max-width: 600px) {
+    .page-container {
+        margin: 0;
+        padding: 0;
+    }
+
+    .form-card {
+        border: none;
+        border-radius: 0;
+    }
+
+    .card-header,
+    .card-body,
+    .card-footer {
+        padding: 15px 20px;
+    }
+
+    .card-footer {
+        flex-direction: column;
+    }
+
+    .input-row {
+        grid-template-columns: 1fr;
+    }
+
+    .site-logo {
+        display: none;
+    }
+}

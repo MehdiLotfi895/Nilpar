@@ -1,0 +1,14 @@
+[
+    { "model": "main.feature", "pk": 1, "fields": { "title": "مقاوم در برابر رطوبت", "description": "دارای پوشش ضد آب و مقاوم در برابر بخار", "created": "2025-01-01T10:00:00+03:30" } },
+    { "model": "main.feature", "pk": 2, "fields": { "title": "لولاهای نرم بند", "description": "لولاهای ایتالیایی با قابلیت بسته شدن نرم و بی‌صدا", "created": "2025-01-02T11:00:00+03:30" } },
+    { "model": "main.feature", "pk": 3, "fields": { "title": "قابلیت تنظیم ارتفاع", "description": "قفسه‌ها و کشوها قابل تنظیم در ارتفاع‌های مختلف", "created": "2025-01-03T12:00:00+03:30" } },
+    { "model": "main.feature", "pk": 4, "fields": { "title": "روکش هایگلاس", "description": "روکش براق و ضد خش با قابلیت تمیزکاری آسان", "created": "2025-01-04T13:00:00+03:30" } },
+    { "model": "main.feature", "pk": 5, "fields": { "title": "طراحی مدرن", "description": "خطوط ساده و مینیمال مناسب برای دکوراسیون امروزی", "created": "2025-01-05T14:00:00+03:30" } },
+    { "model": "main.feature", "pk": 6, "fields": { "title": "آینه تمام قد", "description": "درب آینه‌دار با کیفیت بالا بدون اعوجاج", "created": "2025-01-06T15:00:00+03:30" } },
+    { "model": "main.feature", "pk": 7, "fields": { "title": "سیستم کشویی بی‌صدا", "description": "ریل‌های آلمانی با حرکت نرم و بدون صدا", "created": "2025-01-07T16:00:00+03:30" } },
+    { "model": "main.feature", "pk": 8, "fields": { "title": "قابلیت نصب روی دیوار", "description": "امکان نصب به دیوار با پیچ و رولپلاک همراه", "created": "2025-01-08T17:00:00+03:30" } },
+    { "model": "main.feature", "pk": 9, "fields": { "title": "چندمنظوره", "description": "قابل استفاده به عنوان قفسه، کمد و میز کار", "created": "2025-01-09T18:00:00+03:30" } },
+    { "model": "main.feature", "pk": 10, "fields": { "title": "سبک و قابل حمل", "description": "وزن کم و قابلیت جابجایی آسان", "created": "2025-01-10T19:00:00+03:30" } },
+    { "model": "main.feature", "pk": 11, "fields": { "title": "طرح سه‌بعدی", "description": "دارای لایه‌های برش لیزری با عمق دید", "created": "2025-01-11T20:00:00+03:30" } },
+    { "model": "main.feature", "pk": 12, "fields": { "title": "مقاومت بالا", "description": "تحمل وزن تا 300 کیلوگرم", "created": "2025-01-12T21:00:00+03:30" } }
+  ]

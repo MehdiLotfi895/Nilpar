@@ -1,0 +1,447 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load my_filters %}
+
+{% block content %}
+
+<style>
+    /* ======================
+    کانتینر اصلی
+    ====================== */
+    .addresses-container {
+        width: 95%;
+        max-width: 1400px;
+        margin: 30px auto;
+        font-family: sans-serif;
+    }
+
+    .addresses-content {
+        display: flex;
+        gap: 20px;
+        align-items: flex-start;
+        flex-wrap: nowrap;
+    }
+
+    /* ======================
+    بخش اصلی (لیست آدرس‌ها) - 70%
+    ====================== */
+    .addresses-main {
+        flex: 1 1 70%;
+        min-width: 0;
+        background: #fff;
+        border: 1px solid #ececec;
+        border-radius: 5px;
+        overflow: hidden;
+    }
+
+    .page-header {
+        padding: 20px 25px;
+        border-bottom: 1px solid #f1f1f1;
+        background: #fff;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 15px;
+    }
+
+    .page-title {
+        font-size: 18px;
+        font-weight: 600;
+        color: #333;
+        margin: 0;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .add-address-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 10px 20px;
+        background: #747667;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        font-size: 14px;
+        font-weight: 600;
+        text-decoration: none;
+        transition: 0.3s;
+    }
+
+    .add-address-btn:hover {
+        opacity: 0.85;
+    }
+
+    /* لیست آدرس‌ها */
+    .addresses-list {
+        padding: 25px;
+    }
+
+    .address-card {
+        background: #fff;
+        border: 1px solid #ececec;
+        border-radius: 8px;
+        margin-bottom: 20px;
+        overflow: hidden;
+        transition: 0.3s;
+    }
+
+    .address-card:hover {
+        border-color: #747667;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    }
+
+    .card-header {
+        padding: 15px 20px;
+        background: #fafafa;
+        border-bottom: 1px solid #eee;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+
+    .receiver-name {
+        font-size: 16px;
+        font-weight: 600;
+        color: #333;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .card-body {
+        padding: 20px;
+    }
+
+    .address-info {
+        margin-bottom: 15px;
+    }
+
+    .info-row {
+        display: flex;
+        align-items: flex-start;
+        gap: 10px;
+        margin-bottom: 12px;
+        font-size: 14px;
+        color: #555;
+    }
+
+    .info-row i {
+        color: #747667;
+        width: 20px;
+        margin-top: 2px;
+    }
+
+    .info-label {
+        font-weight: 600;
+        color: #333;
+        min-width: 70px;
+    }
+
+    .info-value {
+        color: #666;
+        flex: 1;
+    }
+
+    .card-actions {
+        padding: 15px 20px;
+        border-top: 1px solid #f5f5f5;
+        display: flex;
+        gap: 12px;
+    }
+
+    .btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 8px 16px;
+        border-radius: 5px;
+        font-size: 13px;
+        font-weight: 600;
+        text-decoration: none;
+        transition: 0.3s;
+        cursor: pointer;
+        border: none;
+    }
+
+    .btn-edit {
+        background: #fff;
+        color: #747667;
+        border: 1px solid #747667;
+    }
+
+    .btn-edit:hover {
+        background: #747667;
+        color: #fff;
+    }
+
+    .btn-delete {
+        background: #fff;
+        color: #d63031;
+        border: 1px solid #d63031;
+    }
+
+    .btn-delete:hover {
+        background: #d63031;
+        color: #fff;
+    }
+
+    /* حالت خالی */
+    .empty-state {
+        text-align: center;
+        padding: 60px 20px;
+        color: #999;
+    }
+
+    .empty-icon {
+        font-size: 48px;
+        margin-bottom: 15px;
+        color: #747667;
+    }
+
+    .empty-title {
+        font-size: 18px;
+        font-weight: 600;
+        color: #666;
+        margin-bottom: 10px;
+    }
+
+    .empty-text {
+        font-size: 14px;
+        color: #888;
+        margin-bottom: 20px;
+    }
+
+    .empty-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 10px 25px;
+        background: #747667;
+        color: #fff;
+        text-decoration: none;
+        border-radius: 5px;
+        font-weight: 600;
+        transition: 0.3s;
+    }
+
+    .empty-btn:hover {
+        opacity: 0.85;
+    }
+
+    /* ======================
+    ستون کناری (سمت چپ) - 30%
+    ====================== */
+    .addresses-sidebar {
+        flex: 0 0 25%;
+        min-width: 250px;
+        position: sticky;
+        top: 100px;
+        align-self: flex-start;
+    }
+
+    .info-card {
+        background: #fff;
+        border: 1px solid #ececec;
+        border-radius: 5px;
+        padding: 20px;
+    }
+
+    .info-title {
+        font-size: 17px;
+        font-weight: 600;
+        margin-bottom: 20px;
+        text-align: center;
+        padding-bottom: 12px;
+        border-bottom: 1px solid #eee;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+    }
+
+    .info-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .info-list li {
+        padding: 10px 0;
+        font-size: 13px;
+        color: #666;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        border-bottom: 1px solid #f5f5f5;
+    }
+
+    .info-list li:last-child {
+        border-bottom: none;
+    }
+
+    .info-list li i {
+        color: #747667;
+        width: 20px;
+        font-size: 14px;
+    }
+
+    .address-count {
+        margin-top: 15px;
+        padding-top: 15px;
+        border-top: 1px solid #eee;
+        text-align: center;
+        font-size: 13px;
+        color: #888;
+    }
+
+    .address-count span {
+        font-weight: 700;
+        color: #747667;
+        font-size: 18px;
+    }
+
+    /* ======================
+    ریسپانسیو
+    ====================== */
+    @media (max-width: 992px) {
+        .addresses-content {
+            flex-direction: column;
+        }
+        .addresses-main,
+        .addresses-sidebar {
+            width: 100%;
+            min-width: 0;
+            position: relative;
+            top: 0;
+        }
+        .card-header {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+        .card-actions {
+            flex-direction: column;
+        }
+        .btn {
+            justify-content: center;
+        }
+        .info-row {
+            flex-direction: column;
+            gap: 5px;
+        }
+        .info-label {
+            min-width: auto;
+        }
+    }
+</style>
+
+<div class="addresses-container">
+    <div class="addresses-content">
+        <!-- بخش اصلی (لیست آدرس‌ها) - سمت راست -->
+        <div class="addresses-main">
+            <div class="page-header">
+                <h1 class="page-title">
+                    <i class="fas fa-map-marker-alt"></i> آدرس‌های من
+                </h1>
+                <a href="{% url 'add_address' %}" class="add-address-btn">
+                    <i class="fas fa-plus"></i> ثبت آدرس جدید
+                </a>
+            </div>
+
+            <div class="addresses-list">
+                {% for address in addresses %}
+                <div class="address-card">
+                    <div class="card-header">
+                        <div class="receiver-name">
+                            <i class="fas fa-user"></i> {{ address.receiver }}
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="address-info">
+                            <div class="info-row">
+                                <span class="info-label">آدرس:</span>
+                                <span class="info-value">{{ address.address }}</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="info-label">استان:</span>
+                                <span class="info-value">{{ address.province|default:"-" }}</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="info-label">شهر:</span>
+                                <span class="info-value">{{ address.city|default:"-" }}</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="info-label">کد پستی:</span>
+                                <span class="info-value">{{ address.address_code|default:"-" }}</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="info-label">تلفن:</span>
+                                <span class="info-value">{{ address.phonenumber|default:"-" }}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-actions">
+                        <a href="{% url 'address_edit' address.id %}" class="btn btn-edit">
+                            <i class="fas fa-edit"></i> ویرایش
+                        </a>
+                        <a href="{% url 'address_delete' address.id %}" class="btn btn-delete" onclick="return confirm('آیا از حذف این آدرس مطمئن هستید؟')">
+                            <i class="fas fa-trash-alt"></i> حذف
+                        </a>
+                    </div>
+                </div>
+                {% empty %}
+                <div class="empty-state">
+                    <div class="empty-icon">
+                        <i class="fas fa-map-marker-alt"></i>
+                    </div>
+                    <div class="empty-title">هنوز آدرسی ثبت نکرده‌اید!</div>
+                    <div class="empty-text">برای ثبت سفارش، ابتدا آدرس خود را وارد کنید.</div>
+                    <a href="{% url 'add_address' %}" class="empty-btn">
+                        <i class="fas fa-plus"></i> ثبت آدرس جدید
+                    </a>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- ستون کناری (سمت چپ) - sticky -->
+        <div class="addresses-sidebar">
+            <div class="info-card">
+                <h3 class="info-title">
+                    <i class="fas fa-info-circle"></i> نکات مهم
+                </h3>
+                <ul class="info-list">
+                    <li>
+                        <i class="fas fa-check-circle"></i>
+                        آدرس تحویل سفارش باید دقیق و کامل باشد
+                    </li>
+                    <li>
+                        <i class="fas fa-phone-alt"></i>
+                        شماره تماس گیرنده معتبر وارد شود
+                    </li>
+                    <li>
+                        <i class="fas fa-mail-bulk"></i>
+                        کد پستی صحیح ۱۰ رقمی باشد
+                    </li>
+                    <li>
+                        <i class="fas fa-truck"></i>
+                        ارسال فقط برای شهرهای استان تهران
+                    </li>
+                    <li>
+                        <i class="fas fa-edit"></i>
+                        آدرس‌های خود را مدیریت کنید
+                    </li>
+                </ul>
+                <div class="address-count">
+                    تعداد آدرس‌های ثبت شده: <span>{{ addresses|length }}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

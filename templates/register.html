@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+{% load static %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ثبت نام | کابینت رزمی</title>
+    <style>
+        @font-face {
+            font-family: 'shabnam';
+            src: url('{% static "fonts/Shabnam-FD.woff2" %}');
+        }
+        @font-face {
+            font-family: 'shohreh';
+            src: url('{% static "fonts/Far_Narm/Far_Narm.ttf" %}');
+        }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'shabnam', Tahoma, sans-serif; }
+        
+        :root {
+            --primary: #ef394e;
+            --primary-dark: #d6303c;
+            --gray-100: #f0f0f1;
+            --gray-200: #e1e2e3;
+            --gray-400: #a1a3a8;
+            --gray-500: #62666d;
+            --gray-600: #3f4064;
+        }
+        
+        body { background: white; min-height: 100vh; display: flex; flex-direction: column; }
+        
+        .register-main { flex: 1; display: flex; align-items: center; justify-content: center; padding: 20px; }
+        
+        .register-box {
+            width: 100%;
+            max-width: 600px;
+            border: 1px solid var(--gray-200);
+            border-radius: 12px;
+            padding: 30px;
+        }
+        
+        .site-title {
+            font-size: 35px;
+            font-weight: 900;
+            color: var(--primary);
+            text-align: center;
+            margin-bottom: 30px;
+            font-family: 'shohreh', tahoma;
+        }
+        
+        .register-desc { margin-bottom: 25px; }
+        .register-desc h2 { font-size: 22px; color: black; margin-bottom: 10px; }
+        .register-desc p { font-size: 14px; color: var(--gray-500); }
+        
+        .register-form { display: flex; flex-direction: column; gap: 12px; }
+        
+        .form-input {
+            width: 100%;
+            padding: 14px 16px;
+            border: 1px solid var(--gray-200);
+            border-radius: 8px;
+            font-size: 15px;
+            font-family: inherit;
+            transition: all 0.3s;
+            background: white;
+            color: var(--gray-600);
+        }
+        
+        .form-input:focus { outline: none; border-color: var(--primary); }
+        .form-input::placeholder { color: var(--gray-400); }
+        
+        .register-btn {
+            width: 100%;
+            padding: 14px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: 600;
+            font-family: inherit;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 10px;
+        }
+        
+        .register-btn:hover { background: var(--primary-dark); }
+        
+        .messages { list-style: none; padding: 0; margin-bottom: 15px; }
+        .messages li { font-size: 14px; padding: 10px; border-radius: 8px; margin-bottom: 8px; }
+        .messages .error { background: #fff0f0; color: #c0392b; }
+        .messages .success { background: #f0fff4; color: #27ae60; }
+        
+        .terms { text-align: center; font-size: 13px; color: var(--gray-500); margin-top: 20px; }
+        .terms a { text-decoration: none; }
+        
+        .login-link { text-align: center; margin-top: 20px; font-size: 14px; color: var(--gray-500); }
+        .login-link a { color: var(--primary); text-decoration: none; font-weight: 600; }
+        
+        @media (max-width: 1024px) {
+            .register-box { max-width: 100%; border: none; border-radius: 0; padding: 20px 0; }
+            .form-input { border: none; border-bottom: 1px solid var(--gray-200); border-radius: 0; padding: 14px 0; }
+            .form-input:focus { border-bottom-color: var(--primary); }
+        }
+    </style>
+</head>
+<body>
+    <main class="register-main">
+        <div class="register-box">
+            <h1 class="site-title">کابینت رزمی</h1>
+            
+            <div class="register-desc">
+                <h2>ثبت نام</h2>
+                <p>سلام! لطفاً اطلاعات خود را وارد کنید</p>
+            </div>
+            
+            {% if messages %}
+                <ul class="messages">
+                    {% for message in messages %}
+                    <li class="{{ message.tags }}">{{ message }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+            
+            <!-- register.html -->
+            <form method="POST" class="register-form" action="">
+                {% csrf_token %}
+            
+                {{ form.first_name }}
+                {{ form.last_name }}
+                {{ form.email }}
+                {{ form.password1 }}
+                {{ form.password2 }}
+                
+                <button type="submit" class="register-btn">ثبت نام</button>
+            </form>
+            
+            <div class="login-link">
+                حساب کاربری دارید؟ <a href="{% url 'login' %}">وارد شوید</a>
+            </div>
+            
+            <div class="terms">
+                ثبت نام شما به معنای پذیرش <a href="#">شرایط</a> و <a href="#">قوانین کابینت رزمی</a> است
+            </div>
+        </div>
+    </main>
+</body>
+</html>

@@ -1,0 +1,844 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+{% load static %}
+{% load humanize %}
+{% load my_filters %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>صنایع چوبی نیلپر</title>
+    {% comment %} <link rel="icon" type="image/png" href="{% static 'images/new_ai/icone1/icon_multi_size.ico' %}" />  {% endcomment %}
+    <link rel="apple-touch-icon" sizes="180x180" href="{% static 'images/new_ai/icone/apple-touch-icon.png' %}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{% static 'images/new_ai/icone/favicon-32x32.png' %}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{% static 'images/new_ai/icone/favicon-16x16.png' %}">
+    <link rel="manifest" href="/site.webmanifest"> 
+    <link rel="stylesheet" href="{% static 'css/checkout_steps.css' %}">
+
+    {% block extra_css %}{% endblock %}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"> 
+    <link rel="stylesheet" href="{% static 'css/styles.css'%}">
+</head>
+<body>
+    
+    <!-- پس‌زمینه تاریک -->
+    <div class="dark-overlay" id="darkOverlay" onclick="closeAll()"></div>
+    
+    <!-- هدر بالا (اکنون جلوتر از overlay قرار دارد و تاریک نمی‌شود) -->
+    <div class="header-top" style="background-image: url('{{header_content.image.url}}')">
+        
+    </div>
+    
+    <!-- هدر اصلی (قبلاً z-index:1000 داشت و جلوتر از overlay است) -->
+    <header class="header-main">
+        <div >
+            <div class="header-content">
+                <div class="left-header">
+                <!-- لوگو -->
+                <a href="/" class="logo">
+                     <!-- <img src="{% static 'images/par3.png'%}" alt="" style="width:120px"> -->
+                      <!-- <img src="{% static 'images/new_ai/ComfyUI_00026_.png'%}" alt="" style="width:120px"> -->
+                     <!-- <p>
+                        نیلپر
+                     </p>  -->
+                     <img src="{% static 'images/new_ai/ComfyUI_00286_.png'%}" alt="" >
+                </a> 
+                <!-- جستجو - دیو بالا و دکمه زیرش -->
+                <div class="search-container">
+                    <!-- دیو کشویی جستجو - بالا -->
+                    <div class="search-dropdown" id="searchDropdown">
+                        <form method="POST" action="" class="search-dropdown-header">
+                            {% csrf_token %}
+                            <button class="mobile-close-btn" onclick="toggleSearch()" type="button">
+                                <i class="fas fa-chevron-right"></i>
+                            </button>
+                            <input type="text" placeholder="جستجو..." id="searchInput" autofocus name="search_input" value="{{search_query}}">
+                            <button class="search-close" onclick="toggleSearch()" type="submit" name="action" value="search_box">
+                                <i class="fas fa-search"></i>
+                            </button>
+                        </form>
+                        <div class="search-suggestions">
+                            <div class="search-suggestion-item">
+                                <i class="fas fa-search"></i>
+                                <span>کابینت آشپزخانه</span>
+                            </div>
+                            <div class="search-suggestion-item">
+                                <i class="fas fa-search"></i>
+                                <span>کمد دیواری</span>
+                            </div>
+                            <div class="search-suggestion-item">
+                                <i class="fas fa-search"></i>
+                                <span>کتابخانه</span>
+                            </div>
+                            <div class="search-suggestion-item">
+                                <i class="fas fa-search"></i>
+                                <span>کمد لباس</span>
+                            </div>
+                            <div class="search-suggestion-item">
+                                <i class="fas fa-search"></i>
+                                <span>کابینت مدرن</span>
+                            </div>
+                            <div class="search-suggestion-item">
+                                <i class="fas fa-search"></i>
+                                <span>کابینت کلاسیک</span>
+                            </div>
+                        </div>
+                        <div class="recent-searches">
+                            <div class="recent-searches-title">جستجوهای اخیر</div>
+                            <span class="recent-search-tag">کابینت مدرن</span>
+                            <span class="recent-search-tag">هایگلاس</span>
+                            <span class="recent-search-tag">کلاسیک</span>
+                        </div>
+                    </div>
+                    
+                    <!-- دکمه سرچ - زیر دیو -->
+                    <div class="search-button">
+                        <button class="search-trigger" id="searchTrigger" onclick="toggleSearch()">
+                            <i class="fas fa-search"></i>
+                            {% if search_query %}
+                            <span style="color:black;">{{search_query}}</span>
+                            {% else%}
+                            <span>جستجو</span>
+                            {% endif%}
+                        </button>
+                    </div>
+                </div>
+            </div>
+                <!-- دکمه‌ها -->
+                <div class="header-actions">
+                    {% if not user.is_authenticated%}
+                    <a class="login-btn" href="{% url 'send_otp'%}">
+                        
+                        <span>ورود | ثبت‌نام</span><img src="{% static 'images/enter.png'%}" alt="" style="width:23px">
+                    </a>
+                    {% else %} 
+                     <div class="user-profile-wrapper" id="userProfileWrapper">
+                        <button class="user-profile-btn" id="userProfileBtn" onclick="toggleProfile()">
+                            <!-- <span style="font-size: 15px; font-weight: 500;">حساب کاربری</span> -->
+                            <img src="{% static 'images/profile.png'%}" alt="" style="width:30px;">
+                            <img src="{% static 'images/header_flesh.png'%}" alt="" style="width:12px;height:12px">
+                        </button>
+                        
+                        <!-- دیو کشویی پروفایل -->
+                        <div class="profile-dropdown" id="profileDropdown">
+                            <!-- هدر با نام کاربر -->
+                            <div class="profile-header">
+                                <div class="profile-header-info">
+                                    <div class="profile-name">{{ user.first_name }} {{ user.last_name|default:'' }}</div>
+                                </div>
+                            </div>
+                            
+                            <!-- لینک‌های منو -->
+                            <div class="profile-menu">
+                                <a href="{% url 'order_list'%}" class="profile-menu-item">
+                                    <img src="{% static 'images/shop.png'%}" alt="" style="width:18px">
+                                    <span>لیست سفارش‌ها</span>
+                                    <!-- <i class="fas fa-chevron-left arrow-left"></i> -->
+                                </a>
+                                <a href="{% url 'user_activity'%}" class="profile-menu-item">
+                                    <i class="far fa-comment"></i>
+                                    <span> پرسش‌ها و دیدگاه ها</span>
+                                    <!-- <i class="fas fa-chevron-left arrow-left"></i> -->
+                                </a>
+                                <a href="{% url 'edit_profile'%}" class="profile-menu-item">
+                                    <i class="far fa-pen-to-square"></i>
+                                    <span>ویرایش پروفایل</span>
+                                    <!-- <i class="fas fa-chevron-left arrow-left"></i> -->
+                                </a>
+                                <a href="{% url 'addresses'%}" class="profile-menu-item">
+                                    <i class="fa-solid fa-location-dot" style="color: transparent; -webkit-text-stroke: 1px black; font-size: 1.2rem;"></i>
+                                    <span>لیست آدرس ها</span>
+                                    <!-- <i class="fas fa-chevron-left arrow-left"></i> -->
+                                </a>
+                                <a href="{% url 'favorite_products' %}" class="profile-menu-item">
+                                    <i class="far fa-heart"></i>
+                                    <span>لیست علاقه مندی ها</span>
+                                    <!-- <i class="fas fa-chevron-left arrow-left"></i> -->
+                                </a>
+                                <a class="profile-menu-item" href="{% url 'logout'%}">
+                                    <i class="fa-solid fa-arrow-right-from-bracket" ></i>
+                                    <span>خروج از حساب کاربری</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    {% endif%}
+                    <span style="width:1px;height: 30px;background-color: var(--gray-200);"></span>
+                    <div class="basket-wrapper" id="basketWrapper">
+                        <a href="{% url 'cart:cart_detail' %}" class="basket-link" style="height: 28px;width:25px; position: relative; display: inline-block;">
+                            <img src="{% static 'images/shop.png' %}" alt="" style="width: 25px;">
+                            
+                            {% if user_order_basket.total_number %}
+                                <div style="
+                                    position: absolute;
+                                    top: 16px;
+                                    right: -8px;
+                                    background-color: var(--primary);
+                                    width: 18px;
+                                    height: 18px;
+                                    border-radius: 5px;
+                                    color: white;
+                                    display: flex;
+                                    justify-content: center;
+                                    font-size: 12px;
+                                    font-weight: bold;
+                                    border:2px solid white;
+                                ">
+                                    {{ user_order_basket.total_number }}
+                                </div>
+                            {% endif %}
+                        </a>
+                        
+                        <div class="basket-dropdown" id="basketDropdown">
+                            <div class="dropdown-header">
+                                {% if user_order_basket.total_number %}
+                                    <span class="item-count">{{ user_order_basket.total_number }} کالا</span>
+                                {% endif %}
+                            </div>
+                            
+                            <div class="dropdown-body" id="dropdownBody">
+                                {% if user.is_authenticated %}
+                                    {# کاربر لاگین شده - از OrderBasket قدیمی #}
+                                    {% with basket=user.order_basket.all %}
+                                        {% if basket %}
+                                            {% for item in basket %}
+                                            <div class="product-item" data-id="{{ item.id }}">
+                                                <div style="display: flex;flex-direction: column;gap:10px;align-items: center;justify-content: center;width: 130px;">
+                                                    <img src="{{ item.product.images.all.0.image.url }}" alt="{{ item.product.name }}" class="product-image-basket">
+                                                    <div class="counter-container">
+                                                    <form method="POST" action="{% url 'cart:cart_update'  product_id=item.product.id color_id=item.color.id %}"> 
+                                                        {% csrf_token %}
+                                                        <button type="submit" name="action" value="increase">
+                                                            <i class="fas fa-plus counter-icon plus-icon"></i>
+                                                        </button>
+                                                    </form>
+                                                        <span class="counter-number">{{ item.number }}</span>
+                                                        {% if item.number == 1 %}
+                                                        <form action="{% url 'cart:cart_remove' product_id=item.product.id color_id=item.color.id %}" method="POST">
+                                                            {% csrf_token %}
+                                                            <button type="submit" name="action" value="delete_order_basket">
+                                                                <i class="fas fa-trash-alt counter-icon trash-icon"></i>
+                                                            </button>
+                                                        </form>
+                                                        {% else %}
+                                                        <form action="{% url 'cart:cart_update'  product_id=item.product.id color_id=item.color.id %}" method="POST">
+                                                            {% csrf_token %}
+                                                            <button type="submit" name="action" value="decrease">
+                                                                <i class="fas fa-minus counter-icon minus-icon"></i>
+                                                            </button>
+                                                        </form>
+                                                        {% endif %}
+                                                    </form>
+                                                    </div>
+                                                </div>
+                                                <div class="product-info">
+                                                    <div>
+                                                        <span class="product-name">{{ item.product.name }}</span>
+                                                        <span style="font-size: 13px;"><i class="fa-solid fa-fill-drip"></i> رنگ {{ item.color.color_name }}</span>
+                                                        <span style="font-size: 13px;"><img src="{% static 'images/new_ai/16060530.png' %}" alt="" style="width:20px"> ارسال از صنایع چوبی نیلپر</span>
+                                                    </div>
+                                                    <div>
+                                                        {% if item.product.off != 0 %}
+                                                            <span style="font-size: 18px;color:var(--red);font-family:'shohreh';"> {{ item.product.off }}% تخفیف</span>
+                                                        {% endif %}
+                                                        <span class="product-price-basket">{{ item.product.old_price|persian_intcomma}} تومان</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            {% endfor %}
+                                        {% else %}
+                                            <div class="empty-message">
+                                                <i class="fas fa-shopping-basket"></i>
+                                                <p>سبد خرید خالی است</p>
+                                            </div>
+                                        {% endif %}
+                                    {% endwith %}
+                                {% else %}
+                                    {# کاربر ناشناس - از سشن #}
+                                    {% with cart_items=cart.get_items %}
+                                        {% if cart_items %}
+                                            {% for item in cart_items %}
+                                            <div class="product-item">
+                                                <div style="display: flex;flex-direction: column;gap:10px;align-items: center;justify-content: center;width: 130px;">
+                                                    <img src="{{ item.product.images.all.0.image.url }}" alt="{{ item.product.name }}" class="product-image-basket">
+                                                    <div class="counter-container">
+                                                        <form  method="POST" action="{% url 'cart:cart_update'  product_id=item.product.id color_id=item.color.id %}">
+                                                            {% csrf_token %}
+                                                            <button type="submit" name="action" value="increase">
+                                                                <i class="fas fa-plus counter-icon plus-icon"></i>                            
+                                                            </button>
+                                                        </form>
+                                                        <span class="counter-number">{{ item.quantity }}</span>
+                                                        {% if item.quantity == 1 %}
+                                                            <form action="{% url 'cart:cart_remove' product_id=item.product.id color_id=item.color.id %}" method="POST">
+                                                                {% csrf_token %}
+                                                                <button type="submit" name="action" value="delete_order_basket">
+                                                                    <i class="fas fa-trash-alt counter-icon trash-icon"></i>
+                                                                </button>
+                                                            </form>
+                                                        {% else %}
+                                                            <form  method="POST" action="{% url 'cart:cart_update'  product_id=item.product.id color_id=item.color.id %}">
+                                                                {% csrf_token %}
+                                                                    <button type="submit" name="action" value="decrease">
+                                                                        <i class="fas fa-minus counter-icon minus-icon"></i>
+                                                                    </button>
+                                                            </form>
+                                                        {% endif %}
+                                                    </div>
+                                                </div>
+                                                <div class="product-info">
+                                                    <div>
+                                                        <span class="product-name">{{ item.product.name }}</span>
+                                                        <span style="font-size: 13px;"><i class="fa-solid fa-fill-drip"></i> رنگ {{ item.color.color_name }}</span>
+                                                        <span style="font-size: 13px;"><img src="{% static 'images/new_ai/16060530.png' %}" alt="" style="width:20px"> ارسال از صنایع چوبی نیلپر</span>
+                                                    </div>
+                                                    <div>
+                                                        {% if item.off_percent > 0 %}
+                                                            <span style="font-size: 18px;color:var(--red);font-family:'shohreh';">{{ item.off_percent }}% تخفیف</span>
+                                                        {% endif %}
+                                                        <span class="product-price-basket">{{ item.old_price|persian_intcomma }} تومان</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            {% endfor %}
+                                        {% else %}
+                                            <div class="empty-message">
+                                                <i class="fas fa-shopping-basket"></i>
+                                                <p>سبد خرید خالی است</p>
+                                            </div>
+                                        {% endif %}
+                                    {% endwith %}
+                                {% endif %}
+                            </div>
+                            
+                            <div class="dropdown-footer">
+                                {% if user_order_basket.total_number %}
+                                    <div>
+                                        <div style="font-size: 12px;">مبلغ قابل پرداخت</div>
+                                        <div style="color:black;margin-top: 10px;">{{ user_order_basket.total_price|default:0|persian_intcomma }} تومان</div>
+                                    </div>
+                                    <a href="{% url 'cart:cart_detail' %}" class="view-basket-link">مدیریت لیست خرید</a>
+                                {% else %}
+                                    <a href="{% url 'products'%}" class="view-basket-link" style="width:100%">مشاهده محصولات</a>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <nav class="main-nav">
+            <div >
+                <div class="nav-content">
+                    <!-- دکمه دسته‌بندی با منوی کشویی -->
+                    <div class="nav-categories" onmouseenter="toggleCategories(true)" onmouseleave="toggleCategories(false)">
+                        <i class="fas fa-bars"></i>
+                        <span>دسته‌بندی</span>
+                        <span style="width:1px;height: 20px;background-color: var(--gray-200);"></span>
+                        <!-- منوی کشویی -->
+                        <!-- منوی کشویی دسته‌بندی - Mega Menu -->
+                        <div class="categories-dropdown" id="categoriesDropdown">
+                            <!-- سمت چپ: لیست دسته‌بندی‌ها -->
+                            <div class="mega-menu-categories">
+                                {% for category in main_category %}
+                                    <div class="mega-category-item {% if forloop.first %}active{% endif %}" data-category="{{ category.id }}">
+                                        <i class="fas {{ category.icone }}"></i>
+                                        <span>{{ category.title }}</span>
+                                    </div>
+                                {% endfor %}
+                                <!-- <div class="mega-category-item active" data-category="desk">
+                                    <i class="fas fa-table"></i>
+                                    <span>میز تحریر</span>
+                                </div>
+                                <div class="mega-category-item" data-category="wardrobe">
+                                    <i class="fas fa-door-open"></i>
+                                    <span>کمد دیواری</span>
+                                </div>
+                                <div class="mega-category-item" data-category="closet">
+                                    <i class="fas fa-tshirt"></i>
+                                    <span>کمد لباس</span>
+                                </div>
+                                <div class="mega-category-item" data-category="bookshelf">
+                                    <i class="fas fa-book-open"></i>
+                                    <span>کتابخانه</span>
+                                </div>
+                                <div class="mega-category-item" data-category="tv">
+                                    <i class="fas fa-tv"></i>
+                                    <span>میز تلویزیون</span>
+                                </div>
+                                <div class="mega-category-item" data-category="shoe">
+                                    <i class="fas fa-shoe-prints"></i>
+                                    <span>جاکفشی</span>
+                                </div>
+                                <div class="mega-category-item" data-category="storage">
+                                    <i class="fas fa-folder-open"></i>
+                                    <span>زونکن اداری</span>
+                                </div>
+                                <div class="mega-category-item" data-category="bedside">
+                                    <i class="fas fa-bed"></i>
+                                    <span>پا تختی</span>
+                                </div>
+                                <div class="mega-category-item" data-category="bedroom">
+                                    <i class="fas fa-bed"></i>
+                                    <span>سرویس خواب</span>
+                                </div>
+                                <div class="mega-category-item" data-category="drawer">
+                                    <i class="fas fa-archive"></i>
+                                    <span>دراور</span>
+                                </div>
+                                <div class="mega-category-item" data-category="dressing">
+                                    <i class="fas fa-female"></i>
+                                    <span>میز آرایش</span>
+                                </div>
+                                <div class="mega-category-item" data-category="console">
+                                    <i class="fas fa-couch"></i>
+                                    <span>کنسول</span>
+                                </div> -->
+                            </div>
+                        
+                            <!-- سمت راست: پنل محصولات -->
+                            <div class="mega-menu-products" id="megaMenuProducts">
+                                {% for category in main_category %}
+                                    <div class="products-panel {% if forloop.first %}active{% endif %}" id="panel-{{category.id}}">
+                                        <div class="product-section">
+                                            <div class="product-section-title">نوع {{category.title}}</div>
+                                            <div class="products-grid-mega">
+                                                {% for item in category.secondary_category.all %}
+                                                    <div class="product-card-mega"><img src="{% if item.image%}{{item.image.url}}{% else %}{% endif %}" alt=""><span>{{item.title}}</span></div>
+                                                {% endfor%}
+                                            </div>
+                                        </div>
+                                        <a href="#" class="view-all-link">مشاهده همه {{category.title}}<i class="fas fa-chevron-left"></i></a>
+                                    </div>
+                                {% endfor %}
+                                <!-- پنل میز تحریر
+                                <div class="products-panel" id="panel-desk">
+                                    <div class="product-section">
+                                        <div class="product-section-title">نوع میز تحریر</div>
+                                        <div class="products-grid-mega">
+                                            <div class="product-card-mega"><img src="{% static 'images/placeholder.png' %}" alt=""><span>اداری</span></div>
+                                            <div class="product-card-mega"><img src="{% static 'images/placeholder.png' %}" alt=""><span>کامپیوتر</span></div>
+                                            <div class="product-card-mega"><img src="{% static 'images/placeholder.png' %}" alt=""><span>رایانه</span></div>
+                                            <div class="product-card-mega"><img src="{% static 'images/placeholder.png' %}" alt=""><span>T شکل</span></div>
+                                            <div class="product-card-mega"><img src="{% static 'images/placeholder.png' %}" alt=""><span>ال شکل</span></div>
+                                            <div class="product-card-mega"><img src="{% static 'images/placeholder.png' %}" alt=""><span>صنعتی</span></div>
+                                        </div>
+                                    </div>
+                                    <div class="product-section">
+                                        <div class="product-section-title">مدل‌های پرطرفدار</div>
+                                        <div class="products-grid-mega">
+                                            <div class="product-card-mega"><img src="{% static 'images/placeholder.png' %}" alt=""><span>مدرن</span></div>
+                                            <div class="product-card-mega"><img src="{% static 'images/placeholder.png' %}" alt=""><span>کلاسیک</span></div>
+                                            <div class="product-card-mega"><img src="{% static 'images/placeholder.png' %}" alt=""><span>مینیمال</span></div>
+                                            <div class="product-card-mega"><img src="{% static 'images/placeholder.png' %}" alt=""><span>اسکاندیناوی</span></div>
+                                        </div>
+                                    </div>
+                                    <a href="#" class="view-all-link">مشاهده همه میزهای تحریر <i class="fas fa-arrow-left"></i></a>
+                                </div>
+                        
+                               
+                                <div class="products-panel" id="panel-wardrobe">
+                                    <div class="product-section">
+                                        <div class="product-section-title">نوع کمد دیواری</div>
+                                        <div class="products-grid-mega">
+                                            <div class="product-card-mega"><img src="{% static 'images/placeholder.png' %}" alt=""><span>کمد ریلی</span></div>
+                                            <div class="product-card-mega"><img src="{% static 'images/placeholder.png' %}" alt=""><span>کمد لولایی</span></div>
+                                            <div class="product-card-mega"><img src="{% static 'images/placeholder.png' %}" alt=""><span>کمد کشو دار</span></div>
+                                            <div class="product-card-mega"><img src="{% static 'images/placeholder.png' %}" alt=""><span>کمد آینه‌دار</span></div>
+                                            <div class="product-card-mega"><img src="{% static 'images/placeholder.png' %}" alt=""><span>کمد گوشه</span></div>
+                                            <div class="product-card-mega"><img src="{% static 'images/placeholder.png' %}" alt=""><span>کمد اتاقی</span></div>
+                                        </div>
+                                    </div>
+                                    <a href="#" class="view-all-link">مشاهده همه کمدهای دیواری <i class="fas fa-arrow-left"></i></a>
+                                </div>
+                        
+                               
+                                <div class="products-panel" id="panel-closet">
+                                    <div class="product-section">
+                                        <div class="product-section-title">نوع کمد لباس</div>
+                                        <div class="products-grid-mega">
+                                            <div class="product-card-mega"><img src="{% static 'images/placeholder.png' %}" alt=""><span>تمام قد</span></div>
+                                            <div class="product-card-mega"><img src="{% static 'images/placeholder.png' %}" alt=""><span>نیم قد</span></div>
+                                            <div class="product-card-mega"><img src="{% static 'images/placeholder.png' %}" alt=""><span>سه دریچه</span></div>
+                                            <div class="product-card-mega"><img src="{% static 'images/placeholder.png' %}" alt=""><span>چهار دریچه</span></div>
+                                            <div class="product-card-mega"><img src="{% static 'images/placeholder.png' %}" alt=""><span>کشویی</span></div>
+                                            <div class="product-card-mega"><img src="{% static 'images/placeholder.png' %}" alt=""><span>چوبی</span></div>
+                                        </div>
+                                    </div>
+                                    <a href="#" class="view-all-link">مشاهده همه کمدهای لباس <i class="fas fa-arrow-left"></i></a>
+                                </div>
+                        
+                               
+                                <div class="products-panel" id="panel-bookshelf">
+                                    <div class="product-section">
+                                        <div class="product-section-title">نوع کتابخانه</div>
+                                        <div class="products-grid-mega">
+                                            <div class="product-card-mega"><img src="{% static 'images/placeholder.png' %}" alt=""><span>دیواری</span></div>
+                                            <div class="product-card-mega"><img src="{% static 'images/placeholder.png' %}" alt=""><span>ایستاده</span></div>
+                                            <div class="product-card-mega"><img src="{% static 'images/placeholder.png' %}" alt=""><span>کمد کتابخانه</span></div>
+                                            <div class="product-card-mega"><img src="{% static 'images/placeholder.png' %}" alt=""><span>قفسه‌ای</span></div>
+                                            <div class="product-card-mega"><img src="{% static 'images/placeholder.png' %}" alt=""><span>شیشه‌ای</span></div>
+                                            <div class="product-card-mega"><img src="{% static 'images/placeholder.png' %}" alt=""><span>باز</span></div>
+                                        </div>
+                                    </div>
+                                    <a href="#" class="view-all-link">مشاهده همه کتابخانه‌ها <i class="fas fa-arrow-left"></i></a>
+                                </div>
+                        
+                               
+                                <div class="products-panel" id="panel-tv">
+                                    <div class="product-section">
+                                        <div class="product-section-title">نوع میز تلویزیون</div>
+                                        <div class="products-grid-mega">
+                                            <div class="product-card-mega"><img src="{% static 'images/placeholder.png' %}" alt=""><span>شیشه‌ای</span></div>
+                                            <div class="product-card-mega"><img src="{% static 'images/placeholder.png' %}" alt=""><span>چوبی</span></div>
+                                            <div class="product-card-mega"><img src="{% static 'images/placeholder.png' %}" alt=""><span>مدرن</span></div>
+                                            <div class="product-card-mega"><img src="{% static 'images/placeholder.png' %}" alt=""><span>کلاسیک</span></div>
+                                            <div class="product-card-mega"><img src="{% static 'images/placeholder.png' %}" alt=""><span>چرخ‌دار</span></div>
+                                            <div class="product-card-mega"><img src="{% static 'images/placeholder.png' %}" alt=""><span>دیواری</span></div>
+                                        </div>
+                                    </div>
+                                    <a href="#" class="view-all-link">مشاهده همه میزهای تلویزیون <i class="fas fa-arrow-left"></i></a>
+                                </div>
+                        
+                                
+                                <div class="products-panel" id="panel-shoe">
+                                    <div class="product-section">
+                                        <div class="product-section-title">نوع جاکفشی</div>
+                                        <div class="products-grid-mega">
+                                            <div class="product-card-mega"><img src="{% static 'images/placeholder.png' %}" alt=""><span>دیواری</span></div>
+                                            <div class="product-card-mega"><img src="{% static 'images/placeholder.png' %}" alt=""><span>ایستاده</span></div>
+                                            <div class="product-card-mega"><img src="{% static 'images/placeholder.png' %}" alt=""><span>دوطبقه</span></div>
+                                            <div class="product-card-mega"><img src="{% static 'images/placeholder.png' %}" alt=""><span>سه‌طبقه</span></div>
+                                            <div class="product-card-mega"><img src="{% static 'images/placeholder.png' %}" alt=""><span>چهارطبقه</span></div>
+                                            <div class="product-card-mega"><img src="{% static 'images/placeholder.png' %}" alt=""><span>باز</span></div>
+                                        </div>
+                                    </div>
+                                    <a href="#" class="view-all-link">مشاهده همه جاکفشی‌ها <i class="fas fa-arrow-left"></i></a>
+                                </div>
+                        
+                              
+                                <div class="products-panel" id="panel-storage">
+                                    <div class="product-section">
+                                        <div class="product-section-title">نوع زونکن</div>
+                                        <div class="products-grid-mega">
+                                            <div class="product-card-mega"><img src="{% static 'images/placeholder.png' %}" alt=""><span>اداری</span></div>
+                                            <div class="product-card-mega"><img src="{% static 'images/placeholder.png' %}" alt=""><span>کشو دار</span></div>
+                                            <div class="product-card-mega"><img src="{% static 'images/placeholder.png' %}" alt=""><span>چند طبقه</span></div>
+                                            <div class="product-card-mega"><img src="{% static 'images/placeholder.png' %}" alt=""><span>درب دار</span></div>
+                                            <div class="product-card-mega"><img src="{% static 'images/placeholder.png' %}" alt=""><span>قفل دار</span></div>
+                                            <div class="product-card-mega"><img src="{% static 'images/placeholder.png' %}" alt=""><span>رومیزی</span></div>
+                                        </div>
+                                    </div>
+                                    <a href="#" class="view-all-link">مشاهده همه زونکن‌های اداری <i class="fas fa-arrow-left"></i></a>
+                                </div>
+                        
+                                
+                                <div class="products-panel" id="panel-bedside">
+                                    <div class="product-section">
+                                        <div class="product-section-title">نوع پا تختی</div>
+                                        <div class="products-grid-mega">
+                                            <div class="product-card-mega"><img src="{% static 'images/placeholder.png' %}" alt=""><span>چوبی</span></div>
+                                            <div class="product-card-mega"><img src="{% static 'images/placeholder.png' %}" alt=""><span>مبل پا تختی</span></div>
+                                            <div class="product-card-mega"><img src="{% static 'images/placeholder.png' %}" alt=""><span>راحتی</span></div>
+                                            <div class="product-card-mega"><img src="{% static 'images/placeholder.png' %}" alt=""><span>سمبل</span></div>
+                                            <div class="product-card-mega"><img src="{% static 'images/placeholder.png' %}" alt=""><span>دورو</span></div>
+                                            <div class="product-card-mega"><img src="{% static 'images/placeholder.png' %}" alt=""><span>مدرن</span></div>
+                                        </div>
+                                    </div>
+                                    <a href="#" class="view-all-link">مشاهده همه پا تختی‌ها <i class="fas fa-arrow-left"></i></a>
+                                </div>
+                        
+                                
+                                <div class="products-panel" id="panel-bedroom">
+                                    <div class="product-section">
+                                        <div class="product-section-title">نوع سرویس خواب</div>
+                                        <div class="products-grid-mega">
+                                            <div class="product-card-mega"><img src="{% static 'images/placeholder.png' %}" alt=""><span>کلاسیک</span></div>
+                                            <div class="product-card-mega"><img src="{% static 'images/placeholder.png' %}" alt=""><span>مدرن</span></div>
+                                            <div class="product-card-mega"><img src="{% static 'images/placeholder.png' %}" alt=""><span>چوبی</span></div>
+                                            <div class="product-card-mega"><img src="{% static 'images/placeholder.png' %}" alt=""><span>دو نفره</span></div>
+                                            <div class="product-card-mega"><img src="{% static 'images/placeholder.png' %}" alt=""><span>یک نفره</span></div>
+                                            <div class="product-card-mega"><img src="{% static 'images/placeholder.png' %}" alt=""><span>بچه گانه</span></div>
+                                        </div>
+                                    </div>
+                                    <a href="#" class="view-all-link">مشاهده همه سرویس‌های خواب <i class="fas fa-arrow-left"></i></a>
+                                </div>
+                        
+                                
+                                <div class="products-panel" id="panel-drawer">
+                                    <div class="product-section">
+                                        <div class="product-section-title">نوع دراور</div>
+                                        <div class="products-grid-mega">
+                                            <div class="product-card-mega"><img src="{% static 'images/placeholder.png' %}" alt=""><span>کشوی لباس</span></div>
+                                            <div class="product-card-mega"><img src="{% static 'images/placeholder.png' %}" alt=""><span>کشوی آشپزخانه</span></div>
+                                            <div class="product-card-mega"><img src="{% static 'images/placeholder.png' %}" alt=""><span>کشوی دکوری</span></div>
+                                            <div class="product-card-mega"><img src="{% static 'images/placeholder.png' %}" alt=""><span>کشوی چندطبقه</span></div>
+                                            <div class="product-card-mega"><img src="{% static 'images/placeholder.png' %}" alt=""><span>زیر میزی</span></div>
+                                            <div class="product-card-mega"><img src="{% static 'images/placeholder.png' %}" alt=""><span>آینه‌دار</span></div>
+                                        </div>
+                                    </div>
+                                    <a href="#" class="view-all-link">مشاهده همه دراورها <i class="fas fa-arrow-left"></i></a>
+                                </div>
+                        
+                                
+                                <div class="products-panel" id="panel-dressing">
+                                    <div class="product-section">
+                                        <div class="product-section-title">نوع میز آرایش</div>
+                                        <div class="products-grid-mega">
+                                            <div class="product-card-mega"><img src="{% static 'images/placeholder.png' %}" alt=""><span>آینه‌دار</span></div>
+                                            <div class="product-card-mega"><img src="{% static 'images/placeholder.png' %}" alt=""><span>چراغ‌دار</span></div>
+                                            <div class="product-card-mega"><img src="{% static 'images/placeholder.png' %}" alt=""><span>کشو دار</span></div>
+                                            <div class="product-card-mega"><img src="{% static 'images/placeholder.png' %}" alt=""><span>مدرن</span></div>
+                                            <div class="product-card-mega"><img src="{% static 'images/placeholder.png' %}" alt=""><span>کلاسیک</span></div>
+                                            <div class="product-card-mega"><img src="{% static 'images/placeholder.png' %}" alt=""><span>گوشه</span></div>
+                                        </div>
+                                    </div>
+                                    <a href="#" class="view-all-link">مشاهده همه میزهای آرایش <i class="fas fa-arrow-left"></i></a>
+                                </div>
+                        
+                                
+                                <div class="products-panel" id="panel-console">
+                                    <div class="product-section">
+                                        <div class="product-section-title">نوع کنسول</div>
+                                        <div class="products-grid-mega">
+                                            <div class="product-card-mega"><img src="{% static 'images/placeholder.png' %}" alt=""><span>دکوری</span></div>
+                                            <div class="product-card-mega"><img src="{% static 'images/placeholder.png' %}" alt=""><span>چوبی</span></div>
+                                            <div class="product-card-mega"><img src="{% static 'images/placeholder.png' %}" alt=""><span>مدرن</span></div>
+                                            <div class="product-card-mega"><img src="{% static 'images/placeholder.png' %}" alt=""><span>کلاسیک</span></div>
+                                            <div class="product-card-mega"><img src="{% static 'images/placeholder.png' %}" alt=""><span>شیشه‌ای</span></div>
+                                            <div class="product-card-mega"><img src="{% static 'images/placeholder.png' %}" alt=""><span>فلزی</span></div>
+                                        </div>
+                                    </div>
+                                    <a href="#" class="view-all-link">مشاهده همه کنسول‌ها <i class="fas fa-arrow-left"></i></a>
+                                </div> -->
+                        
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- لینک‌ها -->
+                    <div class="nav-links">
+                        <a href="#">سوالات متداول</a>
+                        <a href="#">تماس با ما</a>
+                        <a href="#">درباره ما</a>
+                        <a href="#">بلاگ ها</a>
+                        <a href="#">مشاهده محصولات</a>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+    
+    <main>
+        {% block content %}
+        {% endblock %}
+    </main>
+    
+    <!-- فوتر -->
+    <footer>
+        <div class="container">
+            <!-- <div class="footer-logo">
+                <h3>صنایع چوبی نیلپر</h3>
+            </div>
+    
+            <div style="display: flex;gap: 50px;margin-top: 50px;">
+            <div class="footer-about-expandable">
+                <div class="about-summary" id="aboutSummary">
+                    <p>صنایع چوبی نیلپر با بیش از یک دهه تجربه درخشان در زمینه طراحی، تولید و فروش انواع محصولات چوبی با کیفیت بالا، همواره کوشیده است تا مدرن‌ترین و بادوام‌ترین محصولات را با قیمتی مناسب به مشتریان خود ارائه دهد.
+                    ما با بهره‌گیری از بهترین متریال روز دنیا و مجهزترین ماشین‌آلات، محصولاتی منحصر به فرد و متناسب با سلیقه شما تولید می‌کنیم.
+                    رضایت مشتری، اصل بودن کالا و خدمات پس از فروش، سه اصل کلیدی در مجموعه نیلپر است.</p>
+                </div>
+                <div class="about-full" id="aboutFull" >
+                    <p>
+                         هر قطعه از محصولات نیلپر نتیجه هزاران ساعت تجربه و مهارت کارگران ماهر و طراحان خلاق است. چه به دنبال یک میز تحریر مینیمال برای فضای کار خانگی باشید و چه یک ویترین لاکچری برای سالن پذیرایی، نیلپر محصولی متناسب با بودجه و سلیقه شما دارد.
+
+                        ما با بهره‌گیری از بهترین متریال روز دنیا و مجهزترین ماشین‌آلات، محصولاتی منحصر به فرد و متناسب با سلیقه شما تولید می‌کنیم. از چوب روسی با تراکم بالا گرفته تا ام‌دی‌اف‌های ضد رطوبت و هایگلاس با جلای آینه‌ای، هر ماده اولیه با دقت و حساسیت انتخاب می‌شود. خط تولید نیلپر شامل دستگاه‌های تمام اتوماتیک CNC آلمان و ایتالیا، پرس‌های هیدرولیک و خطوط رنگ‌پاشی الکترواستاتیک است که دقت میکرونی و پرداخت بی‌نقص را تضمین می‌کند. در نتیجه محصول نهایی نه تنها زیبا و چشمنواز است، بلکه در برابر خط و خش، رطوبت و تغییرات دما دوام بالایی دارد.
+                        
+                        رضایت مشتری، اصل بودن کالا و خدمات پس از فروش، سه اصل کلیدی در مجموعه نیلپر است. ما هر سفارش را با یک پروتکل کنترل کیفیت چندمرحله‌ای بازبینی می‌کنیم. از لحظه ثبت سفارش تا سال‌ها پس از تحویل محصول، تیم پشتیبانی نیلپر در کنار شماست. هر مشتری یک پرونده اختصاصی دارد و ما تاریخچه خرید، نوع محصول، و نیازهای بعدی او را ثبت می‌کنیم تا همواره خدمات بهتری ارائه دهیم.
+                        
+                        از سال ۱۳۹۰ فعالیت خود را آغاز کردیم و امروز با بیش از ۵۰۰ پروژه موفق در سراسر کشور، یکی از معتبرترین برندهای صنایع چوبی هستیم. این پروژه‌ها شامل مبلمان اداری سازمان‌های بزرگ، دکوراسیون داخلی ویلاهای لوکس، کابینت آشپزخانه واحدهای مسکونی و حتی المان‌های چوبی فضاهای تجاری مثل کافه و رستوران است. اعتماد مشتریان بازخورد اصلی ماست و بسیاری از سفارشات از طریق معرفی مشتریان قبلی به دست آمده است.
+                        
+                        تمام محصولات ما دارای گارانتی اصالت کالا و ضمانت بازگشت تا ۷ روز هستند. یعنی پس از تحویل، شما هفت روز فرصت دارید محصول را از نزدیک آزمایش کنید و در صورت هرگونه مغایرت یا عدم رضایت، بدون قید و شرط وجه شما عودت داده می‌شود. گارانتی اصالت کالا نیز تضمین می‌کند که نوع چوب، روکش و یراق‌آلات دقیقاً مطابق برگه مشخصات فنی است.
+                        
+                        ما به محیط زیست احترام می‌گذاریم و از چوب‌های با گواهی استاندارد FSC استفاده می‌کنیم. جنگل‌های جهان سرمایه نسل‌های آینده است و نیلپر متعهد است که فقط از چوب‌های حاصل از کشت‌های مدیریت‌شده و دارای مجوز FSC بهره ببرد. همچنین ضایعات تولیدی ما بازیافت شده و به جای سوزاندن، به صنایع تخته‌سازی بازمی‌گردد.
+                        
+                        تیم طراحی ما متشکل از فارغ‌التحصیلان برتر دانشگاه هنر و معماری است. این طراحان جوان و خلاق، آخرین ترندهای روز دنیا در دکوراسیون داخلی را دنبال می‌کنند و آنها را با فرهنگ و سلیقه ایرانی تطبیق می‌دهند. نتیجه این همکاری محصولاتی است که هم مدرن هستند و هم ریشه در هویت معماری ایرانی دارند.
+                        
+                        شما می‌توانید سفارش خود را به صورت کاملاً سفارشی و مطابق با ابعاد و رنگ دلخواه ثبت کنید. هر فضایی ابعاد و شرایط خاص خود را دارد. تیم فنی نیلپر پس از بازدید از محل (یا دریافت پلان معماری)، نقشه‌های اجرایی دقیق را آماده کرده و سپس محصول کاملاً تطبیق‌یافته را تولید می‌کند. از انتخاب نوع فرورفتگی دستگیره‌ها تا رنگ نهایی روکش، همه چیز با شماست.
+                        
+                        ارسال رایگان برای سفارش‌های بالای ۵ میلیون تومان. برای مبالغ کمتر از این نیز هزینه ارسال تقریباً نصف میانگین تعرفه شرکت‌های حمل‌ونقل است. بسته‌بندی محصولات با لایه‌های محافظ و کارتن‌های مخصوص انجام می‌شود که ضربه و خراش را در مسیر حمل به صفر می‌رساند.
+                        
+                        مشاوره رایگان قبل از خرید توسط کارشناسان مجرب ما. می‌توانید با شماره تلفن‌های درج شده در سایت تماس بگیرید یا از چت آنلاین استفاده کنید. کارشناسان ما ضمن شنیدن دقیق نیاز شما، بهترین گزینه از نظر نوع چوب، ابعاد، رنگ و بودجه را پیشنهاد می‌دهند. حتی می‌توانید تصویر فضای مورد نظر خود را ارسال کنید تا طراحان ما شبیه‌سازی سه‌بعدی از محصول در آن فضا را برایتان تهیه کنند.
+                        
+                        نصب حرفه‌ای محصولات در محل توسط تیم فنی نیلپر. پس از تولید و حمل، یک تیم مجهز به ابزارآلات تخصصی در زمان و روز تعیین شده به نشانی شما مراجعه کرده و محصول را نصب می‌کند. جابه‌جایی، تراز کردن، اتصال قطعات و جمع‌آوری نخاله‌های بسته‌بندی همه جزو خدمات نصب است.
+                        
+                        خدمات پس از فروش ۲۴ ماهه برای تمامی محصولات. به مدت دو سال، هرگونه عیب ناشی از مواد یا ساخت (مانند ترک خوردگی غیرعادی، لق شدن اتصالات، رنگ پریدگی زودرس) به صورت رایگان تعمیر یا تعویض می‌شود. همچنین تا یک سال پس از نصب، در صورت جابجایی منزل یا اداره، تیم نیلپر محصولات شما را با هزینه اندک جمع‌آوری و در محل جدید نصب می‌کند.
+                        
+                        نیلپر برگزیده جشنواره ملی صنایع چوب در سال ۱۴۰۲. این جشنواره زیر نظر سازمان توسعه تجارت ایران و با داوری اساتید برجسته رشته مهندسی چوب برگزار می‌شود. دیپلم افتخار و تندیس جشنواره در غرفه نیلپر نصب شده و مایه مباهات ماست.
+                        
+                        همکاری با معتبرترین معماران و طراحان داخلی کشور. بسیاری از پروژه‌های لوکس مسکونی، تجاری و اداری که در مجلات معماری منتشر شده‌اند، از محصولات سفارشی نیلپر استفاده کرده‌اند. ما افتخار همکاری با نام‌هایی مثل.... (شرکت‌های طراح مطرح) را داریم و آماده همکاری با معماران جدید هستیم.
+                        
+                        بهره‌مندی از نرم‌افزارهای پیشرفته طراحی سه‌بعدی برای ارائه طرح قبل از تولید. با استفاده از نرم‌افزار SolidWorks، 3ds Max و V-Ray، تصویری فوتورئالیستیک از محصول نهایی در فضای واقعی شما آماده می‌شود. این تصویر شامل بازیابی نور، سایه و بافت‌های واقعی چوب است تا قبل از هرگونه برش و مونتاژ، از نتیجه نهایی اطمینان حاصل کنید.
+                        
+                        تضمین بهترین قیمت بازار به دلیل حذف واسطه‌ها. نیلپر محصولات خود را مستقیماً و بدون دخالت خرده‌فروش یا نماینده به مشتری نهایی می‌فروشد. حذف هر حلقه واسطه به معنی ۱۵ تا ۳۰ درصد صرفه‌جویی در هزینه نهایی شماست. تمام تخفیف‌های مرحله تولید به حساب مشتری واریز می‌شود.
+                        
+                        ارسال به تمام نقاط ایران در سریع‌ترین زمان ممکن. تیم لجستیک نیلپر با شرکت‌های حمل‌ونقل معتبر قرارداد دارد. حتی برای شهرهای دورافتاده، محصول حداکثر ظرف ۱۰ روز کاری به دست شما می‌رسد. بسته‌بندی کاملاً استاندارد و ضدضربه است.
+                        
+                        پرداخت امن آنلاین و امکان پرداخت در محل برای شهر تهران. از درگاه بانکی مطمئن استفاده می‌کنید و کد رهگیری دریافت می‌کنید. در تهران، می‌توانید محصول را در محل تحویل بگیرید، بازرسی کنید و سپس وجه را به کارشناس ما پرداخت نمایید.
+                        
+                        ما مفتخریم که بیش از ۱۰ هزار مشتری راضی در سراسر کشور داریم. این مشتریان اعم از خانواده‌های عزیز، مؤسسات دولتی، شرکت‌های خصوصی، رستوران‌ها، هتل‌ها و گالری‌های هنری هستند. ما نظرات آنها را جمع‌آوری کرده و ملاک بهبود مستمر خود قرار می‌دهیم. نرخ بازگشت مشتری برای خرید مجدد بالای ۷۰ درصد است.
+                        
+                        برای اطلاع از جدیدترین تخفیف‌ها و محصولات، ما را در شبکه‌های اجتماعی دنبال کنید. صفحه اینستاگرام، کانال تلگرام و لینکدین نیلپر هر هفته با محتوای آموزشی (نکات نگهداری از چوب، ایده‌های دکوراسیون، معرفی محصولات جدید) و اطلاعیه تخفیف‌های فصلی به‌روز می‌شود. با دنبال کردن ما می‌توانید در قرعه‌کشی‌های ماهانه برنده کارت‌هدیه خرید شوید.
+                        
+                        
+                    </p>
+                </div>
+                <button class="toggle-about-btn"> <span id="toggleAboutBtn">مشاهده بیشتر</span> <i class="fas fa-chevron-left" style="width:16px;font-size: 13px;"></i></button>
+            </div>
+            <img src="{% static 'images/new_ai/ComfyUI_00248_.png'%}" alt="" style="width:500px;height:250px;border-radius: 5px;">
+            </div>
+           
+            <div class="svg_div">
+                <div class="footer_nav">
+                    <img class="support_svg" src="{% static 'images/support.svg' %}" alt="پشتیبانی">
+                    <p>پشتیبانی 24 ساعته 7 روز هفته</p>
+                </div>
+                <div class="footer_nav">
+                    <img class="author_svg" src="{% static 'images/express-delivery.svg' %}" alt="تحویل اکسپرس">
+                    <p>امکان تحویل اکسپرس کالا</p>
+                </div>
+                <div class="footer_nav">
+                    <img class="author_svg" src="{% static 'images/days-return.svg' %}" alt="بازگشت کالا">
+                    <p>7 روز ضمانت بازگشت کالا</p>
+                </div>
+                <div class="footer_nav">
+                    <img class="author_svg" src="{% static 'images/original-products.svg' %}" alt="اصل بودن کالا">
+                    <p>ضمانت اصل بودن کالا</p>
+                </div>
+                <div class="footer_nav">
+                    <img class="author_svg" src="{% static 'images/cash-on-delivery.svg' %}" alt="پرداخت در محل">
+                    <p>امکان پرداخت در محل</p>
+                </div>
+            </div> -->
+    
+            <!-- ردیف چهارم: لینک‌های خدماتی (همان نسخه اولیه) + خبرنامه جدید -->
+            <div class="footer-links-section">
+                <div class="footer-links-grid">
+                    <!-- سوالات متداول (با فلش) -->
+                    <div class="footer-link-box">
+                        <h4 class="footer-link-title">سوالات متداول</h4>
+                        <ul class="footer-link-list with-arrow">
+                            <li> <a href="#">روش‌های پرداخت</a><i class="fas fa-chevron-left"></i></li>
+                            <li> <a href="#">زمان تحویل سفارش</a><i class="fas fa-chevron-left"></i></li>
+                            <li> <a href="#">هزینه ارسال</a><i class="fas fa-chevron-left"></i></li>
+                            <li> <a href="#">ضمانت بازگشت کالا</a><i class="fas fa-chevron-left"></i></li>
+                            <li> <a href="#">سوالات رایج خرید اینترنتی</a><i class="fas fa-chevron-left"></i></li>
+                        </ul>
+                    </div>
+            
+                    <!-- خدمات مشتری -->
+                    <div class="footer-link-box">
+                        <h4 class="footer-link-title">خدمات مشتری</h4>
+                        <ul class="footer-link-list">
+                            <li><a href="#">پیگیری سفارش</a></li>
+                            <li><a href="#">شرایط بازگشت کالا</a></li>
+                            <li><a href="#">راهنمای خرید</a></li>
+                            <li><a href="#">پرسش‌های متداول</a></li>
+                            <li><a href="#">قوانین و مقررات</a></li>
+                        </ul>
+                    </div>
+            
+                    <!-- تماس با ما -->
+                    <div class="footer-link-box">
+                        <h4 class="footer-link-title">تماس با ما</h4>
+                        <ul class="footer-link-list contact-list">
+                            <li><i class="fas fa-map-marker-alt"></i> تهران، میدان آزادی، خیابان امام خمینی</li>
+                            <li><i class="fas fa-phone"></i> <a href="tel:02112345678">۰۲۱-۱۲۳۴۵۶۷۸</a></li>
+                            <li><i class="fas fa-mobile-alt"></i> <a href="tel:09123456789">۰۹۱۲-۳۴۵۶۷۸۹</a></li>
+                            <li><i class="fas fa-envelope"></i> <a href="mailto:info@nilpar.com">info@nilpar.com</a></li>
+                            <li><i class="fas fa-clock"></i> شنبه تا پنجشنبه ۹ الی ۱۸</li>
+                        </ul>
+                    </div>
+            
+                    <!-- ما را دنبال کنید + نمادها + باکس خبرنامه (جدید) -->
+                    <div class="footer-link-box">
+                        <h4 class="footer-link-title">ما را دنبال کنید</h4>
+                        <div class="footer-social-new">
+                            <a href="#"><img src="{% static 'images/telegram.jpg' %}" alt="تلگرام"></a>
+                            <a href="#"><img src="{% static 'images/instagram.png' %}" alt="اینستاگرام"></a>
+                            <a href="#"><img src="{% static 'images/bale.png' %}" alt="بله"></a>
+                            <a href="#"><img src="{% static 'images/rubika.png' %}" alt="روبیکا"></a>
+                            <a href="#"><img src="{% static 'images/watsup.png' %}" alt="واتساپ"></a>
+                        </div>
+                        <!-- ========== بخش خبرنامه ایمیل (تنها اضافه شده) ========== -->
+                        <div class="newsletter-box">
+                            <p class="newsletter-text">آخرین اخبار را از طریق ایمیل دریافت کنید</p>
+                            <form class="newsletter-form" action="#" method="post">
+                                <input type="email" class="newsletter-input" placeholder="ایمیل خود را وارد کنید" required>
+                                <button type="submit" class="newsletter-button">ثبت</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    
+            <!-- ردیف آخر: کپی‌رایت -->
+            <div class="footer-bottom">
+                © 1404 - تمامی حقوق برای صنایع چوبی نیلپر محفوظ است | طراحی شده توسط مهدی لطفی 
+            </div>
+        </div>
+    </footer>
+    <div class="bottom-nav">
+        <div class="nav-container">
+            <!-- خانه -->
+            <a href="#" class="nav-item" id="nav-home">
+                <i class="fas fa-home"></i>
+                <span class="nav-label">خانه</span>
+            </a>
+            <!-- سبد خرید -->
+            <a href="#" class="nav-item" id="nav-cart">
+                <i class="fas fa-shopping-cart"></i>
+                <span class="nav-label">سبد خرید</span>
+            </a>
+            <!-- دسته‌بندی -->
+            <a href="#" class="nav-item" id="nav-category">
+                <i class="fas fa-layer-group"></i>
+                <span class="nav-label">دسته‌بندی</span>
+            </a>
+            <!-- پروفایل شخص -->
+            <a href="#" class="nav-item" id="nav-profile">
+                <i class="fas fa-user-circle"></i>
+                <span class="nav-label">پروفایل</span>
+            </a>
+        </div>
+    </div>
+    <div class="consult-box" id="consultBox">
+
+        <button class="close-btn" id="closeConsult">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+                <path d="M6 6L18 18M18 6L6 18"
+                      stroke="currentColor"
+                      stroke-width="2.5"
+                      stroke-linecap="round"/>
+            </svg>
+        </button>
+
+        <div class="consult-header">
+            نیاز به مشاوره دارید؟
+        </div>
+
+        <a href="tel:09177004500" class="call-btn">
+             تماس بگیرید
+            <span>09926169004</span>
+        </a>
+
+        <a href="https://ble.ir" target="_blank" class="chat-btn">
+             پیام در بله
+        </a>
+
+    </div>
+
+    {% block extra_js%}{% endblock%}
+    <script src="{% static 'js/script.js' %}"></script>
+</body>
+</html>

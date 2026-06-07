@@ -1,0 +1,544 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load jformat %}
+{% load humanize %}
+{% load my_filters %}
+
+{% block content %}
+
+<style>
+    /* ======================
+    کانتینر اصلی
+    ====================== */
+    .activity-container {
+        width: 95%;
+        max-width: 1400px;
+        margin: 30px auto;
+        font-family: sans-serif;
+    }
+
+    .activity-content {
+        display: flex;
+        gap: 20px;
+        align-items: flex-start;
+        flex-wrap: nowrap;
+    }
+
+    /* ======================
+    بخش اصلی (لیست فعالیت‌ها) - 70%
+    ====================== */
+    .activity-main {
+        flex: 1 1 70%;
+        min-width: 0;
+        background: #fff;
+        border: 1px solid #ececec;
+        border-radius: 5px;
+        overflow: hidden;
+    }
+
+    .page-header {
+        padding: 20px 25px;
+        border-bottom: 1px solid #f1f1f1;
+        background: #fff;
+    }
+
+    .page-title {
+        font-size: 18px;
+        font-weight: 600;
+        color: #333;
+        margin: 0;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    /* تب‌ها */
+    .tabs {
+        display: flex;
+        border-bottom: 1px solid #f1f1f1;
+        background: #fff;
+    }
+
+    .tab-btn {
+        flex: 1;
+        padding: 15px 20px;
+        background: none;
+        border: none;
+        font-size: 15px;
+        font-weight: 600;
+        color: #888;
+        cursor: pointer;
+        transition: 0.3s;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+    }
+
+    .tab-btn:hover {
+        color: #747667;
+        background: #faf8f3;
+    }
+
+    .tab-btn.active {
+        color: #747667;
+        border-bottom: 2px solid #747667;
+    }
+
+    /* محتوای تب‌ها */
+    .tab-content {
+        display: none;
+        padding: 25px;
+    }
+
+    .tab-content.active {
+        display: block;
+    }
+
+    /* کارت نظرات و پرسش‌ها */
+    .activity-card {
+        background: #fff;
+        border: 1px solid #ececec;
+        border-radius: 8px;
+        margin-bottom: 20px;
+        overflow: hidden;
+        transition: 0.3s;
+    }
+
+    .activity-card:hover {
+        border-color: #747667;
+    }
+
+    .card-header {
+        padding: 15px 20px;
+        background: #fafafa;
+        border-bottom: 1px solid #eee;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+
+    .product-title {
+        font-size: 16px;
+        font-weight: 600;
+        color: #333;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .product-title i {
+        color: #747667;
+    }
+
+    .activity-date {
+        font-size: 12px;
+        color: #888;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+    }
+
+    .card-body {
+        padding: 20px;
+    }
+
+    .activity-text {
+        font-size: 14px;
+        color: #555;
+        line-height: 1.7;
+        margin-bottom: 15px;
+    }
+
+    .status-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        padding: 4px 12px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 600;
+    }
+
+    .status-approved {
+        background: #eafaf0;
+        color: #1fa855;
+    }
+
+    .status-pending {
+        background: #fff8e1;
+        color: #ff8f00;
+    }
+
+    .status-rejected {
+        background: #ffebee;
+        color: #d63031;
+    }
+
+    .answer-box {
+        margin-top: 15px;
+        padding: 15px;
+        background: #faf8f3;
+        border-radius: 8px;
+        border-right: 3px solid #747667;
+    }
+
+    .answer-title {
+        font-size: 13px;
+        font-weight: 600;
+        color: #747667;
+        margin-bottom: 8px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .answer-text {
+        font-size: 14px;
+        color: #555;
+        line-height: 1.7;
+    }
+
+    .no-answer-box {
+        margin-top: 15px;
+        padding: 15px;
+        background: #fef9e6;
+        border-radius: 8px;
+        color: #ff8f00;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 13px;
+    }
+
+    /* حالت خالی */
+    .empty-state {
+        text-align: center;
+        padding: 50px 20px;
+        color: #999;
+    }
+
+    .empty-icon {
+        font-size: 48px;
+        margin-bottom: 15px;
+        color: #747667;
+    }
+
+    .empty-title {
+        font-size: 16px;
+        font-weight: 600;
+        color: #666;
+        margin-bottom: 5px;
+    }
+
+    .empty-text {
+        font-size: 13px;
+        color: #888;
+    }
+
+    /* ======================
+    ستون کناری (سمت چپ) - 30%
+    ====================== */
+    .activity-sidebar {
+        flex: 0 0 25%;
+        min-width: 250px;
+        position: sticky;
+        top: 100px;
+        align-self: flex-start;
+    }
+
+    .info-card {
+        background: #fff;
+        border: 1px solid #ececec;
+        border-radius: 5px;
+        padding: 20px;
+    }
+
+    .info-title {
+        font-size: 17px;
+        font-weight: 600;
+        margin-bottom: 20px;
+        text-align: center;
+        padding-bottom: 12px;
+        border-bottom: 1px solid #eee;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+    }
+
+    .stats {
+        display: flex;
+        justify-content: space-around;
+        margin-bottom: 20px;
+    }
+
+    .stat-item {
+        text-align: center;
+    }
+
+    .stat-number {
+        font-size: 28px;
+        font-weight: 700;
+        color: #747667;
+    }
+
+    .stat-label {
+        font-size: 12px;
+        color: #888;
+    }
+
+    .info-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .info-list li {
+        padding: 10px 0;
+        font-size: 13px;
+        color: #666;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        border-bottom: 1px solid #f5f5f5;
+    }
+
+    .info-list li:last-child {
+        border-bottom: none;
+    }
+
+    .info-list li i {
+        color: #747667;
+        width: 20px;
+        font-size: 14px;
+    }
+
+    /* ======================
+    ریسپانسیو
+    ====================== */
+    @media (max-width: 992px) {
+        .activity-content {
+            flex-direction: column;
+        }
+        .activity-main,
+        .activity-sidebar {
+            width: 100%;
+            min-width: 0;
+            position: relative;
+            top: 0;
+        }
+        .card-header {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+    }
+</style>
+
+<div class="activity-container">
+    <div class="activity-content">
+        <!-- بخش اصلی (لیست فعالیت‌ها) - سمت راست -->
+        <div class="activity-main">
+            <div class="page-header">
+                <h1 class="page-title">
+                    <i class="fas fa-chart-line"></i> فعالیت‌های من
+                </h1>
+            </div>
+
+            <!-- تب‌ها -->
+            <div class="tabs">
+                <button class="tab-btn active" onclick="showTab('comments')">
+                    <i class="fas fa-comment"></i> نظرات من
+                    <span class="stat-number" style="font-size: 14px;">({{ comments|length }})</span>
+                </button>
+                <button class="tab-btn" onclick="showTab('questions')">
+                    <i class="fas fa-question-circle"></i> پرسش‌های من
+                    <span class="stat-number" style="font-size: 14px;">({{ questions|length }})</span>
+                </button>
+            </div>
+
+            <!-- تب نظرات -->
+            <div id="comments-tab" class="tab-content active">
+                {% if comments %}
+                    {% for comment in comments %}
+                    <div class="activity-card">
+                        <div class="card-header">
+                            <div class="product-title">
+                                <i class="fas fa-box"></i>
+                                {{ comment.product.name }}
+                            </div>
+                            <div class="activity-date">
+                                <i class="fas fa-calendar-alt"></i>
+                                {{ comment.created_at|jformat:"%Y/%m/%d" }}
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="activity-text">
+                                {{ comment.description }}
+                            </div>
+                            <div>
+                                {% if comment.state == 'c' %}
+                                    <span class="status-badge status-approved">
+                                        <i class="fas fa-check-circle"></i> تأیید شده
+                                    </span>
+                                {% elif comment.state == 'p' %}
+                                    <span class="status-badge status-pending">
+                                        <i class="fas fa-clock"></i> در انتظار بررسی
+                                    </span>
+                                {% else %}
+                                    <span class="status-badge status-rejected">
+                                        <i class="fas fa-times-circle"></i> رد شده
+                                    </span>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                {% else %}
+                    <div class="empty-state">
+                        <div class="empty-icon">
+                            <i class="fas fa-comment-slash"></i>
+                        </div>
+                        <div class="empty-title">نظری ثبت نکرده‌اید!</div>
+                        <div class="empty-text">شما هنوز هیچ نظری برای محصولات ثبت نکرده‌اید.</div>
+                    </div>
+                {% endif %}
+            </div>
+
+            <!-- تب پرسش‌ها -->
+            <div id="questions-tab" class="tab-content">
+                {% if questions %}
+                    {% for question in questions %}
+                    <div class="activity-card">
+                        <div class="card-header">
+                            <div class="product-title">
+                                <i class="fas fa-box"></i>
+                                {{ question.product.name }}
+                            </div>
+                            <div class="activity-date">
+                                <i class="fas fa-calendar-alt"></i>
+                                {{ question.created_at|jformat:"%Y/%m/%d" }}
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="activity-text">
+                                <strong><i class="fas fa-question"></i> پرسش:</strong>
+                                {{ question.description }}
+                            </div>
+                            <div style="margin-bottom: 10px;">
+                                {% if question.state == 'c' %}
+                                    <span class="status-badge status-approved">
+                                        <i class="fas fa-check-circle"></i> تأیید شده
+                                    </span>
+                                {% elif question.state == 'p' %}
+                                    <span class="status-badge status-pending">
+                                        <i class="fas fa-clock"></i> در انتظار پاسخ
+                                    </span>
+                                {% else %}
+                                    <span class="status-badge status-rejected">
+                                        <i class="fas fa-times-circle"></i> رد شده
+                                    </span>
+                                {% endif %}
+                            </div>
+
+                            {% if question.answer %}
+                                <div class="answer-box">
+                                    <div class="answer-title">
+                                        <i class="fas fa-reply"></i> پاسخ فروشگاه:
+                                    </div>
+                                    <div class="answer-text">
+                                        {{ question.answer.description }}
+                                    </div>
+                                </div>
+                            {% else %}
+                                <div class="no-answer-box">
+                                    <i class="fas fa-hourglass-half"></i>
+                                    هنوز پاسخی ثبت نشده است. به زودی پاسخ شما ارسال خواهد شد.
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    {% endfor %}
+                {% else %}
+                    <div class="empty-state">
+                        <div class="empty-icon">
+                            <i class="fas fa-question-circle"></i>
+                        </div>
+                        <div class="empty-title">پرسشی ثبت نکرده‌اید!</div>
+                        <div class="empty-text">شما هنوز هیچ پرسشی برای محصولات ثبت نکرده‌اید.</div>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- ستون کناری (سمت چپ) - sticky -->
+        <div class="activity-sidebar">
+            <div class="info-card">
+                <h3 class="info-title">
+                    <i class="fas fa-chart-simple"></i> آمار فعالیت‌ها
+                </h3>
+                <div class="stats">
+                    <div class="stat-item">
+                        <div class="stat-number">{{ comments|length }}</div>
+                        <div class="stat-label">نظر</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">{{ questions|length }}</div>
+                        <div class="stat-label">پرسش</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">{{ comments|length|add:questions|length }}</div>
+                        <div class="stat-label">فعالیت</div>
+                    </div>
+                </div>
+
+                <h3 class="info-title" style="margin-top: 20px;">
+                    <i class="fas fa-info-circle"></i> نکات مهم
+                </h3>
+                <ul class="info-list">
+                    <li>
+                        <i class="fas fa-check-circle"></i>
+                        نظرات و پرسش‌ها پس از تأیید نمایش داده می‌شوند
+                    </li>
+                    <li>
+                        <i class="fas fa-clock"></i>
+                        پاسخ پرسش‌ها حداکثر ۲۴ ساعت بعد ارسال می‌شود
+                    </li>
+                    <li>
+                        <i class="fas fa-star"></i>
+                        نظرات مثبت شما به دیگر کاربران کمک می‌کند
+                    </li>
+                    <li>
+                        <i class="fas fa-shield-alt"></i>
+                        نظرات مغایر با قوانین تأیید نخواهند شد
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function showTab(tabName) {
+        // مخفی کردن همه تب‌ها
+        document.getElementById('comments-tab').classList.remove('active');
+        document.getElementById('questions-tab').classList.remove('active');
+        
+        // غیرفعال کردن کلاس active همه دکمه‌ها
+        const btns = document.querySelectorAll('.tab-btn');
+        btns.forEach(btn => btn.classList.remove('active'));
+        
+        // نمایش تب انتخاب شده
+        if (tabName === 'comments') {
+            document.getElementById('comments-tab').classList.add('active');
+            btns[0].classList.add('active');
+        } else {
+            document.getElementById('questions-tab').classList.add('active');
+            btns[1].classList.add('active');
+        }
+    }
+</script>
+
+{% endblock %}

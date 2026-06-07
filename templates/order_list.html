@@ -1,0 +1,412 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load humanize %}
+{% load my_filters %}
+
+{% block content %}
+
+<style>
+    /* ======================
+    کانتینر اصلی
+    ====================== */
+    .orders-container {
+        width: 95%;
+        margin: 30px auto;
+        font-family: sans-serif;
+    }
+
+    .orders-content {
+        display: flex;
+        gap: 20px;
+        align-items: flex-start;
+        flex-wrap: nowrap;
+    }
+
+    /* ======================
+    بخش اصلی (لیست سفارش‌ها)
+    ====================== */
+    .orders-main {
+        flex: 1 1 70%;
+        min-width: 600px;
+        background: #fff;
+        border: 1px solid #ececec;
+        border-radius: 5px;
+        overflow: hidden;
+    }
+
+    .page-header {
+        padding: 20px 25px;
+        border-bottom: 1px solid #f1f1f1;
+        background: #fff;
+    }
+
+    .page-title {
+        font-size: 18px;
+        font-weight: 600;
+        color: #333;
+        margin: 0;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    /* ======================
+    جدول سفارش‌ها
+    ====================== */
+    .orders-table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    .orders-table thead {
+        background: #fafafa;
+        font-size: 14px;
+    }
+
+    .orders-table th,
+    .orders-table td {
+        padding: 20px 15px;
+        text-align: center;
+        border-bottom: 1px solid #f1f1f1;
+    }
+
+    .order-id {
+        font-weight: 600;
+        color: #333;
+        font-size: 15px;
+    }
+
+    .tracking-code {
+        font-family: monospace;
+        font-size: 13px;
+        color: #1fa855;
+        font-weight: 600;
+    }
+
+    .price {
+        color: #4a4a4a;
+        font-weight: 600;
+        font-size: 14px;
+    }
+
+    /* وضعیت سفارش */
+    .status-badge {
+        display: inline-block;
+        padding: 5px 12px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 600;
+    }
+
+    .status-payed {
+        background: #eafaf0;
+        color: #1fa855;
+    }
+
+    .status-cod {
+        background: #fff8e1;
+        color: #ff8f00;
+    }
+
+    .status-paying {
+        background: #e3f2fd;
+        color: #1976d2;
+    }
+
+    .status-unpay {
+        background: #ffebee;
+        color: #d63031;
+    }
+
+    /* دکمه مشاهده جزئیات */
+    .detail-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        padding: 8px 16px;
+        background: #747667;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        font-size: 12px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: 0.3s;
+        text-decoration: none;
+    }
+
+    .detail-btn:hover {
+        opacity: 0.85;
+    }
+
+    /* پیام خالی بودن لیست */
+    .empty-state {
+        text-align: center;
+        padding: 60px 20px;
+        color: #999;
+    }
+
+    .empty-icon {
+        font-size: 48px;
+        margin-bottom: 15px;
+    }
+
+    .empty-title {
+        font-size: 18px;
+        font-weight: 600;
+        color: #666;
+        margin-bottom: 10px;
+    }
+
+    .empty-text {
+        font-size: 14px;
+        color: #888;
+    }
+
+    .shop-link {
+        display: inline-block;
+        margin-top: 20px;
+        padding: 10px 25px;
+        background: #747667;
+        color: #fff;
+        text-decoration: none;
+        border-radius: 5px;
+        font-weight: 600;
+        transition: 0.3s;
+    }
+
+    .shop-link:hover {
+        opacity: 0.85;
+    }
+
+    /* ======================
+    ستون کناری (سمت چپ)
+    ====================== */
+    .orders-sidebar {
+        flex: 0 0 25%;
+        min-width: 250px;
+        position: sticky;
+        top: 180px;
+        align-self: flex-start;
+    }
+
+    .info-card {
+        background: #fff;
+        border: 1px solid #ececec;
+        border-radius: 5px;
+        padding: 20px;
+    }
+
+    .info-title {
+        font-size: 17px;
+        font-weight: 600;
+        margin-bottom: 20px;
+        text-align: center;
+        padding-bottom: 12px;
+        border-bottom: 1px solid #eee;
+    }
+
+    .info-list {
+        list-style: none;
+        padding: 0;
+    }
+
+    .info-list li {
+        padding: 10px 0;
+        font-size: 13px;
+        color: #666;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        border-bottom: 1px solid #f5f5f5;
+    }
+
+    .info-list li:last-child {
+        border-bottom: none;
+    }
+
+    .info-list li i {
+        color: #747667;
+        width: 20px;
+    }
+
+    /* ======================
+    Pagination
+    ====================== */
+    .pagination {
+        display: flex;
+        justify-content: center;
+        gap: 8px;
+        padding: 20px;
+        border-top: 1px solid #f1f1f1;
+        background: #fff;
+    }
+
+    .pagination a,
+    .pagination span {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 35px;
+        height: 35px;
+        padding: 0 10px;
+        border: 1px solid #e0e0e0;
+        border-radius: 5px;
+        text-decoration: none;
+        font-size: 14px;
+        color: #666;
+        transition: 0.3s;
+    }
+
+    .pagination a:hover {
+        background: #747667;
+        color: #fff;
+        border-color: #747667;
+    }
+
+    .pagination .current {
+        background: #747667;
+        color: #fff;
+        border-color: #747667;
+    }
+
+    /* ======================
+    ریسپانسیو
+    ====================== */
+    @media (max-width: 992px) {
+        .orders-content {
+            flex-direction: column;
+        }
+        .orders-main,
+        .orders-sidebar {
+            width: 100%;
+            min-width: 0;
+            position: relative;
+            top: 0;
+        }
+        .orders-table {
+            display: block;
+            overflow-x: auto;
+        }
+        .orders-table th,
+        .orders-table td {
+            white-space: nowrap;
+        }
+    }
+</style>
+
+<div class="orders-container">
+    <div class="orders-content">
+        <!-- بخش اصلی (لیست سفارش‌ها) -->
+        <div class="orders-main">
+            <div class="page-header">
+                <h1 class="page-title">
+                     سفارش‌های من
+                </h1>
+            </div>
+
+            {% if orders %}
+            <table class="orders-table">
+                <thead>
+                    <tr>
+                        <th>شماره سفارش</th>
+                        <th>کد رهگیری</th>
+                        <th>مبلغ</th>
+                        <th>گیرنده</th>
+                        <th>وضعیت</th>
+                        <th>عملیات</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for order in orders %}
+                    <tr>
+                        <td class="order-id">#{{ order.id }}</td>
+                        <td class="tracking-code">
+                            {{ order.tracking_code|default:"در حال صدور" }}
+                        </td>
+                        <td class="price">{{ order.total_price|intcomma }} تومان</td>
+                        <td>{{ order.receiver|default:"-" }}</td>
+                        <td>
+                            <span class="status-badge 
+                                {% if order.state == 'payed' %}status-payed
+                                {% elif order.state == 'cash_on_delivery' %}status-cod
+                                {% elif order.state == 'paying' %}status-paying
+                                {% else %}status-unpay{% endif %}">
+                                {% if order.state == 'payed' %}
+                                    پرداخت شده
+                                {% elif order.state == 'cash_on_delivery' %}
+                                    پرداخت در محل
+                                {% elif order.state == 'paying' %}
+                                    در انتظار پرداخت
+                                {% else %}
+                                   پرداخت نشد
+                                {% endif %}
+                            </span>
+                        </td>
+                        <td>
+                            <a href="{% url 'order_detail' order.id %}" class="detail-btn">
+                                مشاهده جزئیات
+                            </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+            <!-- Pagination -->
+            {% if is_paginated %}
+            <div class="pagination">
+                {% if page_obj.has_previous %}
+                    <a href="?page=1">&laquo; اول</a>
+                    <a href="?page={{ page_obj.previous_page_number }}">قبلی</a>
+                {% endif %}
+
+                <span class="current">
+                    صفحه {{ page_obj.number }} از {{ page_obj.paginator.num_pages }}
+                </span>
+
+                {% if page_obj.has_next %}
+                    <a href="?page={{ page_obj.next_page_number }}">بعدی</a>
+                    <a href="?page={{ page_obj.paginator.num_pages }}">آخر &raquo;</a>
+                {% endif %}
+            </div>
+            {% endif %}
+
+            {% else %}
+            <div class="empty-state">
+                <div class="empty-icon"></div>
+                <div class="empty-title">هنوز سفارشی ثبت نشده است!</div>
+                <div class="empty-text">شما تاکنون هیچ سفارشی در فروشگاه ثبت نکرده‌اید.</div>
+                <a href="{% url 'home' %}" class="shop-link">شروع خرید</a>
+            </div>
+            {% endif %}
+        </div>
+
+        <!-- ستون کناری (سمت چپ) -->
+        <div class="orders-sidebar">
+            <div class="info-card">
+                <h3 class="info-title"> راهنمای پیگیری سفارش</h3>
+                <ul class="info-list">
+                    <li>
+                        <i></i>
+                        پس از ثبت سفارش، وضعیت آن در این صفحه قابل مشاهده است
+                    </li>
+                    <li>
+                        <i></i>
+                        پس از آماده‌سازی، سفارش برای شما ارسال خواهد شد
+                    </li>
+                    <li>
+                        <i></i>
+                        در صورت نیاز به پشتیبانی با ما تماس بگیرید
+                    </li>
+                    <li>
+                        <i></i>
+                        برای پیگیری دقیق‌تر، کد رهگیری را نزد خود نگه دارید
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

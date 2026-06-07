@@ -1,0 +1,435 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load humanize %}
+{% load my_filters %}
+
+{% block content %}
+
+<style>
+    /* ======================
+    کانتینر اصلی
+    ====================== */
+    .favorites-container {
+        width: 95%;
+        max-width: 1400px;
+        margin: 30px auto;
+        font-family: sans-serif;
+    }
+
+    .favorites-content {
+        display: flex;
+        gap: 20px;
+        align-items: flex-start;
+        flex-wrap: nowrap;
+    }
+
+    /* ======================
+    بخش اصلی (لیست محصولات) - 70%
+    ====================== */
+    .favorites-main {
+        flex: 1 1 70%;
+        min-width: 0;
+        background: #fff;
+        border: 1px solid #ececec;
+        border-radius: 5px;
+        overflow: hidden;
+    }
+
+    .page-header {
+        padding: 20px 25px;
+        border-bottom: 1px solid #f1f1f1;
+        background: #fff;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 15px;
+    }
+
+    .page-title {
+        font-size: 18px;
+        font-weight: 600;
+        color: #333;
+        margin: 0;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    /* لیست محصولات */
+    .products-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 20px;
+        padding: 25px;
+    }
+
+    .product-card {
+        background: #fff;
+        border: 1px solid #ececec;
+        border-radius: 8px;
+        overflow: hidden;
+        transition: 0.3s;
+        position: relative;
+    }
+
+    .product-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+        border-color: #747667;
+    }
+
+    /* دکمه حذف از علاقه‌مندی‌ها */
+    .remove-favorite-btn {
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        background: #fff;
+        border: 1px solid #ddd;
+        border-radius: 50%;
+        width: 32px;
+        height: 32px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: 0.3s;
+        z-index: 10;
+        text-decoration: none;
+        color: #d63031;
+    }
+
+    .remove-favorite-btn:hover {
+        background: #d63031;
+        color: #fff;
+        border-color: #d63031;
+    }
+
+    .product-image {
+        width: 100%;
+        height: 220px;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #fafafa;
+        border-bottom: 1px solid #f1f1f1;
+    }
+
+    .product-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        transition: transform 0.3s;
+    }
+
+    .product-card:hover .product-image img {
+        transform: scale(1.02);
+    }
+
+    .product-info {
+        padding: 15px;
+        text-align: center;
+    }
+
+    .product-name {
+        font-size: 15px;
+        font-weight: 600;
+        color: #333;
+        margin-bottom: 10px;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        height: 44px;
+    }
+
+    .product-price {
+        font-size: 16px;
+        font-weight: 700;
+        color: #d63031;
+        margin-bottom: 15px;
+    }
+
+    .product-old-price {
+        font-size: 13px;
+        color: #999;
+        text-decoration: line-through;
+        margin-left: 8px;
+    }
+
+    .product-discount {
+        display: inline-block;
+        background: #eafaf0;
+        color: #1fa855;
+        font-size: 12px;
+        font-weight: 600;
+        padding: 2px 8px;
+        border-radius: 20px;
+        margin-right: 8px;
+    }
+
+    .btn-view {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        width: 100%;
+        padding: 10px;
+        background: #747667;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        font-size: 13px;
+        font-weight: 600;
+        text-decoration: none;
+        transition: 0.3s;
+    }
+
+    .btn-view:hover {
+        opacity: 0.85;
+    }
+
+    /* حالت خالی */
+    .empty-state {
+        text-align: center;
+        padding: 60px 20px;
+        color: #999;
+    }
+
+    .empty-icon {
+        font-size: 64px;
+        margin-bottom: 20px;
+        color: #747667;
+    }
+
+    .empty-title {
+        font-size: 20px;
+        font-weight: 600;
+        color: #666;
+        margin-bottom: 10px;
+    }
+
+    .empty-text {
+        font-size: 14px;
+        color: #888;
+        margin-bottom: 25px;
+    }
+
+    .empty-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 12px 30px;
+        background: #747667;
+        color: #fff;
+        text-decoration: none;
+        border-radius: 5px;
+        font-weight: 600;
+        transition: 0.3s;
+    }
+
+    .empty-btn:hover {
+        opacity: 0.85;
+    }
+
+    /* ======================
+    ستون کناری (سمت چپ) - 30%
+    ====================== */
+    .favorites-sidebar {
+        flex: 0 0 25%;
+        min-width: 250px;
+        position: sticky;
+        top: 180px;
+        align-self: flex-start;
+    }
+
+    .info-card {
+        background: #fff;
+        border: 1px solid #ececec;
+        border-radius: 5px;
+        padding: 20px;
+    }
+
+    .info-title {
+        font-size: 17px;
+        font-weight: 600;
+        margin-bottom: 20px;
+        text-align: center;
+        padding-bottom: 12px;
+        border-bottom: 1px solid #eee;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+    }
+
+    .info-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .info-list li {
+        padding: 10px 0;
+        font-size: 13px;
+        color: #666;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        border-bottom: 1px solid #f5f5f5;
+    }
+
+    .info-list li:last-child {
+        border-bottom: none;
+    }
+
+    .info-list li i {
+        color: #747667;
+        width: 20px;
+        font-size: 14px;
+    }
+
+    .favorites-count {
+        margin-top: 15px;
+        padding-top: 15px;
+        border-top: 1px solid #eee;
+        text-align: center;
+        font-size: 13px;
+        color: #888;
+    }
+
+    .favorites-count span {
+        font-weight: 700;
+        color: #747667;
+        font-size: 18px;
+    }
+
+    /* ======================
+    ریسپانسیو
+    ====================== */
+    @media (max-width: 992px) {
+        .favorites-content {
+            flex-direction: column;
+        }
+        .favorites-main,
+        .favorites-sidebar {
+            width: 100%;
+            min-width: 0;
+            position: relative;
+            top: 0;
+        }
+        .products-grid {
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        }
+    }
+
+    @media (max-width: 768px) {
+        .products-grid {
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 15px;
+            padding: 15px;
+        }
+        .product-image {
+            height: 180px;
+        }
+        .product-name {
+            font-size: 13px;
+            height: 38px;
+        }
+        .product-price {
+            font-size: 14px;
+        }
+    }
+</style>
+
+<div class="favorites-container">
+    <div class="favorites-content">
+        <!-- بخش اصلی (لیست محصولات) - سمت راست -->
+        <div class="favorites-main">
+            <div class="page-header">
+                <h1 class="page-title">
+                    <i class="fas fa-heart"></i> محصولات مورد علاقه
+                </h1>
+            </div>
+
+            {% if products %}
+            <div class="products-grid">
+                {% for product in products %}
+                <div class="product-card">
+                    <a href="{% url 'toggle_favorite' product.id %}" class="remove-favorite-btn" onclick="return confirm('آیا از حذف این محصول از علاقه‌مندی‌ها مطمئن هستید؟')">
+                        <i class="fas fa-times"></i>
+                    </a>
+                    <div class="product-image">
+                        {% if product.images.first %}
+                            <img src="{{ product.images.first.image.url }}" alt="{{ product.name }}">
+                        {% else %}
+                            <img src="{% static 'images/no-image.png' %}" alt="بدون تصویر">
+                        {% endif %}
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-name">{{ product.name }}</h3>
+                        <div class="product-price">
+                            {% if product.off %}
+                                <span class="product-old-price">{{ product.old_price|intcomma }}</span>
+                                <span class="product-discount">٪{{ product.off }}</span>
+                                <br>
+                                {{ product.price|intcomma }} تومان
+                            {% else %}
+                                {{ product.old_price|intcomma }} تومان
+                            {% endif %}
+                        </div>
+                        <a href="{% url 'detail' product.slug%}" class="btn-view">
+                            <i class="fas fa-eye"></i> مشاهده محصول
+                        </a>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+            <div class="empty-state">
+                <div class="empty-icon">
+                    <i class="far fa-heart"></i>
+                </div>
+                <div class="empty-title">لیست علاقه‌مندی‌ها خالی است!</div>
+                <div class="empty-text">شما هنوز محصولی به لیست علاقه‌مندی‌های خود اضافه نکرده‌اید.</div>
+                <a href="{% url 'home' %}" class="empty-btn">
+                    <i class="fas fa-shopping-bag"></i> مشاهده محصولات
+                </a>
+            </div>
+            {% endif %}
+        </div>
+
+        <!-- ستون کناری (سمت چپ) - sticky -->
+        <div class="favorites-sidebar">
+            <div class="info-card">
+                <h3 class="info-title">
+                    <i class="fas fa-info-circle"></i> نکات مهم
+                </h3>
+                <ul class="info-list">
+                    <li>
+                        <i class="fas fa-heart"></i>
+                        محصولات مورد علاقه خود را ذخیره کنید
+                    </li>
+                    <li>
+                        <i class="fas fa-bell"></i>
+                        از تخفیف‌های ویژه محصولات مطلع شوید
+                    </li>
+                    <li>
+                        <i class="fas fa-shopping-cart"></i>
+                        محصولات را به سبد خرید اضافه کنید
+                    </li>
+                    <li>
+                        <i class="fas fa-trash-alt"></i>
+                        برای حذف محصول روی × کلیک کنید
+                    </li>
+                </ul>
+                <div class="favorites-count">
+                    تعداد محصولات مورد علاقه: <span>{{ products|length }}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,18 @@
+<!-- templates/payment_error.html -->
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <title>خطا در پرداخت</title>
+    <style>
+        body { font-family: tahoma; text-align: center; padding: 50px; }
+        .error { color: red; font-size: 24px; }
+        .btn { background: #ef394e; color: white; padding: 12px 30px; text-decoration: none; border-radius: 8px; }
+    </style>
+</head>
+<body>
+    <h1 class="error">✗ خطا در پرداخت</h1>
+    <p>{{ message }}</p>
+    <a href="{% url 'ordering' %}" class="btn">تلاش مجدد</a>
+</body>
+</html>

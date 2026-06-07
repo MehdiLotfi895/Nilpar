@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+{% load static %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ورود | ثبت نام</title>
+
+    <style>
+        @font-face {
+            font-family: 'shabnam';
+            src: url('../static/fonts/Shabnam-FD.woff2');
+        }
+
+        @font-face {
+            font-family: 'shohreh';
+            src: url('../static/fonts/digi\ Shohreh\ bold.otf');
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'shabnam', Tahoma, sans-serif;
+        }
+
+        :root {
+            --primary: #ef394e;
+            --primary-dark: #d6303c;
+            --secondary: #3f4064;
+            --gray-100: #f0f0f1;
+            --gray-200: #e1e2e3;
+            --gray-300: #c0c1c2;
+            --gray-400: #a1a3a8;
+            --gray-500: #62666d;
+            --gray-600: #3f4064;
+            --gray-700: #282c34;
+        }
+
+        body {
+            background: #fff;
+            min-height: 100vh;
+            overflow: hidden;
+        }
+
+        /* لایه اصلی */
+        .auth-container {
+            width: 100%;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: row-reverse;
+        }
+
+        /* سمت فرم */
+        .login-side {
+            width: 40%;
+            min-width: 420px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 40px;
+            background: white;
+        }
+
+        .login-box {
+            width: 100%;
+            max-width: 420px;
+        }
+
+        /* سمت عکس */
+        .image-side {
+            width: 60%;
+            height: 100vh;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .image-side img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* هدر */
+        .login-box-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .site-logo {
+            width: 100px;
+            margin-bottom: 20px;
+        }
+
+        .back-link img {
+            width: 20px;
+        }
+
+        /* توضیحات */
+        .login-desc {
+            margin-bottom: 25px;
+        }
+
+        .login-desc h2 {
+            font-size: 28px;
+            color: black;
+            margin-bottom: 15px;
+        }
+
+        .login-desc p {
+            font-size: 14px;
+            color: var(--gray-500);
+        }
+
+        /* فرم */
+        .login-form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 14px 16px;
+            border: 1px solid var(--gray-200);
+            border-radius: 10px;
+            font-size: 15px;
+            transition: 0.3s;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        /* دکمه */
+        .login-btn {
+            width: 100%;
+            padding: 14px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 15px;
+            cursor: pointer;
+            transition: 0.3s;
+            margin-top: 5px;
+        }
+
+        .login-btn:hover {
+            background: var(--primary-dark);
+        }
+
+        /* پیام ها */
+        .messages {
+            list-style: none;
+        }
+
+        .messages .error {
+            color: #c0392b;
+            font-size: 14px;
+        }
+
+        .messages .success {
+            color: #27ae60;
+            font-size: 14px;
+        }
+
+        /* قوانین */
+        .terms {
+            text-align: center;
+            font-size: 13px;
+            color: var(--gray-500);
+            margin-top: 20px;
+        }
+
+        .terms a {
+            text-decoration: none;
+            color: rgb(3, 126, 171);
+        }
+
+        /* ================= RESPONSIVE ================= */
+
+        @media (max-width: 992px) {
+
+            .auth-container {
+                flex-direction: column;
+            }
+
+            .image-side {
+                display: none;
+            }
+
+            .login-side {
+                width: 100%;
+                min-width: 100%;
+                padding: 30px 20px;
+            }
+
+            .login-box {
+                max-width: 100%;
+            }
+        }
+
+        @media (max-width: 480px) {
+
+            .login-desc h2 {
+                font-size: 22px;
+            }
+
+            .site-logo {
+                width: 80px;
+            }
+        }
+
+    </style>
+</head>
+
+<body>
+
+<div class="auth-container">
+
+    <!-- سمت فرم -->
+    <div class="login-side">
+
+        <div class="login-box">
+
+            <div class="login-box-header">
+                <a href="/" class="back-link">
+                    <img src="{% static 'images/flesh.png'%}" alt="">
+                </a>
+            </div>
+
+            <img src="{% static 'images/new_ai/ComfyUI_00286_.png'%}" alt="" class="site-logo">
+
+            <div class="login-desc">
+                <h2>ورود | ثبت نام</h2>
+                <p>سلام! لطفاً شماره تماس را وارد کنید</p>
+            </div>
+
+            <form method="POST" class="login-form">
+                {% csrf_token %}
+                
+                <input 
+                    type="tel" 
+                    name="phone" 
+                    class="form-input" 
+                    placeholder="شماره موبایل"
+                    required
+                    autofocus
+                    pattern="09[0-9]{9}"
+                    title="09123456789"
+                >
+                
+                <button type="submit" class="login-btn">
+                    ارسال کد تأیید
+                </button>
+            </form>
+
+            <div class="terms">
+                ورود شما به معنای پذیرش
+                <a href="#">شرایط</a>
+                و
+                <a href="#">قوانین کابینت رزمی</a>
+                است
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- سمت عکس -->
+    <div class="image-side">
+
+        <!-- لینک عکس خودت -->
+        <img src="{% static 'images/new_ai/43d65fef-ae2c-4427-b9d0-e23f6c2649a8.png'%}" alt="auth image">
+
+    </div>
+
+</div>
+
+</body>
+</html>

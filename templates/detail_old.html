@@ -1,0 +1,529 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load humanize %}
+{% load jformat%}
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/product_detail.css' %}">
+{% endblock %}
+{% block extra_js%}
+<script src="{% static 'js/color-picker.js' %}"></script>
+{% endblock%}
+{% block content %}
+<div class="product-detail-container container">
+    
+   
+    <div class="product-hero-section" id="hero">
+        <div class="product-hero-content">
+            <a href="{% url 'home'%}">خانه</a> <i class="fas fa-chevron-left"></i>
+            {%for item in product.category_main.all%}
+              <a href="#">{{item}}</a> <i class="fas fa-chevron-left"></i>
+            {%endfor%}
+            {%for item in product.category_second.all%}
+              <a href="#">{{item}}</a> <i class="fas fa-chevron-left"></i>
+            {%endfor%}
+            <span style="color:var(--gray-500)">{{product.name}}</span>
+        </div>
+    </div>
+    
+    <!-- هدر محصول -->
+    <div class="product-header-section">
+        <div class="product-thumbnails">
+            <!-- <img src="{{ product.image.url }}" alt="{{ product.name }}" class="product-thumb active" onclick="changeImage(this)"> -->
+             {% for item in product.images.all%}
+             <img src="{{ item.image.url }}" alt="{{ product.name }}" class="product-thumb active" onclick="changeImage(this)">
+             {%endfor%}
+        </div>
+        <!-- عکس بزرگ -->
+        <div class="product-image-section">
+            <div class="product-main-image">
+                <img src="{{ product.images.first.image.url }}" alt="{{ product.name }}" id="mainImage">
+                <div class="zoom-icon" id="zoomIcon">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                    </svg>
+                </div>
+            </div>
+        </div>
+        
+        <!-- اطلاعات محصول -->
+        <div class="product-info-section">
+            <h1 class="product-main-title">{{ product.name }}</h1>
+            <!-- <p class="product-introduction">{{ product.introduction }}</p> -->
+            <!-- جایگزین کن بخش color-selector-component -->
+            
+            <div class="product-meta">
+                <div class="meta-item">
+                    <span>وزن: </span><span class="value_info"> {{ product.weight }} کیلوگرم</span>
+                </div>
+                <div class="meta-item">
+                    <span>ابعاد:</span><span class="value_info"> {{ product.dimensions }}</span>
+                </div>
+                <div class="meta-item">
+                    <span>دسته:</span><span class="value_info"> {% for cat in product.category_main.all %}{{ cat.title }}{% if not forloop.last %}، {% endif %}{% endfor %}</span>
+                </div>
+                <div class="meta-item">
+                    <span>جنس چوب:</span><span class="value_info"> {{product.wood_kind}}</span>
+                </div>
+                <div class="meta-item">
+                    <span>  
+                        {% if product.off != 0%}
+                           <span class="product-new-price">30000000تومان</span><del class="product-detail-old-price">{{product.old_price}} تومان</del>
+                        {% else %}
+                            <span class="product-price">{{product.old_price}} تومان</span>
+                       {% endif%} 
+                    </span>
+                </div>
+            </div>
+            <div class="color-selector-component">
+                <div class="selected-color-row">
+                    <span class="color-label">رنگ :</span>
+                    <span class="selected-color-value" id="selectedColorValue">
+                        {{ product.color.first.color_name }}
+                    </span>
+                </div>
+                <div class="circles-container" id="circlesContainer">
+                    {% for color in product.color.all %}
+                        <div class="color-circle{% if forloop.first %} active{% endif %}" 
+                             data-color-name="{{ color.color_name }}"
+                             data-color-code="{{color.color_code}}">
+                            <span class="checkmark">✓</span>
+                        </div>
+                    {% endfor %}
+                </div>
+                
+            </div>
+            
+            <div style="display: flex;gap:20px;align-items: center;">
+                <div class="counter-container" data-max="5" >
+                    <button class="plus-btn">
+                        <i class="fas fa-plus counter-icon plus-icon"></i>
+                        
+                    </button>
+                    <span class="counter-number" id="order-number_detail">1</span>
+                    <button class="minus-btn">
+                        <i class="fas fa-minus counter-icon minus-icon"></i>
+                        
+                    </button>
+                </div>
+                <form action="{% url 'cart:handle_cart_action' %}" method="post" style="display: flex;gap:20px">
+                    {% csrf_token %}
+                    <button style="background-color: #169c5c;color:white;width:180px;height:40px;border-radius:25px;display:flex;align-items:center;justify-content:center;border:none;font-size:14px;" class="add-to-cart" type="submit" name="action" value="add_product-order">افزودن به سبد خرید</button>
+                    <input type="hidden" id="hidden-quantity" name="quantity" value="1">
+                    <input type="hidden" id="hiddenColorInput" name="product_color" value="{{ product.color.first.color_name }}">
+                    <button type="submit" class="action-icon description-detail"  name="action" value="add_favorite_product" data-tooltip="افزودن به علاقه‌مندی‌ها" style="background-color: var(--gray-100);">
+                        <i class="far fa-heart"></i>
+                    </button>
+                    <button class="action-icon description-detail"  data-tooltip="اشتراک‌گذاری" data-share-link="https://example.com/product-link" style="background-color: var(--gray-100);">
+                        <i class="fas fa-share-alt"></i> 
+                    </button>
+                    
+                    <!-- دیو برای نمایش پیام کپی شد -->
+                    <div id="copyMessage" class="copy-message">لینک کپی شد!</div>
+                </form>
+            
+            </div>
+            
+            
+            {% if product.features.all %}
+            <div class="product-features-list">
+                {% for feature in product.features.all %}
+                <div class="product-feature-tag"> <div style="color:var(--gray-400);font-size: 12px;">{{ feature.title }}</div> <div>{{feature.description}}</div></div>
+                {% endfor %}
+            </div>
+            {% endif %}
+        </div>
+        <div style="width: 60px; color: #1a1a1a; border-radius: 12px; padding: 15px 0; display: flex; flex-direction: column; align-items: center; gap: 30px;justify-content: center;">
+            <a href="https://facebook.com" target="_blank" style="text-decoration: none; font-size: 24px; transition: transform 0.2s;"><i class="fab fa-facebook-f"></i></a>
+            <a href="https://instagram.com" target="_blank" style="text-decoration: none; font-size: 24px; transition: transform 0.2s;"><i class="fab fa-instagram"></i></a>
+            <a href="https://linkedin.com" target="_blank" style=" text-decoration: none; font-size: 24px; transition: transform 0.2s;"><i class="fab fa-linkedin-in"></i></a>
+            <a href="https://wa.me/" target="_blank" style=" text-decoration: none; font-size: 24px; transition: transform 0.2s;"><i class="fab fa-whatsapp"></i></a>
+            <a href="https://t.me/" target="_blank" style=" text-decoration: none; font-size: 24px; transition: transform 0.2s;"><i class="fab fa-telegram-plane"></i></a>
+            <a href="https://x.com" target="_blank" style=" text-decoration: none; font-size: 24px; transition: transform 0.2s;"><i class="fab fa-twitter"></i></a>
+        </div>
+        <!-- form -->
+        <!-- فرم سفارش - فیکسد -->
+        <!-- <div class="order-form-section">
+            <div class="order-card">
+                <div style="display: flex;gap:20px;align-items: center;">
+                    <img src="{{ product.images.first.image.url }}" alt="" style="width:30%">
+                    <span style="font-size:13px;color:black">{{product.name}} {{product.category.first}}</span>
+                </div>
+                <div style="width:100%;height:1px;background-color: var(--gray-500);margin:50px 0"></div>
+                <div class="order-price">
+                    {{ product.price|intcomma }} <span>تومان</span>
+                </div>
+                
+                <div class="order-stock">
+                    {% if product.stock > 10 %}
+                    <i class="fas fa-check-circle stock-available"></i>
+                    <span class="stock-available">موجود در انبار</span>
+                    {% elif product.stock > 0 %}
+                    <i class="fas fa-exclamation-circle stock-low"></i>
+                    <span class="stock-low">موجودی کم ({{ product.stock }} عدد)</span>
+                    {% else %}
+                    <i class="fas fa-times-circle stock-out"></i>
+                    <span class="stock-out">ناموجود</span>
+                    {% endif %}
+                </div>
+                
+                {% if product.stock > 0 %}
+                <form method="post" action="">
+                    {% csrf_token %}
+                    
+                    <button type="submit" class="add-to-cart-btn" nam="action" value="add_basket">
+                        <i class="fas fa-shopping-cart"></i>
+                        افزودن به سبد خرید
+                    </button>
+                </form>
+                {% else %}
+                <button class="add-to-cart-btn" disabled>
+                    <i class="fas fa-bell"></i>
+                    اطلاع‌رسانی موجودی
+                </button>
+                {% endif %}
+                
+                <div class="order-extras">
+                    <div class="extra-item">
+                        <i class="fas fa-truck"></i>
+                        <span>ارسال رایگان</span>
+                    </div>
+                    <div class="extra-item">
+                        <i class="fas fa-shield-alt"></i>
+                        <span>گارانتی 5 ساله</span>
+                    </div>
+                    <div class="extra-item">
+                        <i class="fas fa-tools"></i>
+                        <span>نصب رایگان</span>
+                    </div>
+                    <div class="extra-item">
+                        <i class="fas fa-tools"></i>
+                        <span>پشتیبانی 24 ساعته</span>
+                    </div>
+                </div>
+            </div>
+        </div> -->
+    </div>
+    
+    <!-- تب‌ها -->
+    <div class="product-tabs">
+        <div class="tabs-header">
+            <button class="tab-btn active" onclick="scrollToSection('details')">مشخصات</button>
+            <button class="tab-btn" onclick="scrollToSection('comments')">نظرات ({{ product.comment_set.count }})</button>
+            <button class="tab-btn" onclick="scrollToSection('questions')">سوالات ({{ product.question_set.count }})</button>
+        </div>
+        <div style="display: flex;gap: 5%;">
+        
+            <div style="width:70%;">
+            <!-- تب مشخصات -->
+                <div class="tab-content active" id="details">
+                    <div class="details-section">
+                        <h2 class="section-title">مشخصات</h2>
+                        
+                        <div class="details-list">
+                            <!-- <div class="detail-row">
+                                <span class="label">نام محصول</span>
+                                <span class="value">{{ product.name }}</span>
+                            </div>
+                            <div class="detail-row">
+                                <span class="label">وزن</span>
+                                <span class="value">{{ product.weight }} کیلوگرم</span>
+                            </div>
+                            <div class="detail-row">
+                                <span class="label">ابعاد</span>
+                                <span class="value">{{ product.dimensions }}</span>
+                            </div>
+                            <div class="detail-row">
+                                <span class="label">قیمت</span>
+                                <span class="value">{{ product.price|intcomma }} تومان</span>
+                            </div>
+                            <div class="detail-row">
+                                <span class="label">موجودی</span>
+                                <span class="value">{{ product.stock }} عدد</span>
+                            </div>
+                            <div class="detail-row">
+                                <span class="label">دسته‌بندی</span>
+                                <span class="value">{% for cat in product.category.all %}{{ cat.title }}{% if not forloop.last %}، {% endif %}{% endfor %}</span>
+                            </div> -->
+                            <div style="display: flex;">
+                                <div style="width:20%;color:var(--gray-400);font-size: 15px;margin-right: 30%;">نام محصول</div>
+                                <div style="font-size: 15px;border-bottom: 1px solid var(--gray-300);padding-bottom: 20px;width:50%">{{product.name}}</div>
+                            </div>
+                            <div style="display: flex;">
+                                <div style="width:20%;color:var(--gray-400);font-size: 15px;margin-right: 30%;">وزن</div>
+                                <div style="font-size: 15px;border-bottom: 1px solid var(--gray-300);padding-bottom: 20px;width:50%">{{product.weight}} کیلو گرم</div>
+                            </div>
+                            <div style="display: flex;">
+                                <div style="width:20%;color:var(--gray-400);font-size: 15px;margin-right: 30%;">ابعاد</div>
+                                <div style="font-size: 15px;border-bottom: 1px solid var(--gray-300);padding-bottom: 20px;width:50%">{{product.dimensions}}</div>
+                            </div>
+                            <div style="display: flex;">
+                                <div style="width:20%;color:var(--gray-400);font-size: 15px;margin-right: 30%;">توضیحات</div>
+                                <div style="font-size: 15px;border-bottom: 1px solid var(--gray-300);padding-bottom: 20px;width:50%">{{product.introduction}}</div>
+                            </div>
+                            <div style="display: flex;">
+                                <div style="width:20%;color:var(--gray-400);font-size: 15px;margin-right: 30%;">قیمت</div>
+                                <div style="font-size: 15px;border-bottom: 1px solid var(--gray-300);padding-bottom: 20px;width:50%">{{product.old_price|intcomma}} تومان</div>
+                            </div>
+                            <div style="display: flex;">
+                                <div style="width:20%;color:var(--gray-400);font-size: 15px;margin-right: 30%;">تخفیف</div>
+                                <div style="font-size: 15px;border-bottom: 1px solid var(--gray-300);padding-bottom: 20px;width:50%">
+                                    {% if product.off != 0%}
+                                       {{product.off}}%
+                                    {% else%}
+                                    ندارد
+                                    {% endif%}
+                                </div>
+                            </div>
+                            <div style="display: flex;">
+                                <div style="width:20%;color:var(--gray-400);font-size: 15px;margin-right: 30%;">رنگ ها</div>
+                                <div style="font-size: 15px;border-bottom: 1px solid var(--gray-300);padding-bottom: 20px;width:50%">{% for color in product.color.all %}{{ color.color_name }}{% if not forloop.last %} ، {% endif %}{% endfor %}</div>
+                            </div>
+                            <div style="display: flex;">
+                                <div style="width:20%;color:var(--gray-400);font-size: 15px;margin-right: 30%;">موجودی</div>
+                                <div style="font-size: 15px;border-bottom: 1px solid var(--gray-300);padding-bottom: 20px;width:50%">{{product.stock}} عدد</div>
+                            </div>
+                            <div style="display: flex;">
+                                <div style="width:20%;color:var(--gray-400);font-size: 15px;margin-right: 30%;">دسته بندی</div>
+                                <div style="font-size: 15px;border-bottom: 1px solid var(--gray-300);padding-bottom: 20px;width:50%">{% for cat in product.category_main.all %}{{ cat.title }}{% if not forloop.last %}، {% endif %}{% endfor %}</div>
+                            </div>
+                        </div>
+                        
+                        {% if product.more_details %}
+                        <div class="more-details-section">
+                            <h2 class="section-title">توضیحات بیشتر</h2>
+                            <div class="more-details-content">
+                                {{ product.more_details|linebreaks }}
+                            </div>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            
+                <!-- تب نظرات -->
+                <div class="tab-content" id="comments">
+                    <div class="comments-section">
+                        <h2 class="section-title">نظرات کاربران</h2>
+                        
+                        {% with product.comment_set.all as comments %}
+                        {% if comments %}
+                            {% for comment in comments %}
+                            <div class="comment-card">
+                                <div class="comment-header">
+                                    <div class="comment-avatar">{{ comment.user.username|make_list|first|upper }}</div>
+                                    <div>
+                                        <div class="comment-user">{{ comment.user.get_full_name|default:comment.user.username }}</div>
+                                        <div class="comment-date">{{ comment.created_at|jformat:"%Y/%m/%d , %H:%M"}}</div>
+                                    </div>
+                                </div>
+                                <div class="comment-body">{{ comment.description }}</div>
+                            </div>
+                            {% endfor %}
+                        {% else %}
+                        <div class="no-comments">
+                            <i class="fas fa-comments" style="font-size: 50px; margin-bottom: 15px; color: var(--gray-300);"></i>
+                            <p>هنوز نظری ثبت نشده است.</p>
+                            <p>اولین نفری باشید که نظر می‌دهید!</p>
+                        </div>
+                        {% endif %}
+                        {% endwith %}
+                        
+                        <!-- فرم نظر -->
+                        <div class="comment-form-section">
+                            <h4>ثبت نظر</h4>
+                            <form method="post" action="">
+                                {% csrf_token %}
+                                <textarea name="comment" placeholder="نظر خود را بنویسید..." required></textarea>
+                                <button type="submit" class="submit-comment-btn" name="action" value="comment">ارسال نظر</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- تب سوالات -->
+                <div class="tab-content" id="questions">
+                    <div class="questions-section">
+                        <h2 class="section-title">سوالات کاربران</h2>
+                        
+                        {% with product.question_set.all as questions %}
+                        {% if questions %}
+                            {% for question in questions %}
+                            <div class="question-card">
+                                <div class="question-header">
+                                    <div class="question-icon">?</div>
+                                    <div>
+                                        <div class="question-user">{{ question.user.get_full_name|default:question.user.username }}</div>
+                                        <div class="question-date">{{ question.created_at|jformat:"%Y/%m/%d , %H:%M" }}</div>
+                                    </div>
+                                </div>
+                                <div class="question-body">{{ question.description }}</div>
+                                
+                                {% if question.answer %}
+                                <div class="answer-card">
+                                    <div class="answer-header">
+                                        <span class="answer-label">پاسخ</span>
+                                        <span class="answer-date">{{ question.answer.created_at|jformat:"%Y/%m/%d , %H:%M" }}</span>
+                                    </div>
+                                    <div class="answer-body">{{ question.answer.description }}</div>
+                                </div>
+                                {% endif %}
+                            </div>
+                            {% endfor %}
+                        {% else %}
+                        <div class="no-questions">
+                            <i class="fas fa-question-circle" style="font-size: 50px; margin-bottom: 15px; color: var(--gray-300);"></i>
+                            <p>هنوز سوالی پرسیده نشده است.</p>
+                            <p>سوال خود را بپرسید!</p>
+                        </div>
+                        {% endif %}
+                        {% endwith %}
+                        
+                        <!-- فرم سوال -->
+                        <div class="ask-question-form">
+                            <h4>سوال خود را بپرسید</h4>
+                            <form method="post" action="">
+                                {% csrf_token %}
+                                <textarea name="question" placeholder="سوال خود را اینجا بنویسید..." required></textarea>
+                                <button type="submit" class="submit-question-btn" name="action" value="question">ارسال سوال</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div style="width:25%;margin-top: 20px;">
+                <div class="order-card" style="position: sticky; top:220px;z-index: 100;">
+                    <div style="display: flex;gap:20px;align-items: center;">
+                        <img src="{{ product.images.first.image.url }}" alt="" style="width:50%">
+                        <div style="display: flex;gap:10px;flex-direction: column;">
+                            <span style="font-size:14px;color:black">{{product.name}}</span>
+                            <div class="order-price">
+                                {{ product.old_price|intcomma }} <span>تومان</span>
+                            </div>
+                            {% if product.off != 0%}
+                            <div style="font-size: 16px;color:red">
+                                {{product.off}}% تخفیف
+                            </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    
+                    
+                    
+                    
+                    {% if product.stock > 0 %}
+
+                    <div style="display: flex;align-items: center;margin-top: 30px;">
+                        
+                        <form action="{% url 'cart:handle_cart_action' %}" method="post" style="display: flex;gap:20px;width:100%;">
+                            {% csrf_token %}
+                            <button style="background-color: #169c5c;color:white;width:100%;height:40px;border-radius:5px;display:flex;align-items:center;justify-content:center;border:none;font-size:14px;" class="add-to-cart" type="submit" name="action" value="add_product-order">افزودن به سبد خرید</button>
+                            <input type="hidden" id="hidden-quantity" name="quantity" value="1">
+                            <input type="hidden" id="hiddenColorInput" name="product_color" value="{{ product.color.first.color_name }}">
+                    
+                        </form>
+                    
+                    </div>
+                    {% else %}
+                    <button class="add-to-cart-btn" disabled>
+                        <i class="fas fa-bell"></i>
+                        اطلاع‌رسانی موجودی
+                    </button>
+                    {% endif %}
+                </div>
+               
+            </div>
+        </div>
+    </div>
+</div>
+<div class="last-product-container container">
+    <!-- header با عنوان و دکمه‌های اسکرول -->
+    <div class="last-product-header">
+        <span>کالاهای مشابه</span>
+        <div class="last-product-btn">
+            <button class="scroll-btn" id="scrollRightBtnDetail" aria-label="اسکرول به راست">
+                <i class="fas fa-chevron-right"></i>
+            </button>
+            <button class="scroll-btn" id="scrollLeftBtnDetail" aria-label="اسکرول به چپ">
+                <i class="fas fa-chevron-left"></i>
+            </button>
+        </div>
+    </div>
+  
+    <!-- محفظه اسکرول افقی (مرتبط با کلاس last-prodcut-container که شما خواستید) -->
+    <div class="last-prodcut-container last-product-scroll" id="scrollContainerDetail">
+        <div class="last-product-grid" id="productGrid">
+            <!-- کارت‌های محصولات با عرض و ارتفاع ثابت 250px شامل تصویر + نام + قیمت -->
+            <!-- سعی شده تصاویر معتبر و متنوع باشند (از picsum و placeholder با id‌های مختلف) -->
+            
+            <!-- product 1 -->
+             {% for product in products%}
+
+            <div class="last-product-card">
+                <div class="last-product-image">
+                  <form class="product-actions" method="POST" >
+                      {% csrf_token %}
+                      <input type="hidden" value="{{product.id}}" name="product">
+                      <button type="submit" class="action-icon wishlist-icon" name="action" value="add_favorite_product">
+                          <i class="far fa-heart"></i>
+                      </button>
+                      <a href="{% url 'detail' product.slug %}" class="action-icon search-icon" >
+                          <i class="fas fa-search"></i>
+                      </a>
+                      
+                  </form>
+                     {% if product.off != 0 %}
+                    <span class="offer-button">20%</span>
+                    {% endif %}
+                    {% with product.images.all|first as first_image %}
+                    {% if first_image %}
+                        <img src="{{ first_image.image.url }}" alt="{{ product.name }}" loading="lazy">
+                    {% endif %}
+                    {% endwith %}                  </div>
+                <div class="last-product-info">
+                    <div class="last-product-name">{{product.name}}</div>
+                    {% if product.off != 0 %}
+                      <div class="last-product-price"><span class="last-price-number new-price-color" >{{product.price}}<span class="new-price-color">تومان</span></span> {% if product.off != 0%}<del class="old-price-color">40,000,000</del>{% endif%}</div>
+                    {% else %}
+                      <div class="last-product-price"><span class="last-price-number">{{product.price}}<span>تومان</span></span> </div>
+                  {% endif %}
+                  </div>
+            </div>
+            {% endfor%}
+        </div>
+    </div>
+  </div>
+<script>
+    // تغییر عکس
+    function changeImage(thumb) {
+        document.getElementById('mainImage').src = thumb.src;
+        document.querySelectorAll('.product-thumb').forEach(t => t.classList.remove('active'));
+        thumb.classList.add('active');
+    }
+    
+    // اسکرول به بخش
+    function scrollToSection(sectionId) {
+        // آپدیت تب‌ها
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+        
+        // پیدا کردن دکمه对应的
+        const buttons = document.querySelectorAll('.tab-btn');
+        if (sectionId === 'details') buttons[0].classList.add('active');
+        else if (sectionId === 'comments') buttons[1].classList.add('active');
+        else if (sectionId === 'questions') buttons[2].classList.add('active');
+        
+        document.getElementById(sectionId).classList.add('active');
+        
+        // اسکرول
+        document.getElementById(sectionId).scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+    
+    // اسکرول با لینک
+    document.querySelectorAll('.tabs-header .tab-btn').forEach((btn, index) => {
+        btn.addEventListener('click', function() {
+            const ids = ['details', 'comments', 'questions'];
+            scrollToSection(ids[index]);
+        });
+    });
+</script>
+{% endblock %}

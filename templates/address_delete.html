@@ -1,0 +1,374 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load my_filters %}
+
+{% block content %}
+
+<style>
+    /* ======================
+    کانتینر اصلی
+    ====================== */
+    .address-delete-container {
+        width: 95%;
+        max-width: 1400px;
+        margin: 30px auto;
+        font-family: sans-serif;
+    }
+
+    .address-delete-content {
+        display: flex;
+        gap: 20px;
+        align-items: flex-start;
+        flex-wrap: nowrap;
+    }
+
+    /* ======================
+    بخش اصلی (تأیید حذف) - 70%
+    ====================== */
+    .address-delete-main {
+        flex: 1 1 70%;
+        min-width: 0;
+        background: #fff;
+        border: 1px solid #ececec;
+        border-radius: 5px;
+        overflow: hidden;
+    }
+
+    .page-header {
+        padding: 20px 25px;
+        border-bottom: 1px solid #f1f1f1;
+        background: #fff;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 15px;
+    }
+
+    .page-title {
+        font-size: 18px;
+        font-weight: 600;
+        color: #333;
+        margin: 0;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .back-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 16px;
+        background: #fff;
+        color: #666;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        font-size: 13px;
+        text-decoration: none;
+        transition: 0.3s;
+    }
+
+    .back-link:hover {
+        border-color: #747667;
+        color: #747667;
+    }
+
+    /* بخش تأیید حذف */
+    .delete-body {
+        padding: 30px 25px;
+        text-align: center;
+    }
+
+    .warning-icon {
+        width: 80px;
+        height: 80px;
+        background: #ffebee;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 20px;
+    }
+
+    .warning-icon i {
+        font-size: 40px;
+        color: #d63031;
+    }
+
+    .delete-title {
+        font-size: 22px;
+        font-weight: 700;
+        color: #333;
+        margin-bottom: 15px;
+    }
+
+    .delete-message {
+        font-size: 15px;
+        color: #666;
+        margin-bottom: 25px;
+        line-height: 1.6;
+    }
+
+    /* کارت آدرس */
+    .address-preview {
+        background: #fafafa;
+        border: 1px solid #ececec;
+        border-radius: 8px;
+        padding: 20px;
+        margin-bottom: 30px;
+        text-align: right;
+        max-width: 500px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .address-preview-title {
+        font-size: 14px;
+        font-weight: 600;
+        color: #888;
+        margin-bottom: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+    }
+
+    .address-preview-content {
+        font-size: 15px;
+        color: #333;
+        line-height: 1.8;
+    }
+
+    .address-detail-row {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        margin-top: 10px;
+        padding-top: 10px;
+        border-top: 1px dashed #ddd;
+        font-size: 13px;
+        color: #888;
+    }
+
+    .address-detail-row i {
+        color: #747667;
+    }
+
+    /* دکمه‌ها */
+    .delete-actions {
+        display: flex;
+        gap: 15px;
+        justify-content: center;
+    }
+
+    .btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        padding: 12px 30px;
+        border-radius: 5px;
+        font-size: 14px;
+        font-weight: 600;
+        text-decoration: none;
+        transition: 0.3s;
+        cursor: pointer;
+        border: none;
+        font-family: inherit;
+    }
+
+    .btn-delete {
+        background: #d63031;
+        color: #fff;
+    }
+
+    .btn-delete:hover {
+        background: #b52b2c;
+    }
+
+    .btn-cancel {
+        background: #fff;
+        color: #666;
+        border: 1px solid #ddd;
+    }
+
+    .btn-cancel:hover {
+        background: #f5f5f5;
+        border-color: #747667;
+        color: #747667;
+    }
+
+    /* ======================
+    ستون کناری (سمت چپ) - 30%
+    ====================== */
+    .address-delete-sidebar {
+        flex: 0 0 25%;
+        min-width: 250px;
+        position: sticky;
+        top: 100px;
+        align-self: flex-start;
+    }
+
+    .info-card {
+        background: #fff;
+        border: 1px solid #ececec;
+        border-radius: 5px;
+        padding: 20px;
+    }
+
+    .info-title {
+        font-size: 17px;
+        font-weight: 600;
+        margin-bottom: 20px;
+        text-align: center;
+        padding-bottom: 12px;
+        border-bottom: 1px solid #eee;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+    }
+
+    .info-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .info-list li {
+        padding: 10px 0;
+        font-size: 13px;
+        color: #666;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        border-bottom: 1px solid #f5f5f5;
+    }
+
+    .info-list li:last-child {
+        border-bottom: none;
+    }
+
+    .info-list li i {
+        color: #747667;
+        width: 20px;
+        font-size: 14px;
+    }
+
+    /* ======================
+    ریسپانسیو
+    ====================== */
+    @media (max-width: 992px) {
+        .address-delete-content {
+            flex-direction: column;
+        }
+        .address-delete-main,
+        .address-delete-sidebar {
+            width: 100%;
+            min-width: 0;
+            position: relative;
+            top: 0;
+        }
+        .delete-actions {
+            flex-direction: column;
+        }
+        .btn {
+            width: 100%;
+        }
+        .address-preview {
+            margin: 0 0 20px 0;
+        }
+    }
+</style>
+
+<div class="address-delete-container">
+    <div class="address-delete-content">
+        <!-- بخش اصلی (تأیید حذف) - سمت راست -->
+        <div class="address-delete-main">
+            <div class="page-header">
+                <h1 class="page-title">
+                    <i class="fas fa-trash-alt"></i> حذف آدرس
+                </h1>
+                <a href="{% url 'addresses' %}" class="back-link">
+                    <i class="fas fa-arrow-right"></i> بازگشت به لیست آدرس‌ها
+                </a>
+            </div>
+
+            <div class="delete-body">
+                <div class="warning-icon">
+                    <i class="fas fa-exclamation-triangle"></i>
+                </div>
+                
+                <h2 class="delete-title">
+                    آیا از حذف این آدرس مطمئن هستید؟
+                </h2>
+                
+                <p class="delete-message">
+                    این عمل غیرقابل بازگشت است و آدرس از لیست آدرس‌های شما حذف خواهد شد.
+                </p>
+
+                <!-- پیش‌نمایش آدرس -->
+                <div class="address-preview">
+                    <div class="address-preview-title">
+                        <i class="fas fa-map-marker-alt"></i>
+                        آدرس مورد نظر
+                    </div>
+                    <div class="address-preview-content">
+                        <strong>{{ object.receiver }}</strong>
+                        <br>
+                        {{ object.address }}
+                    </div>
+                    <div class="address-detail-row">
+                        <i class="fas fa-city"></i> {{ object.province|default:"-" }}
+                        <i class="fas fa-map-pin"></i> {{ object.city|default:"-" }}
+                        <i class="fas fa-mail-bulk"></i> {{ object.address_code|default:"-" }}
+                        <i class="fas fa-phone-alt"></i> {{ object.phonenumber|default:"-" }}
+                    </div>
+                </div>
+
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="delete-actions">
+                        <a href="{% url 'addresses' %}" class="btn btn-cancel">
+                            <i class="fas fa-times"></i> انصراف
+                        </a>
+                        <button type="submit" class="btn btn-delete">
+                            <i class="fas fa-trash-alt"></i> حذف آدرس
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- ستون کناری (سمت چپ) - sticky -->
+        <div class="address-delete-sidebar">
+            <div class="info-card">
+                <h3 class="info-title">
+                    <i class="fas fa-shield-alt"></i> توجه
+                </h3>
+                <ul class="info-list">
+                    <li>
+                        <i class="fas fa-exclamation-circle"></i>
+                        حذف آدرس غیرقابل بازگشت است
+                    </li>
+                    <li>
+                        <i class="fas fa-shopping-cart"></i>
+                        آدرس‌های استفاده شده در سفارشات قابل حذف نیستند
+                    </li>
+                    <li>
+                        <i class="fas fa-check-circle"></i>
+                        در صورت نیاز می‌توانید مجدداً آدرس جدید ثبت کنید
+                    </li>
+                    <li>
+                        <i class="fas fa-phone-alt"></i>
+                        در صورت نیاز به پشتیبانی تماس بگیرید
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
