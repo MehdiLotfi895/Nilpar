@@ -546,3 +546,52 @@ document.addEventListener("DOMContentLoaded", () => {
         );
     });
 });
+
+
+
+
+
+
+// ═══════════════════════════════════════════════════════════════
+// SMART MOBILE FIXED HEADER - مدیریت هدر اصلی در اسکرول
+// ═══════════════════════════════════════════════════════════════
+(function() {
+    const mobileHeader = document.querySelector('.mobile-header-wrapper');
+    if (!mobileHeader) return;
+
+    let lastScrollY = window.pageYOffset || document.documentElement.scrollTop;
+    let ticking = false;
+
+    function handleMobileScroll() {
+        if (document.body.classList.contains('scroll-locked')) {
+            ticking = false;
+            return;
+        }
+
+        const currentScrollY = window.pageYOffset || document.documentElement.scrollTop;
+
+        // فقط زمانی کار کند که کاربر حداقل ۱۰۰ پیکسل اسکرول کرده و از هدر تاپ رد شده باشد
+        if (currentScrollY > 100) {
+            if (currentScrollY > lastScrollY) {
+                // اسکرول به سمت پایین -> هدر اصلی پنهان شود
+                mobileHeader.classList.add('mobile-nav-hidden');
+            } else {
+                // اسکرول به سمت بالا -> هدر اصلی روی سقف ظاهر شود
+                mobileHeader.classList.remove('mobile-nav-hidden');
+            }
+        } else {
+            // در بالای صفحه همیشه هدر اصلی سر جای خودش بماند
+            mobileHeader.classList.remove('mobile-nav-hidden');
+        }
+
+        lastScrollY = currentScrollY;
+        ticking = false;
+    }
+
+    window.addEventListener('scroll', function() {
+        if (!ticking) {
+            window.requestAnimationFrame(handleMobileScroll);
+            ticking = true;
+        }
+    }, { passive: true });
+})();

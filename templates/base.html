@@ -803,12 +803,12 @@
     <div class="bottom-nav">
         <div class="nav-container">
             <!-- خانه -->
-            <a href="#" class="nav-item active" id="nav-home">
+            <a href="{% url 'home'%}" class="nav-item active" id="nav-home">
                 <i class="fas fa-home"></i>
                 <span class="nav-label">خانه</span>
             </a>
             <!-- سبد خرید -->
-            <a href="#" class="nav-item" id="nav-cart">
+            <a href="{% url 'cart:cart_detail' %}" class="nav-item" id="nav-cart">
                 <i class="fas fa-shopping-cart"></i>
                 <span class="nav-label">سبد خرید</span>
             </a>

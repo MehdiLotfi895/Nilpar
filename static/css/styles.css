@@ -2981,9 +2981,11 @@ footer {
         position: sticky;
         top: 0;
         z-index: 1000;
-        transition: transform .35s ease;
+        transition: top 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     }
-
+    .mobile-header-wrapper.mobile-nav-hidden {
+        top: -70px !important; /* این عدد را بر اساس ارتفاع هدر اصلی خودتان تنظیم کنید */
+    }
     .mobile-header-container {
         display: flex;
         justify-content: space-between;
