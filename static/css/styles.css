@@ -102,9 +102,9 @@ ul { list-style: none; }
     position: sticky;
     top: 0;
     z-index: 1000;
-    border-bottom: 1px solid var(--gray-200);
     padding: 0 10px;
     display: none;
+    border-bottom: 1px solid var(--gray-200);
 
 }
 
@@ -343,27 +343,23 @@ ul { list-style: none; }
 
 /* ==================== NAV ==================== */
 .main-nav {
-    background: white;
-    border-bottom: 1px solid var(--gray-200);
     position: relative;
-    display: none;
-    transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1),opacity 0.2s ease,max-height 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-    max-height: 60px;
-    /*اینمقداررودقیقاًبرابریاکمیبیشترازارتفاعواقعیمنویخودتبذار*/transform: translateY(0);
+    z-index:998;
+    background:#fff;
     opacity: 1;
-    visibility: visible;
-    /*overflow: hidden;
-    */-webkit-transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1),opacity 0.2s ease,max-height 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-    -moz-transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1),opacity 0.2s ease,max-height 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-    -ms-transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1),opacity 0.2s ease,max-height 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-    -o-transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1),opacity 0.2s ease,max-height 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-    -webkit-transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1),opacity 0.2s ease,max-height 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    transition:all 0.3s;
+    height: 50px;
+    overflow: visible;
+    -webkit-transition:all 0.3s;
+    -moz-transition:all 0.3s;
+    -ms-transition:all 0.3s;
+    -o-transition:all 0.3s;
+   
 }
 .main-nav.nav-hidden{
+    height:0;
+    overflow: hidden;
     opacity: 0;
-    visibility: hidden; /* کدهای کلیک‌خور رو کاملاً غیرفعال می‌کنه */
-    max-height: 0 !important; /* ارتفاع رو صفر می‌کنه تا فضای سفید کاملاً غیب بشه */
-    transform: translateY(-20px); /* یک افکت جابجایی ریز و نرم به سمت بالا */
 }
 .nav-content {
     display: flex;
