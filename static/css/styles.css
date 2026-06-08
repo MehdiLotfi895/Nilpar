@@ -2973,14 +2973,24 @@ footer {
 
 /* فقط برای موبایل */
 @media (max-width: 1024px) {
-    .mobile-header-wrapper {
+    .mobile-header-wrapper{
         position: sticky;
         top: 0;
         z-index: 1000;
-        transition: top 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        background: #fff;
+    
+        height: 65px;
+        overflow: hidden;
+    
+        transition:
+            all 0.5s;
+    
+        will-change: height;
     }
-    .mobile-header-wrapper.mobile-nav-hidden {
-        top: -70px !important; /* این عدد را بر اساس ارتفاع هدر اصلی خودتان تنظیم کنید */
+    
+    .mobile-header-wrapper.mobile-nav-hidden{
+        height: 0;
+        pointer-events: none;
     }
     .mobile-header-container {
         display: flex;

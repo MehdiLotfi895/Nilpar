@@ -553,47 +553,62 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 // ═══════════════════════════════════════════════════════════════
-// SMART MOBILE FIXED HEADER - مدیریت هدر اصلی در اسکرول
+// SMART MOBILE HEADER
 // ═══════════════════════════════════════════════════════════════
-(function() {
+(function () {
+
     const mobileHeader = document.querySelector('.mobile-header-wrapper');
+
     if (!mobileHeader) return;
 
     let lastScrollY = window.pageYOffset || document.documentElement.scrollTop;
     let ticking = false;
 
-    function handleMobileScroll() {
+    function updateHeader() {
+
         if (document.body.classList.contains('scroll-locked')) {
+            lastScrollY = window.pageYOffset || document.documentElement.scrollTop;
             ticking = false;
             return;
         }
 
-        const currentScrollY = window.pageYOffset || document.documentElement.scrollTop;
+        const currentScrollY =
+            window.pageYOffset || document.documentElement.scrollTop;
 
-        // فقط زمانی کار کند که کاربر حداقل ۱۰۰ پیکسل اسکرول کرده و از هدر تاپ رد شده باشد
-        if (currentScrollY > 100) {
-            if (currentScrollY > lastScrollY) {
-                // اسکرول به سمت پایین -> هدر اصلی پنهان شود
+        const diff = currentScrollY - lastScrollY;
+
+        //  بالای صفحه همیشه نمایش داده شود
+         if (currentScrollY < 100) {
+             mobileHeader.classList.remove('mobile-nav-hidden');
+        }
+
+        // جلوگیری از لرزش روی اسکرول‌های ریز
+        else if (Math.abs(diff) > 5) {
+
+            // اسکرول به پایین
+            if (diff > 0) {
                 mobileHeader.classList.add('mobile-nav-hidden');
-            } else {
-                // اسکرول به سمت بالا -> هدر اصلی روی سقف ظاهر شود
+            }
+
+            // اسکرول به بالا
+            else {
                 mobileHeader.classList.remove('mobile-nav-hidden');
             }
-        } else {
-            // در بالای صفحه همیشه هدر اصلی سر جای خودش بماند
-            mobileHeader.classList.remove('mobile-nav-hidden');
         }
 
         lastScrollY = currentScrollY;
         ticking = false;
     }
 
-    window.addEventListener('scroll', function() {
+    window.addEventListener('scroll', function () {
+
         if (!ticking) {
-            window.requestAnimationFrame(handleMobileScroll);
+            requestAnimationFrame(updateHeader);
             ticking = true;
         }
+
     }, { passive: true });
+
 })();
 
 
