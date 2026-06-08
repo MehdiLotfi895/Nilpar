@@ -766,8 +766,14 @@ class CustomUser(AbstractUser):
 
 
 class SliderImage(models.Model):
-    image=models.ImageField(
-         upload_to='slider_image/',
+    desktop_image=models.ImageField(
+         upload_to='slider_image/desktop/',
+        verbose_name=_('image'),
+        null=True,
+        blank=True
+    )
+    mobile_image=models.ImageField(
+         upload_to='slider_image/mobile/',
         verbose_name=_('image'),
         null=True,
         blank=True

@@ -2658,7 +2658,8 @@ footer {
         margin: 20px 0;
     }
     .image-slider-container {
-        height: 180px !important;
+        aspect-ratio: 2 / 3;
+        height: auto !important;
         padding: 0 10px;
     }
     .slider-nav{
@@ -2739,7 +2740,8 @@ footer {
         font-size: 11px;
     }
 }
-@media (min-width: 768px) {
+@media (min-width: 600px) {
+
     .logo img{
         width:150px;
     }
@@ -2747,10 +2749,18 @@ footer {
         font-size: 16px;
     }
     .image-slider-container{
-        height:300px !important;
+        height:220px !important;
     }
     
 }
+
+@media (min-width:768px) {
+    .image-slider-container{
+        height:300px !important;
+    }
+}
+
+
 
 @media (min-width: 1024px) {
     .bottom-nav {
@@ -3052,47 +3062,50 @@ footer {
 }
 
 .alert-success {
-    background: linear-gradient(135deg, #2d5a3b, #3a6b48);
-    border-right: 3px solid #6fbf4c;
+    background: linear-gradient(135deg, #e8f5e9, #d0e8d4);
+    border-right: 3px solid #4caf50;
+    color: #1e3a2f;
 }
 
 .alert-success::before {
     content: "\f00c";
-    color: #6fbf4c;
+    color: #4caf50;
 }
 
 .alert-error,
 .alert-danger {
-    background: linear-gradient(135deg, #6b3a3a, #7a4848);
-    border-right: 3px solid #e57373;
+    background: linear-gradient(135deg, #ffebee, #ffdddf);
+    border-right: 3px solid #f44336;
+    color: #6b2a2a;
 }
 
 .alert-error::before,
 .alert-danger::before {
-    content: "\f071";
-    color: #e57373;
+    content: "";
+    color: #f44336;
 }
 
 .alert-warning {
-    background: linear-gradient(135deg, #6b5a2a, #7a6a38);
-    border-right: 3px solid #ffd54f;
+    background: linear-gradient(135deg, #fff8e1, #fff0c8);
+    border-right: 3px solid #ffb300;
+    color: #5d4a1a;
 }
 
 .alert-warning::before {
     content: "\f06a";
-    color: #ffd54f;
+    color: #ffb300;
 }
 
 .alert-info {
-    background: linear-gradient(135deg, #2a5a6b, #386a7a);
-    border-right: 3px solid #4fc3f7;
+    background: linear-gradient(135deg, #e1f5fe, #cfeefc);
+    border-right: 3px solid #03a9f4;
+    color: #1a4d6b;
 }
 
 .alert-info::before {
     content: "\f129";
-    color: #4fc3f7;
+    color: #03a9f4;
 }
-
 .alert.hide {
     animation: hideToast 0.5s cubic-bezier(0.55, 0.085, 0.68, 0.53) forwards;
 }
