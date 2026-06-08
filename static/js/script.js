@@ -595,3 +595,27 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }, { passive: true });
 })();
+
+
+
+
+
+
+
+document.addEventListener("DOMContentLoaded", () => {
+
+    document.querySelectorAll(".alert").forEach(alert => {
+
+        setTimeout(() => {
+
+            alert.classList.add("hide");
+
+            alert.addEventListener("animationend", () => {
+                alert.remove();
+            });
+
+        }, 10000); // 10 ثانیه
+
+    });
+
+});

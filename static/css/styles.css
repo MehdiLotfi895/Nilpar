@@ -3011,3 +3011,238 @@ footer {
     }
 }
 
+
+
+.messages-container {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.alert {
+    min-width: 280px;
+    max-width: 380px;
+    padding: 14px 18px;
+    border-radius: 8px;
+    color: #fff;
+    font-size: 14px;
+    font-weight: 500;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    animation: showToast 0.4s cubic-bezier(0.21, 0.98, 0.35, 1.1);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.alert::before {
+    font-family: "Font Awesome 6 Free";
+    font-weight: 900;
+    font-size: 14px;
+}
+
+.alert-success {
+    background: linear-gradient(135deg, #2d5a3b, #3a6b48);
+    border-right: 3px solid #6fbf4c;
+}
+
+.alert-success::before {
+    content: "\f00c";
+    color: #6fbf4c;
+}
+
+.alert-error,
+.alert-danger {
+    background: linear-gradient(135deg, #6b3a3a, #7a4848);
+    border-right: 3px solid #e57373;
+}
+
+.alert-error::before,
+.alert-danger::before {
+    content: "\f071";
+    color: #e57373;
+}
+
+.alert-warning {
+    background: linear-gradient(135deg, #6b5a2a, #7a6a38);
+    border-right: 3px solid #ffd54f;
+}
+
+.alert-warning::before {
+    content: "\f06a";
+    color: #ffd54f;
+}
+
+.alert-info {
+    background: linear-gradient(135deg, #2a5a6b, #386a7a);
+    border-right: 3px solid #4fc3f7;
+}
+
+.alert-info::before {
+    content: "\f129";
+    color: #4fc3f7;
+}
+
+.alert.hide {
+    animation: hideToast 0.5s cubic-bezier(0.55, 0.085, 0.68, 0.53) forwards;
+}
+
+@keyframes showToast {
+    from {
+        opacity: 0;
+        transform: translateX(-80px) scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0) scale(1);
+    }
+}
+
+@keyframes hideToast {
+    from {
+        opacity: 1;
+        transform: translateX(0);
+    }
+    to {
+        opacity: 0;
+        transform: translateX(-120px);
+    }
+}
+
+/* ======================
+ریسپانسیو کامل از 300px
+====================== */
+
+/* 300px تا 480px (موبایل خیلی کوچک) */
+@media (min-width: 300px) and (max-width: 480px) {
+    .messages-container {
+        bottom: 12px;
+        left: 12px;
+        right: 12px;
+        gap: 8px;
+    }
+
+    .alert {
+        min-width: auto;
+        max-width: 100%;
+        width: calc(100% - 24px);
+        padding: 10px 14px;
+        font-size: 12px;
+        border-radius: 6px;
+    }
+
+    .alert::before {
+        font-size: 12px;
+    }
+}
+
+/* 481px تا 576px (موبایل بزرگ) */
+@media (min-width: 481px) and (max-width: 576px) {
+    .messages-container {
+        bottom: 15px;
+        left: 15px;
+        right: 15px;
+        gap: 9px;
+    }
+
+    .alert {
+        min-width: auto;
+        max-width: 100%;
+        width: calc(100% - 30px);
+        padding: 12px 16px;
+        font-size: 13px;
+    }
+
+    .alert::before {
+        font-size: 13px;
+    }
+}
+
+/* 577px تا 768px (تبلت کوچک) */
+@media (min-width: 577px) and (max-width: 768px) {
+    .messages-container {
+        bottom: 18px;
+        left: 18px;
+        gap: 10px;
+    }
+
+    .alert {
+        min-width: 260px;
+        max-width: 340px;
+        padding: 13px 17px;
+        font-size: 13px;
+    }
+}
+
+/* 769px تا 992px (تبلت بزرگ) */
+@media (min-width: 769px) and (max-width: 992px) {
+    .messages-container {
+        bottom: 20px;
+        left: 20px;
+        gap: 10px;
+    }
+
+    .alert {
+        min-width: 280px;
+        max-width: 360px;
+        padding: 14px 18px;
+        font-size: 14px;
+    }
+}
+
+/* 993px تا 1200px (دسکتاپ کوچک) */
+@media (min-width: 993px) and (max-width: 1200px) {
+    .messages-container {
+        bottom: 22px;
+        left: 22px;
+        gap: 11px;
+    }
+
+    .alert {
+        min-width: 300px;
+        max-width: 380px;
+        padding: 14px 18px;
+        font-size: 14px;
+    }
+}
+
+/* 1201px تا 1400px (دسکتاپ متوسط) */
+@media (min-width: 1201px) and (max-width: 1400px) {
+    .messages-container {
+        bottom: 25px;
+        left: 25px;
+        gap: 12px;
+    }
+
+    .alert {
+        min-width: 320px;
+        max-width: 400px;
+        padding: 15px 20px;
+        font-size: 14px;
+    }
+}
+
+/* 1401px به بالا (دسکتاپ بزرگ) */
+@media (min-width: 1401px) {
+    .messages-container {
+        bottom: 30px;
+        left: 30px;
+        gap: 12px;
+    }
+
+    .alert {
+        min-width: 340px;
+        max-width: 420px;
+        padding: 16px 22px;
+        font-size: 15px;
+        border-radius: 10px;
+    }
+
+    .alert::before {
+        font-size: 15px;
+    }
+}
