@@ -369,7 +369,7 @@
                     </div>
                     <div class="product-info">
                         <h3 class="product-name">{{ product.name }}</h3>
-                        <div class="product-price">
+                        {% comment %} <div class="product-price">
                             {% if product.off %}
                                 <span class="product-old-price">{{ product.old_price|intcomma }}</span>
                                 <span class="product-discount">٪{{ product.off }}</span>
@@ -378,7 +378,7 @@
                             {% else %}
                                 {{ product.old_price|intcomma }} تومان
                             {% endif %}
-                        </div>
+                        </div> {% endcomment %}
                         <a href="{% url 'detail' product.slug%}" class="btn-view">
                             <i class="fas fa-eye"></i> مشاهده محصول
                         </a>

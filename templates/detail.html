@@ -112,9 +112,13 @@
                 </div>
                 <form action="{% url 'cart:cart_add' product.id %}" method="post" style="display: flex;gap:20px">
                     {% csrf_token %}
-                    <button style="background-color: #169c5c;color:white;width:180px;height:40px;border-radius:25px;display:flex;align-items:center;justify-content:center;border:none;font-size:14px;" class="add-to-cart" type="submit" name="action" value="add_product-order">افزودن به سبد خرید</button>
+                    <button style="background-color: #169c5c;color:white;width:180px;height:40px;border-radius:25px;display:flex;align-items:center;justify-content:center;border:none;font-size:14px;" class="add-to-cart" type="submit" name="action" value="add_product-order" >افزودن به سبد خرید</button>
                     <input type="hidden" id="hidden-quantity" name="quantity" value="1">
                     <input type="hidden" id="hiddenColorInput" name="color" value="{{ product.color.first.color_name }}">
+                </form>
+                <form action="" method="post" style="display: flex;gap:20px">
+                    {% csrf_token %}
+                    <input type="hidden" value="{{product.id}}" name="product">
                     <button type="submit" class="action-icon description-detail"  name="action" value="add_favorite_product" data-tooltip="افزودن به علاقه‌مندی‌ها" style="background-color: var(--gray-100);">
                         <i class="far fa-heart"></i>
                     </button>

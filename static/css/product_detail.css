@@ -559,9 +559,7 @@ body:has(.main-nav.nav-hidden) .tabs-header {
     cursor: pointer;
     transition: all 0.3s;
 }
-.submit-comment-btn:hover {
-    background: #d6303c;
-}
+
 .no-comments {
     text-align: center;
     padding: 40px;
@@ -679,7 +677,7 @@ body:has(.main-nav.nav-hidden) .tabs-header {
 }
 .submit-question-btn {
     padding: 12px 25px;
-    background: #0077e6;
+    background: var(--primary);
     color: white;
     border: none;
     border-radius: 8px;
