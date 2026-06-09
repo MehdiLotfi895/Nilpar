@@ -130,7 +130,6 @@ body {
   text-align: center;
   color: black;
   font-size: 23px;
-  /* font-weight: 600; */
 }
 
 .category-scroller {
@@ -163,8 +162,6 @@ body {
 }
 
 .scroll-btn:disabled {
-  /* opacity: 0.3;
-  cursor: not-allowed; */
   display: none;
 }
 
@@ -235,6 +232,159 @@ body {
   flex-shrink: 0;
 }
 
+/* ======================
+ریسپانسیو دسته بندی محصولات
+====================== */
+
+/* حداکثر 500px - دو ستونه */
+@media (max-width: 500px) {
+  .category-scroller-title {
+    font-size: 18px;
+    margin-top: 30px;
+  }
+
+  .category-scroller {
+    display: block;
+    direction: rtl;
+  }
+
+  .scroll-btn {
+    display: none !important;
+  }
+
+  .scroll-container {
+    overflow-x: visible;
+    overflow-y: visible;
+  }
+
+  .categories-track {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+    padding: 10px;
+  }
+
+  .category-card {
+    width: 100%;
+    flex: none;
+  }
+
+  .card-img-category img {
+    width: 100%;
+    height: auto;
+  }
+
+  .card-title {
+    font-size: 12px;
+    padding: 8px 5px;
+    white-space: normal;
+    line-height: 1.4;
+  }
+}
+
+/* 501px تا 768px - یک ردیف (اسکرول افقی) */
+@media (min-width: 501px) and (max-width: 768px) {
+  .category-scroller-title {
+    font-size: 20px;
+    margin-top: 35px;
+  }
+
+  .category-scroller {
+    display: flex;
+    gap: 12px;
+  }
+
+  .scroll-btn {
+    display: flex;
+    width: 35px;
+    height: 35px;
+  }
+
+  .scroll-btn i {
+    font-size: 0.8rem;
+  }
+
+  .scroll-container {
+    overflow-x: auto;
+    overflow-y: hidden;
+  }
+
+  .categories-track {
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+    padding: 10px 4px 20px 4px;
+  }
+
+  .category-card {
+    flex: 0 0 auto;
+    width: 160px;
+  }
+
+  .card-title {
+    font-size: 13px;
+    padding: 12px 5px;
+    white-space: nowrap;
+  }
+}
+
+/* تبلت (769px تا 992px) */
+@media (min-width: 769px) and (max-width: 992px) {
+  .category-scroller {
+    gap: 12px;
+  }
+
+  .scroll-btn {
+    width: 35px;
+    height: 35px;
+  }
+
+  .scroll-btn i {
+    font-size: 0.8rem;
+  }
+
+  .categories-track {
+    gap: 25px;
+  }
+
+  .category-card {
+    width: 170px;
+  }
+
+  .card-title {
+    font-size: 14px;
+  }
+}
+
+/* دسکتاپ کوچک (993px تا 1200px) */
+@media (min-width: 993px) and (max-width: 1200px) {
+  .categories-track {
+    gap: 30px;
+  }
+
+  .category-card {
+    width: 180px;
+  }
+
+  .card-title {
+    font-size: 15px;
+  }
+}
+
+/* دسکتاپ بزرگ (1201px به بالا) */
+@media (min-width: 1201px) {
+  .categories-track {
+    gap: 40px;
+  }
+
+  .category-card {
+    width: 200px;
+  }
+
+  .card-title {
+    font-size: 16px;
+  }
+}
 /* ========== تبلیغات وسط ========== */
 .Ad_section_full {
   width: 100%;
@@ -245,19 +395,24 @@ body {
   background-size: cover;
   margin: 30px 0;
 }
-
+@media (max-width:1023px){
+  .Ad_section_full{
+    display: none;
+  }
+}
 /* ========== انواع میز (بخش suggest) ========== */
 .suggest-section-header {
   display: flex;
   justify-content: space-between;
   margin: 50px 0;
   align-items: baseline;
+  flex-wrap: wrap;
+  gap: 15px;
 }
 
 .suggest-section-header span {
   color: black;
   font-size: 22px;
-  /* font-weight: 600; */
 }
 
 .suggest-section-header a {
@@ -285,11 +440,198 @@ body {
   justify-content: center;
   border-radius: 4px;
   background-size: cover;
-  background-position:center;
+  background-position: center;
   background-repeat: no-repeat;
 }
 
+/* ======================
+ریسپانسیو بخش suggest
+====================== */
+
+/* دسکتاپ بزرگ (حداقل 1269px) - 3 تا کنار هم ثابت، بدون اسکرول */
+@media (min-width: 1269px) {
+  .suggest_section {
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+    overflow-x: visible;
+    margin-top: 50px;
+  }
+
+  .box {
+    flex: 1;
+    width: auto;
+    min-width: 0;
+    height: 250px;
+  }
+}
+
+/* تبلت و دسکتاپ کوچک (768px تا 1268px) - اسکرول افقی بدون اسکرول بار */
+@media (min-width: 768px) and (max-width: 1268px) {
+  .suggest-section-header {
+    margin: 40px 0 20px 0;
+  }
+
+  .suggest-section-header span {
+    font-size: 20px;
+  }
+
+  .suggest-section-header a {
+    font-size: 14px;
+  }
+
+  .suggest_section {
+    display: flex;
+    flex-direction: row;
+    gap: 15px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+    margin-top: 40px;
+    /* مخفی کردن اسکرول بار */
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  .suggest_section::-webkit-scrollbar {
+    display: none;
+  }
+
+  .box {
+    flex: 0 0 60%;
+    min-width: 250px;
+    height: 220px;
+  }
+}
+
+/* موبایل بزرگ (550px تا 767px) - اسکرول افقی بدون اسکرول بار */
+@media (min-width: 550px) and (max-width: 767px) {
+  .suggest-section-header {
+    margin: 35px 0 18px 0;
+  }
+
+  .suggest-section-header span {
+    font-size: 18px;
+  }
+
+  .suggest-section-header a {
+    font-size: 13px;
+    gap: 8px;
+  }
+
+  .suggest_section {
+    display: flex;
+    flex-direction: row;
+    gap: 12px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+    margin-top: 35px;
+    /* مخفی کردن اسکرول بار */
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  .suggest_section::-webkit-scrollbar {
+    display: none;
+  }
+
+  .box {
+    flex: 0 0 75%;
+    min-width: 280px;
+    height: 200px;
+  }
+}
+
+/* موبایل متوسط (400px تا 549px) */
+@media (min-width: 400px) and (max-width: 549px) {
+  .suggest-section-header {
+    margin: 30px 0 15px 0;
+  }
+
+  .suggest-section-header span {
+    font-size: 17px;
+  }
+
+  .suggest-section-header a {
+    font-size: 12px;
+    gap: 6px;
+  }
+
+  .suggest_section {
+    display: flex;
+    flex-direction: row;
+    gap: 12px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+    margin-top: 30px;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  .suggest_section::-webkit-scrollbar {
+    display: none;
+  }
+
+  .box {
+    flex: 0 0 85%;
+    min-width: 260px;
+    height: 180px;
+  }
+}
+
+/* موبایل کوچک (300px تا 399px) */
+@media (min-width: 300px) and (max-width: 399px) {
+  .suggest-section-header {
+    margin: 25px 0 12px 0;
+  }
+
+  .suggest-section-header span {
+    font-size: 16px;
+  }
+
+  .suggest-section-header a {
+    font-size: 11px;
+    gap: 5px;
+  }
+
+  .suggest_section {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+    margin-top: 25px;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  .suggest_section::-webkit-scrollbar {
+    display: none;
+  }
+
+  .box {
+    flex: 0 0 90%;
+    min-width: 240px;
+    height: 160px;
+  }
+}
+
 /* ========== منتخب تخفیف و حراج ========== */
+
+/* عنوان بخش */
+.offer-section-title {
+    font-size: 22px;
+    color: black;
+    margin: 50px 0;
+}
+
 .offer_products_section {
     width: 100%;
     padding: 40px;
@@ -311,7 +653,6 @@ body {
     justify-content: center;
     border-radius: 12px;
     overflow: hidden;
-    
 }
 
 .brand_offer_section img {
@@ -322,10 +663,6 @@ body {
 
 .brand_offer_section img:hover {
     transform: scale(1.02);
-    -webkit-transform: scale(1.02);
-    -moz-transform: scale(1.02);
-    -ms-transform: scale(1.02);
-    -o-transform: scale(1.02);
 }
 
 /* اسکرول افقی - حفظ ساختار قبلی */
@@ -342,14 +679,13 @@ body {
     -ms-overflow-style: none;
     transform: translateY(200px);
     margin-top: -200px;
-    
 }
 
 .offer_products_grid_wrapper::-webkit-scrollbar {
     display: none;
 }
 
-/* کارت محصول - بزرگ و واضح */
+/* کارت محصول */
 .product_card_item {
     width: 280px;
     min-width: 280px;
@@ -362,13 +698,7 @@ body {
     transition: all 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1);
     box-shadow: 0 4px 12px rgba(0,0,0,0.08);
     position: relative;
-    -webkit-border-radius: 8px;
-    -moz-border-radius: 8px;
-    -ms-border-radius: 8px;
-    -o-border-radius: 8px;
 }
-
-
 
 /* تصویر محصول */
 .product_card_image {
@@ -376,31 +706,20 @@ body {
     height: 220px;
     border-radius: 8px;
     background: #f8f8f8;
-    -webkit-border-radius: 8px;
-    -moz-border-radius: 8px;
-    -ms-border-radius: 8px;
-    -o-border-radius: 8px;
     padding: 16px;
 }
 
-.product_card_image img{
-  width:100%;
-  height: 100%;
-  object-fit: contain;
-  transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  -webkit-transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  -moz-transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  -ms-transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  -o-transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+.product_card_image img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
 .product_card_image:hover img {
-  transform: scale(1.05);
-  -webkit-transform: scale(1.05);
-  -moz-transform: scale(1.05);
-  -ms-transform: scale(1.05);
-  -o-transform: scale(1.05);
+    transform: scale(1.05);
 }
+
 /* قیمت‌ها */
 .product_price_wrapper {
     display: flex;
@@ -510,6 +829,289 @@ body {
 .product_detail_link:hover {
     background: #747667;
     color: #fff;
+}
+
+/* ======================
+ریسپانسیو بخش تخفیف و حراج
+====================== */
+
+/* دسکتاپ (1000px به بالا) - استایل اصلی */
+@media (min-width: 1000px) {
+    .offer_products_section {
+        display: flex;
+        flex-direction: row;
+        gap: 40px;
+        padding: 40px;
+    }
+
+    .brand_offer_section {
+        width: 22%;
+        display: flex;
+    }
+
+    .offer_products_grid_wrapper {
+        width: 78%;
+        display: flex;
+        flex-direction: row;
+        overflow-x: auto;
+        transform: translateY(200px);
+        margin-top: -200px;
+    }
+
+    .product_card_item {
+        width: 280px;
+        min-width: 280px;
+    }
+}
+
+/* تبلت و دسکتاپ کوچک (768px تا 999px) - برند بالا، محصولات اسکرول */
+@media (min-width: 768px) and (max-width: 999px) {
+    .offer-section-title {
+        font-size: 20px;
+        margin: 40px 0;
+    }
+
+    .offer_products_section {
+        flex-direction: column;
+        padding: 30px;
+        gap: 20px;
+    }
+
+    .brand_offer_section {
+        width: 100%;
+        max-width: 300px;
+        margin: 0 auto;
+    }
+
+    .offer_products_grid_wrapper {
+        width: 100%;
+        gap: 15px;
+    }
+
+    .product_card_item {
+        width: 260px;
+        min-width: 260px;
+        padding: 12px;
+    }
+
+    .product_card_image {
+        height: 200px;
+        padding: 12px;
+    }
+
+    .product_card_price {
+        font-size: 16px;
+    }
+
+    .product_card_title {
+        font-size: 14px;
+        min-height: 42px;
+    }
+
+    .product_favorite_button,
+    .product_detail_link {
+        width: 34px;
+        height: 34px;
+        font-size: 14px;
+    }
+}
+
+/* موبایل بزرگ (550px تا 767px) */
+@media (min-width: 550px) and (max-width: 767px) {
+    .offer-section-title {
+        font-size: 18px;
+        margin: 35px 0;
+    }
+
+    .offer_products_section {
+        flex-direction: column;
+        padding: 25px;
+        gap: 18px;
+        border-radius: 12px;
+    }
+
+    .brand_offer_section {
+        width: 100%;
+        max-width: 250px;
+        margin: 0 auto;
+    }
+
+    .offer_products_grid_wrapper {
+        width: 100%;
+        gap: 12px;
+    }
+
+    .product_card_item {
+        width: 240px;
+        min-width: 240px;
+        padding: 12px;
+        gap: 10px;
+    }
+
+    .product_card_image {
+        height: 180px;
+        padding: 10px;
+    }
+
+    .product_card_price {
+        font-size: 15px;
+    }
+
+    .product-offer-old-price {
+        font-size: 12px;
+    }
+
+    .product_card_title {
+        font-size: 13px;
+        min-height: 38px;
+    }
+
+    .offer-product-colors span {
+        width: 16px;
+        height: 16px;
+    }
+
+    .product_favorite_button,
+    .product_detail_link {
+        width: 32px;
+        height: 32px;
+        font-size: 13px;
+    }
+}
+
+/* موبایل متوسط (400px تا 549px) */
+@media (min-width: 400px) and (max-width: 549px) {
+    .offer-section-title {
+        font-size: 17px;
+        margin: 30px 0;
+    }
+
+    .offer_products_section {
+        flex-direction: column;
+        padding: 20px;
+        gap: 15px;
+        border-radius: 12px;
+    }
+
+    .brand_offer_section {
+        width: 100%;
+        max-width: 200px;
+        margin: 0 auto;
+    }
+
+    .offer_products_grid_wrapper {
+        width: 100%;
+        gap: 10px;
+    }
+
+    .product_card_item {
+        width: 220px;
+        min-width: 220px;
+        padding: 10px;
+        gap: 8px;
+    }
+
+    .product_card_image {
+        height: 160px;
+        padding: 8px;
+    }
+
+    .product_card_price {
+        font-size: 14px;
+    }
+
+    .product-offer-old-price {
+        font-size: 11px;
+    }
+
+    .product_card_title {
+        font-size: 12px;
+        min-height: 34px;
+    }
+
+    .offer-product-colors {
+        gap: 4px;
+    }
+
+    .offer-product-colors span {
+        width: 14px;
+        height: 14px;
+    }
+
+    .product_favorite_button,
+    .product_detail_link {
+        width: 28px;
+        height: 28px;
+        font-size: 12px;
+    }
+}
+
+/* موبایل کوچک (300px تا 399px) */
+@media (min-width: 300px) and (max-width: 399px) {
+    .offer-section-title {
+        font-size: 16px;
+        margin: 25px 0;
+    }
+
+    .offer_products_section {
+        flex-direction: column;
+        padding: 15px;
+        gap: 12px;
+        border-radius: 10px;
+    }
+
+    .brand_offer_section {
+        width: 100%;
+        max-width: 180px;
+        margin: 0 auto;
+    }
+
+
+    .offer_products_grid_wrapper {
+        width: 100%;
+        gap: 8px;
+    }
+
+    .product_card_item {
+        width: 200px;
+        min-width: 200px;
+        padding: 8px;
+        gap: 8px;
+    }
+
+    .product_card_image {
+        height: 140px;
+        padding: 6px;
+    }
+
+    .product_card_price {
+        font-size: 13px;
+    }
+
+    .product-offer-old-price {
+        font-size: 10px;
+    }
+
+    .product_card_title {
+        font-size: 11px;
+        min-height: 30px;
+    }
+
+    .offer-product-colors {
+        gap: 3px;
+    }
+
+    .offer-product-colors span {
+        width: 12px;
+        height: 12px;
+    }
+
+    .product_favorite_button,
+    .product_detail_link {
+        width: 26px;
+        height: 26px;
+        font-size: 11px;
+    }
 }
 
 /* ========== ریسپانسیو ========== */
@@ -934,249 +1536,283 @@ body {
   margin:10px auto 0 auto;
   
 }
-/* ========== خواندنی ها (بلاگ) ========== */
+@media (max-width:1023px){
+  .about-section{
+    display: none;
+  }
+}
+/* =========================
+   CLEAN BLOG SECTION
+========================= */
+
+/* Blog wrapper */
 .blog-simple {
-  margin: 0 auto;
-  background: transparent;
-  padding: 0;
+    margin: 0;
+    padding: 0 15px; /* فاصله از لبه صفحه */
+    background: transparent;
 }
 
+/* Header */
 .blog-header {
-  margin-top: 230px;
-  display: flex;
-  justify-content: space-between;
-  align-items: baseline;
-  flex-wrap: wrap;
-  margin-bottom: 32px;
-  border: none;
-  background: transparent;
-  padding: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    margin: 230px 0 32px 0;
 }
 
 .blog-header span {
-  font-size: 22px;
-  color: black;
+    font-size: 22px;
+    color: #000;
 }
 
 .view-all {
-  text-decoration: none;
-  font-size: 16px;
-  font-weight: 500;
-  padding-bottom: 2px;
-  transition: color 0.2s;
-  color:var(--primary)
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--primary);
+    text-decoration: none;
+    transition: 0.3s;
 }
 
-
-/* گرید اصلی */
+.view-all:hover {
+    opacity: 0.8;
+}
 
 .blog-grid{
-    display:grid;
-    grid-template-columns:repeat(2,1fr);
-    gap: 50px 40px;
-    margin: 50px 0;
+  display:grid;
+  grid-template-columns:1fr;
+  gap:60px 40px;
+  margin:50px 0;
 }
 
-/* کارت */
+@media (min-width:1200px){
+
+  .blog-grid{
+      grid-template-columns:repeat(2,minmax(0,1fr));
+  }
+
+}
+
+/* Card */
+.blog-item {
+    display: flex;
+    flex-direction: row; /* افقی همیشه */
+    align-items: center;
+    justify-content: space-between;
+
+    position: relative;
+    background: #f5f5f5;
+    border-radius: 12px;
+
+    height: 180px;
+
+    padding: 20px;
+
+    overflow: visible;
+    transition: 0.3s;
+}
+
+.blog-item:hover {
+    transform: translateY(-5px);
+}
+
+/* Image */
+.blog-image {
+    flex-shrink: 0;
+    width: 210px;
+    height: 210px;
+    margin-left: 20px; /* سمت راست */
+    position: relative;
+    z-index: 5;
+}
+
+.blog-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 16px;
+    display: block;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+}
+
+/* Content */
+.blog-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    flex: 1;
+}
+
+.blog-content h3 {
+    font-size: 16px;
+    font-weight: 700;
+    color: #3d2318;
+    line-height: 1.8;
+    margin-bottom: 10px;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
+}
+
+.blog-content p {
+    font-size: 14px;
+    color: #777;
+    line-height: 1.9;
+    margin-bottom: 16px;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+    overflow: hidden;
+}
+
+/* Button */
+.read-more {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    width: max-content;
+    text-decoration: none;
+    background: #747667;
+    color: #fff;
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 500;
+    margin-top: auto;
+    transition: 0.3s;
+    margin-right: auto;
+    
+}
+
+.read-more:hover {
+    opacity: 0.9;
+}
+
+/* =========================
+   Responsive
+========================= */
+
+/* Large desktop */
+@media (min-width:1400px) {
+    .blog-image {
+        width: 210px;
+        height: 210px;
+    }
+}
+
+/* Tablets */
+@media (max-width:992px) {
+    .blog-image {
+        width: 210px;
+        height: 210px;
+    }
+    .blog-content h3 { font-size: 15px; }
+    .blog-content p { font-size: 13px; }
+}
+
+/* Mobile: keep horizontal layout */
+@media (max-width:768px) {
+    .blog-item {
+        flex-direction: row; /* همیشه افقی */
+        min-height: 160px;
+        padding: 12px;
+    }
+
+    .blog-image {
+        width: 200px;
+        height: 200px;
+        margin-left: 10px;
+    }
+
+    .blog-content h3 { font-size: 14px; }
+    .blog-content p { font-size: 12px; }
+    .read-more { font-size: 11px; padding: 6px 12px; }
+}
+
+/* Extra small screens */
+@media (max-width:400px) {
+    .blog-image { width: 120px; height: 120px; margin-left: 8px; }
+    .blog-content h3 { font-size: 13px; }
+    .blog-content p { font-size: 11px; }
+}
+
+@media (min-width:300px) and (max-width:650px){
+ .blog-content p {
+    display: none;
+  } 
+  .blog-grid{
+    grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+    gap:20px;
+}
 
 .blog-item{
-    position:relative;
-    background:#f5f5f5;
-    height:170px;
-    border-radius:8px;
-    padding:15px 280px 15px 20px;
-    overflow:visible;
-    transition:0.3s;
-    -webkit-transition:0.3s;
-    -moz-transition:0.3s;
-    -ms-transition:0.3s;
-    -o-transition:0.3s;
-    -webkit-border-radius:8px;
-    -moz-border-radius:8px;
-    -ms-border-radius:8px;
-    -o-border-radius:8px;
-}
+    display:block;
 
-.blog-item:hover{
-    transform:translateY(-5px);
-}
+    min-height:auto !important;
 
-/* عکس شناور */
+    height: auto !important;
+
+    padding:0;
+
+    /* overflow:hidden; */
+
+    border-radius:12px;
+}
 
 .blog-image{
-    position:absolute;
+    position:relative;
 
-    right:35px;
+    width:100%;
+    height:180px;
 
-    top:50%;
+    top:auto;
+    right:auto;
 
-    transform:translateY(-50%);
+    transform:none;
 
-    width:200px;
-    
-
-    z-index:3;
+    margin:0;
 }
 
 .blog-image img{
     width:100%;
     height:100%;
+
     object-fit:cover;
-    border-radius:16px;
-    display:block;
-    -webkit-border-radius:16px;
-    -moz-border-radius:16px;
-    -ms-border-radius:16px;
-    -o-border-radius:16px;
+
+    border-radius:12px 12px 0 0;
 }
 
-/* محتوا */
-
 .blog-content{
-    display:flex;
-    flex-direction:column;
-    height:100%;
+    padding:15px;
+    height:auto;
+    border-left: 1px solid #e7e7e7;
+    border-right: 1px solid #e7e7e7;
+    border-bottom: 1px solid #e7e7e7;
 
+    /* گوشه‌های پایین گرد */
+    border-bottom-left-radius: 12px;
+    border-bottom-right-radius: 12px;
 }
 
 .blog-content h3{
-    font-size:16px;
-
+    font-size:13px;
     line-height:1.8;
-
     margin-bottom:10px;
-
-    color:#3d2318;
-
-    font-weight:600;
-
-    display:-webkit-box;
-    -webkit-line-clamp:2;
-    -webkit-box-orient:vertical;
-    /* overflow:hidden; */
 }
 
 .blog-content p{
-    color:#777;
-
-    line-height:2;
-
     font-size:13px;
+    line-height:1.8;
+    margin-bottom:15px;
 
-    display:-webkit-box;
-    -webkit-line-clamp:4;
-    -webkit-box-orient:vertical;
-    /* overflow:hidden; */
-
-    margin-bottom:20px;
+    -webkit-line-clamp:3;
 }
-
-/* دکمه */
 
 .read-more{
-    display:inline-flex;
-    align-items:center;
-    justify-content:center;
-    width:max-content;
-    text-decoration:none;
-    background:#747667;
-    color:#fff;
-    padding:8px 16px;
-    border-radius:5px;
-    font-size:12px;
-    font-weight:500;
-    margin-top:auto;
-    transition:0.3s;
-    -webkit-border-radius:5px;
-    -moz-border-radius:5px;
-    -ms-border-radius:5px;
-    -o-border-radius:5px;
-    -webkit-transition:0.3s;
-    -moz-transition:0.3s;
-    -ms-transition:0.3s;
-    -o-transition:0.3s;
-    margin-right:auto;
+    margin-top:0;
 }
-
-.read-more:hover{
-    opacity:.9;
-}
-
-/* بخش کامنت */
-
-.blog-comment{
-    position:absolute;
-
-    left:20px;
-
-    top:50%;
-
-    transform:translateY(-50%);
-
-    display:flex;
-
-    flex-direction:column;
-
-    align-items:center;
-
-    gap:6px;
-
-    color:#d66b43;
-
-    font-size:13px;
-}
-
-.blog-comment i{
-    font-size:20px;
-}
-
-/* تبلت */
-
-@media(max-width:1200px){
-
-    .blog-grid{
-        grid-template-columns:1fr;
-    }
-
-}
-
-/* موبایل */
-
-@media(max-width:768px){
-
-    .blog-item{
-
-        padding:220px 20px 20px 20px;
-
-        min-height:auto;
-    }
-
-    .blog-image{
-
-        width:220px;
-
-        height:220px;
-
-        right:50%;
-
-        top:0;
-
-        transform:translate(50%,-35%);
-    }
-
-    .blog-comment{
-
-        display:none;
-    }
-
-    .blog-content h3{
-        font-size:18px;
-    }
-
-    .blog-content p{
-        font-size:14px;
-    }
-
 }
 .testimonial-master {
   background-color:  #A39370;
@@ -1383,14 +2019,12 @@ body {
 @media (max-width: 780px) {
   .testimonial-master { padding: 1.2rem; }
   .card-item { width: 250px; }
-  .product-img { height: 180px; }
   .title { font-size: 1.5rem; }
   .slider-track { gap: 1rem; }
 }
 
 @media (max-width: 560px) {
   .card-item { width: 220px; }
-  .product-img { height: 160px; }
 }
 /* ========== ریسپانسیو کامل از ۳۰۰ پیکسل تا دسکتاپ ========== */
 
@@ -1569,7 +2203,6 @@ body {
 
   /* وبلاگ */
   .blog-header {
-    margin-top: 30px;
     margin-bottom: 16px;
   }
   .blog-row {
@@ -1814,6 +2447,8 @@ body {
   overflow-x: hidden;
 }
 
+
+}
 /* رفع مشکل دکمه‌های اسکرول در موبایل: هرگز display:none نمی‌کنیم */
 @media (max-width: 700px) {
   /* .scroll-btn {
@@ -1831,3 +2466,108 @@ body {
 }
 
 
+/* ========== بنرهای تبلیغاتی دو قسمتی ========== */
+
+/* کلاس جدید برای جلوگیری از تداخل */
+.ad-banner-wrapper {
+    width: 100%;
+    margin-top: 230px;
+    margin-bottom: 30px;
+}
+
+.ad-banner-row {
+    width: 100%;
+    display: flex;
+    gap: 20px;
+}
+
+.ad-banner-item {
+    flex: 1;
+    height: 250px;
+    border-radius: 8px;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    display: block;
+}
+
+.ad-banner-item:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+}
+
+/* ======================
+ریسپانسیو بنرهای تبلیغاتی
+====================== */
+
+/* دسکتاپ (1024px به بالا) - دو تا کنار هم */
+@media (min-width: 1024px) {
+
+    .ad-banner-row {
+        flex-direction: row;
+        gap: 20px;
+    }
+
+    .ad-banner-item {
+        flex: 1;
+        height: 250px;
+        display: block;
+    }
+}
+
+/* تبلت و موبایل (300px تا 1023px) - فقط اولین عکس نمایش داده شود */
+@media (max-width: 1023px) {
+
+    .ad-banner-row {
+        flex-direction: row;
+        gap: 0;
+    }
+
+    /* فقط اولین بنر نمایش داده شود */
+    .ad-banner-item:first-child {
+        display: block;
+        width: 100%;
+        flex: none;
+    }
+
+    /* بقیه بنرها مخفی شوند */
+    .ad-banner-item:last-child {
+        display: none;
+    }
+}
+
+/* موبایل بزرگ (550px تا 767px) */
+@media (min-width: 550px) and (max-width: 767px) {
+
+    .ad-banner-item:first-child {
+        height: 180px;
+        border-radius: 6px;
+    }
+}
+
+/* موبایل متوسط (400px تا 549px) */
+@media (min-width: 400px) and (max-width: 549px) {
+
+    .ad-banner-item:first-child {
+        height: 160px;
+        border-radius: 6px;
+    }
+}
+
+/* موبایل کوچک (300px تا 399px) */
+@media (min-width: 300px) and (max-width: 399px) {
+
+    .ad-banner-item:first-child {
+        height: 140px;
+        border-radius: 5px;
+    }
+}
+
+/* تبلت (768px تا 1023px) */
+@media (min-width: 768px) and (max-width: 1023px) {
+
+    .ad-banner-item:first-child {
+        height: 220px;
+    }
+}

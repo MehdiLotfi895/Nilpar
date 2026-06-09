@@ -32,6 +32,7 @@
     <div class="category-scroller-title">
       دسته بندی محصولات
     </div>
+    
     <div class="category-scroller" id="categoryScroller" dir="rtl">
       <button class="scroll-btn scroll-btn-right" id="scrollRightBtn" aria-label="اسکرول به راست">
         <i class="fas fa-chevron-right"></i>
@@ -48,62 +49,6 @@
                 </a> 
               {% endif%}
             {% endfor%}
-            
-              <!-- <div class="category-card">
-                  <div class="card-img-category">
-                      <img src="{% static 'images/new_ai/ComfyUI_00128_.png'%}" alt="طبیعت" loading="lazy">
-                  </div>
-                  <span class="card-title">کمد لباس</span>
-              </div>
-              <div class="category-card">
-                  <div class="card-img-category">
-                      <img src="{% static 'images/new_ai/ComfyUI_00130_.png'%}" alt="شهر" loading="lazy">
-                  </div>
-                  <span class="card-title">میز تحریر</span>
-              </div>
-              <div class="category-card">
-                  <div class="card-img-category">
-                      <img src="{% static 'images/new_ai/ComfyUI_00136_.png'%}" alt="قهوه" loading="lazy">
-                  </div>
-                  <span class="card-title">دراور</span>
-              </div>
-              <div class="category-card">
-                <div class="card-img-category">
-                    <img src="{% static 'images/new_ai/ComfyUI_00154_.png'%}" alt="موسیقی" loading="lazy">
-                </div>
-                <span class="card-title">کنسول</span>
-              </div>
-              <div class="category-card">
-                <div class="card-img-category">
-                    <img src="{% static 'images/new_ai/ComfyUI_00147_.png'%}" alt="ورزش" loading="lazy">
-                </div>
-                <span class="card-title">زونکن اداری</span>
-            </div>
-            
-              <div class="category-card">
-                <div class="card-img-category">
-                    <img src="{% static 'images/new_ai/ComfyUI_00143_.png'%}" alt="خودرو" loading="lazy">
-                </div>
-                <span class="card-title"> میز تلویزیون</span>
-              </div>
-              <div class="category-card">
-                <div class="card-img-category">
-                    <img src="{% static 'images/new_ai/ComfyUI_00160_.png'%}" alt="مد" loading="lazy">
-                </div>
-                <span class="card-title">میز ارایش</span>
-            </div>
-              <div class="category-card">
-                  <div class="card-img-category">
-                      <img src="{% static 'images/new_ai/ComfyUI_00158_.png'%}" alt="گردشگری" loading="lazy">
-                  </div>
-                  <span class="card-title">پاتختی</span>
-              </div>
-              <div class="category-card">
-                <div class="card-img-category">
-                    <img src="{% static 'images/new_ai/ComfyUI_00144_.png'%}" alt="فناوری" loading="lazy">
-                </div>
-                <span class="card-title">جاکفشی</span>
-            </div> -->
           </div>
       </div>
       <button class="scroll-btn scroll-btn-left" id="scrollLeftBtn" aria-label="اسکرول به چپ">
@@ -139,7 +84,7 @@
           <div class="box" style="background-image: url('{% static "images/new_ai/1779312572220.png"%}');"></div>
         </div>
     {% endif%}
-    <div style="font-size:22px;color:black;margin:50px 0;">منتخب تخفیف و حراج</div>
+    <div class="offer-section-title">منتخب تخفیف و حراج</div>
     <div class="offer_products_section">
         <div class="brand_offer_section">
             <img src="{% static 'images/new_ai/ComfyUI_00285_.png' %}" alt="brand offer image">
@@ -187,18 +132,28 @@
             مشاهده همه 
         </a>
     </div> -->
+
+
+
     {% if ad_section_second %}
-       <div class="flex-row" style='margin-top:230px;'>
-            {% for item in ad_section_second.image.all%}
-                <a href="{% url 'detail' item.product.slug%}" style="background-image: url('{{item.image.url}}');"></a>
-            {% endfor%}
-       </div>
-    {% else %}
-        <div class="flex-row">
-          <a  style="background-image: url('{% static "images/new_ai/61809025-60bc-4518-8c09-12cc7902a8ba.jpg"%}');"></a>
-          <a  style="background-image: url('{% static "images/new_ai/1779289852746.png"%}');"></a>
+    <div class="ad-banner-wrapper">
+        <div class="ad-banner-row">
+            {% for item in ad_section_second.image.all|slice:":2" %}
+                <a href="{% url 'detail' item.product.slug %}" class="ad-banner-item" style="background-image: url('{{ item.image.url }}');"></a>
+            {% endfor %}
         </div>
-    {% endif%}
+    </div>
+    {% else %}
+        <div class="ad-banner-wrapper">
+            <div class="ad-banner-row">
+                <a class="ad-banner-item" style="background-image: url('{% static "images/new_ai/61809025-60bc-4518-8c09-12cc7902a8ba.jpg" %}');"></a>
+                <a class="ad-banner-item" style="background-image: url('{% static "images/new_ai/1779289852746.png" %}');"></a>
+            </div>
+        </div>
+    {% endif %}
+
+
+
     <div class="last-product-container">
       <!-- header با عنوان و دکمه‌های اسکرول -->
       <div class="last-product-header">
@@ -286,7 +241,7 @@
         
     </div> -->
 </div>
-<<div class="about-section container" style="background-image: url('{% static "images/new_ai/ChatGPT Image Jun 1, 2026, 01_03_32 PM.png"%}');">
+<div class="about-section container" style="background-image: url('{% static "images/new_ai/ChatGPT Image Jun 1, 2026, 01_03_32 PM.png"%}');">
 
 </div> 
 <div class="container">
@@ -374,79 +329,6 @@
                 </div>
             </a>
             {% endfor %}
-            {% comment %} <!-- ۱۰ کارت به صورت استاتیک در HTML قرار داده شده (از بک‌اند بعداً جایگزین می‌شود) -->
-            <!-- هر کارت شامل یک تصویر با src خالی (placeholder) و کامنت مشتری -->
-            <div class="card-item">
-                <img class="product-img" src="{% static 'images/new_ai/ComfyUI_00261_.png'%}" alt="عکس محصول - قابل تعویض">
-                <div class="comment-section">
-                    <div class="comment-text">کیفیت فوق‌العاده عالی! دقیقاً مطابق توضیحات. خیلی راضی هستم و به دوستان هم پیشنهاد می‌کنم.</div>
-                    <div class="customer-name"><span>✦ فاطمه کریمی ✦</span></div>
-                </div>
-            </div>
-            <div class="card-item">
-                <img class="product-img" src="{% static 'images/new_ai/ComfyUI_00140_.png'%}" alt="عکس محصول - قابل تعویض">
-                <div class="comment-section">
-                    <div class="comment-text">ارسال سریع و بسته‌بندی حرفه‌ای. محصول بی‌نظیر بود، حتماً دوباره خرید می‌کنم.</div>
-                    <div class="customer-name"><span>✦ امیرحسین نادری ✦</span></div>
-                </div>
-            </div>
-            <div class="card-item">
-                <img class="product-img" src="{% static 'images/new_ai/1779290230836 (1).png'%}" alt="عکس محصول - قابل تعویض">
-                <div class="comment-section">
-                    <div class="comment-text">واقعاً عالی بود! از کیفیت ساخت تا طراحی، همه‌چیز بی‌نقص. ممنون از تیم راز.</div>
-                    <div class="customer-name"><span>✦ سارا محمدیان ✦</span></div>
-                </div>
-            </div>
-            <div class="card-item">
-                <img class="product-img" src="{% static 'images/new_ai/ComfyUI_00190_.png'%}" alt="عکس محصول - قابل تعویض">
-                <div class="comment-section">
-                    <div class="comment-text">خرید لذت‌بخشی بود. جنس مرغوب و قیمت مناسب، پشتیبانی عالی. دلم می‌خواهد دوباره سفارش بدم.</div>
-                    <div class="customer-name"><span>✦ رضا میرزایی ✦</span></div>
-                </div>
-            </div>
-            <div class="card-item">
-                <img class="product-img" src="{% static 'images/new_ai/ComfyUI_00158_.png'%}" alt="عکس محصول - قابل تعویض">
-                <div class="comment-section">
-                    <div class="comment-text">از هر نظر عالی، حتی از تصوراتم بهتر بود. ممنون بابت مشاوره عالی و محصول باکیفیت.</div>
-                    <div class="customer-name"><span>✦ زهرا احمدی ✦</span></div>
-                </div>
-            </div>
-            <div class="card-item">
-                <img class="product-img" src="{% static 'images/new_ai/ComfyUI_00136_.png'%}" alt="عکس محصول - قابل تعویض">
-                <div class="comment-section">
-                    <div class="comment-text">سرعت ارسال شگفت‌انگیز! محصول دقیقاً مطابق توضیحات. خوشحالم این انتخاب رو داشتم.</div>
-                    <div class="customer-name"><span>✦ علی حسنی ✦</span></div>
-                </div>
-            </div>
-            <div class="card-item">
-                <img class="product-img" src="{% static 'images/new_ai/ComfyUI_00144_.png'%}" alt="عکس محصول - قابل تعویض">
-                <div class="comment-section">
-                    <div class="comment-text">طراحی زیبا و کیفیت ساخت بالا. ارزش خرید را دارد. تیم راز حرفه‌ای عمل می‌کند. ممنونم.</div>
-                    <div class="customer-name"><span>✦ مهدی طهماسبی ✦</span></div>
-                </div>
-            </div>
-            <div class="card-item">
-                <img class="product-img" src="{% static 'images/new_ai/1779290322391.png'%}" alt="عکس محصول - قابل تعویض">
-                <div class="comment-section">
-                    <div class="comment-text">اولین خریدم بود و تجربه فوق‌العاده! بسته‌بندی شکیل و محصول بی‌نقص، دوباره سفارش میدم.</div>
-                    <div class="customer-name"><span>✦ لیلا قاسمی ✦</span></div>
-                </div>
-            </div>
-            <div class="card-item">
-                <img class="product-img" src="{% static 'images/new_ai/ComfyUI_00279_.png'%}" alt="عکس محصول - قابل تعویض">
-                <div class="comment-section">
-                    <div class="comment-text">خیلی خوشحالم که این محصول رو خریدم. کارایی عالی و مطابق نیازم. تشکر از تیم حرفه‌ای.</div>
-                    <div class="customer-name"><span>✦ پریسا موسوی ✦</span></div>
-                </div>
-            </div>
-            <div class="card-item">
-                <img class="product-img" src="{% static 'images/new_ai/ComfyUI_00135_.png'%}" alt="عکس محصول - قابل تعویض">
-                <div class="comment-section">
-                    <div class="comment-text">بهترین تجربه خرید آنلاین! ارسال سریع، پشتیبانی دلسوز و محصول عالی. صد درصد راضی.</div>
-                    <div class="customer-name"><span>✦ نوید رستمی ✦</span></div>
-                </div>
-            </div> {% endcomment %}
-            <!-- برای ایجاد لوپ بینهایت، یک کپی از ۱۰ کارت بالا اضافه می‌شود (با جاوااسکریپت) -->
         </div>
     </div>
 </div>
