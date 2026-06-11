@@ -42,6 +42,7 @@ class Home(ListView):
         context['blogs']=Blog.objects.all().order_by('-created')[:4]
         context['ad_section_first']=AdSection.objects.exclude(state="repose",title="").prefetch_related('image').select_related('category_main').first()
         context['ad_section_second']=AdSection.objects.filter(state='active',title__isnull=True).prefetch_related('image').select_related('category_main').first()
+        context['current_page']="home"
         
         # ========== سبد خرید حذف شد - به جای آن از cart app استفاده کن ==========
         # if self.request.user.is_authenticated:

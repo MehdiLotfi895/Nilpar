@@ -2602,49 +2602,73 @@ footer {
     position: fixed;
     bottom: 0;
     left: 0;
-    width: 100vw;
-    background: #ffffff;
+    width: 100%;
+    background: #fff;
     box-shadow: 0 -2px 15px rgba(0, 0, 0, 0.1);
     border-top: 1px solid #e2e8f0;
     z-index: 1000;
-    padding: 8px 0 8px;
+    padding: 8px 0;
 }
 
-/* کانتینر داخلی برای چیدمان منوها */
 .nav-container {
     display: flex;
-    justify-content: space-around;
     align-items: center;
-    margin: 0 auto;
-    padding: 0 10px;
+    justify-content: center;
+    width: 100%;
 }
 
-/* هر آیتم منو */
 .nav-item {
+    flex: 1; /* هر آیتم به یک اندازه فضا می‌گیرد */
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
     text-decoration: none;
     color: #A9A9A9;
     gap: 5px;
-    flex: 1;
-    transition: color 0.2s;
+    transition: color .2s;
+    position: relative;
+    min-width: 0;
 }
 
-.nav-item i {
+.nav-item i,
+.nav-item svg {
     font-size: 24px;
+    width: 24px;
+    height: 24px;
 }
 
 .nav-label {
     font-size: 11px;
     font-weight: 500;
+    white-space: nowrap;
 }
 
-/* حالت فعال (اختیاری) */
 .nav-item.active {
     color: #3a3a3a;
 }
 
+.cart-counter {
+    position: absolute;
+    top: -2px;
+    right: 50%;
+    transform: translateX(18px);
+    background: var(--primary);
+    width: 20px;
+    height: 20px;
+    border-radius: 5px;
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 11px;
+    font-weight: bold;
+    border: 2px solid #fff;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    -ms-border-radius: 5px;
+    -o-border-radius: 5px;
+}
 /* ============================================= */
 /* شرط مخفی شدن در 1024px و بالاتر (display: none) */
 /* ============================================= */
@@ -2658,18 +2682,10 @@ footer {
         margin: 20px 0;
     }
     .image-slider-container {
-        height: 180px !important;
-        padding: 0 10px;
+        height: 150px !important;
     }
     .slider-nav{
         display: none !important;
-    }
-    .slider-image{
-        border-radius: 5px;
-        -webkit-border-radius: 5px;
-        -moz-border-radius: 5px;
-        -ms-border-radius: 5px;
-        -o-border-radius: 5px;
     }
     .search-trigger{
         font-size: 13px;
@@ -3264,3 +3280,6 @@ footer {
         font-size: 15px;
     }
 }
+
+
+

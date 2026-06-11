@@ -15,6 +15,7 @@ class CartDetailView(TemplateView):
         context['cart_items'] = cart_service.get_items()
         context['total_price'] = cart_service.get_total_price()
         context['total_items'] = cart_service.get_total_items()
+        context['current_page']="orderbasket"
         return context
 
 class CartAddView(View):

@@ -311,23 +311,20 @@
 </div>
 
 <div class="testimonial-master">
-    <!-- هدر با عنوان و دکمه space-between -->
     <div class="header-row">
         <h1 class="title">نظرات مشتری ها</h1>
-        <div class="view-all-testimonial"> همه نظرات </div>
+        <div class="view-all-testimonial">همه نظرات</div>
     </div>
-
-    <!-- کاروسل خودکار (غیرقابل اسکرول توسط کاربر) -->
     <div class="carousel-cage" id="carouselCage">
         <div class="slider-track" id="sliderTrack">
             {% for comment in comments %}
             <a class="card-item" href="{% url 'detail' comment.product.slug %}">
                 <div class="product-img">
-                   <img src="{{ comment.product.images.first.image.url }}" alt="عکس محصول - قابل تعویض">
+                    <img src="{{ comment.product.images.first.image.url }}" alt="عکس محصول">
                 </div>
                 <div class="comment-section">
-                    <div class="comment-text">{{comment.description}}</div>
-                    <div class="customer-name"><span>✦ {{comment.user.first_name}} {{comment.user.last_name}} ✦</span></div>
+                    <div class="comment-text">{{ comment.description }}</div>
+                    <div class="customer-name"><span>✦ {{ comment.user.first_name }} {{ comment.user.last_name }} ✦</span></div>
                 </div>
             </a>
             {% endfor %}

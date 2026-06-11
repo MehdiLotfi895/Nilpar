@@ -394,7 +394,7 @@
             <div class="mobile-header-menu">
                 <i class="fas fa-bars"></i>
             </div>
-            <a class="mobile-header-logo">
+            <a class="mobile-header-logo" href="{% url "home" %}">
                 <img src="/static/images/new_ai/ComfyUI_00286_.png" alt="logo">
             </a>
             <div class="mobile-header-search">
@@ -480,14 +480,22 @@
     <div class="bottom-nav">
         <div class="nav-container">
             <!-- خانه -->
-            <a href="{% url 'home'%}" class="nav-item active" id="nav-home">
+            <a href="{% url 'home'%}" class="nav-item {% if current_page == "home" %}active{% endif %}" id="nav-home">
                 <i class="fas fa-home"></i>
                 <span class="nav-label">خانه</span>
             </a>
             <!-- سبد خرید -->
-            <a href="{% url 'cart:cart_detail' %}" class="nav-item" id="nav-cart">
+            <!-- لینک سبد خرید در هدر / نویگیشن -->
+            <a href="{% url 'cart:cart_detail' %}" class="nav-item {% if current_page == "orderbasket" %}active{% endif %}" id="nav-cart" style="  position: relative;">
                 <i class="fas fa-shopping-cart"></i>
                 <span class="nav-label">سبد خرید</span>
+                
+                <!-- شمارنده فقط در صورت وجود محصول در سبد -->
+                {% if user_order_basket.total_number > 0 %}
+                <span class="cart-counter">
+                    {{ user_order_basket.total_number }}
+                </span>
+                {% endif %}
             </a>
             <!-- دسته‌بندی -->
             <a href="#" class="nav-item" id="nav-category">

@@ -4,407 +4,805 @@
 {% block content %}
 
 <style>
+/* =============================================
+   سبد خرید - نسخه نهایی
+   ============================================= */
 
-    /* ======================
-    کانتینر اصلی
- ====================== */
- .basket-page-container {
-     width: 95%;
-     margin: 30px auto;
-     font-family: sans-serif;
- }
- 
- .basket-content {
-     display: flex;
-     gap: 20px;
-     align-items: flex-start;
-     flex-wrap: nowrap; /* مهم برای اینکه ستون سمت چپ پایین نیاید */
- }
- 
- /* ======================
-    ستون خلاصه سفارش
- ====================== */
- .basket-order-section {
-     flex: 0 0 25%;
-     min-width: 250px;
-     position: sticky;
-     top: 180px;
-     align-self: flex-start;
- }
- 
- .order-summary-card {
-     background: #fff;
-     border: 1px solid #ececec;
-     border-radius: 5px;
-     padding: 20px;
- }
- 
- .order-summary-title {
-     font-size: 17px;
-     font-weight: 600;
-     margin-bottom: 25px;
-     text-align: center;
- }
- 
- .order-info-row,
- .order-total-row {
-     display: flex;
-     justify-content: space-between;
-     align-items: center;
-     margin-bottom: 15px;
- }
- 
- .order-total-row {
-     border-top: 1px solid #eee;
-     padding-top: 20px;
-     margin-top: 20px;
- }
- 
- .order-info-row .label,
- .order-total-row .label {
-     color: black;
-     font-size:14px;
-     {% comment %} font-weight: 600; {% endcomment %}
- }
- 
- .order-info-row .value {
-     font-weight: 500;
-     color: #333;
-     font-size:14px;
- }
- 
- .order-total-row .value {
-     font-size: 14px;
-     font-weight: 500;
-     color: black;
- }
- 
- /* دکمه‌ها */
- .pre-factor-btn,
- .submit-order-btn,
- .discount-code-box button {
-     width: 100%;
-     border-radius: 5px;
-     font-weight: 600;
-     cursor: pointer;
-     transition: 0.3s;
- }
- 
- .pre-factor-btn {
-     height: 50px;
-     background: #fff;
-     border: 1px solid #ddd;
-     margin-top: 20px;
- }
- 
- .submit-order-btn {
-     height: 50px;
-     background: #747667;
-     color: #fff;
-     border: none;
-     margin-top: 15px;
-     font-size: 14px;
- }
- 
- .pre-factor-btn:hover,
- .submit-order-btn:hover,
- .discount-code-box button:hover {
-     opacity: 0.85;
- }
- 
- /* کد تخفیف */
- .discount-code-box {
-     margin-top: 15px;
- }
- 
- .discount-code-box input {
-     width: 100%;
-     height: 45px;
-     border: 1px solid #ddd;
-     border-radius: 8px;
-     padding: 0 12px;
- }
- 
- .discount-code-box button {
-     margin-top: 10px;
-     height: 45px;
-     background: #747667;
-     color: #fff;
-     border: none;
- }
- 
- /* ======================
-    جدول محصولات
- ====================== */
- .basket-products-section {
-     flex: 1 1 70%;
-     min-width: 600px;
-     background: #fff;
-     border: 1px solid #ececec;
-     border-radius: 5px;
-     overflow-x: auto;
- }
- 
- .basket-table {
-     width: 100%;
-     border-collapse: collapse;
- }
- 
- .basket-table thead {
-     background: #fafafa;
-     font-size:14px;
- }
- 
- .basket-table th,
- .basket-table td {
-     padding: 20px 15px;
-     text-align: center;
-     border-bottom: 1px solid #f1f1f1;
- }
- 
- .product-cell {
-     display: flex;
-     align-items: center;
-     gap: 15px;
-     text-align: right;
- }
- 
- .product-image {
-     width: 120px;
-     height: 120px;
-     border-radius: 8px;
-     border: 1px solid #eee;
-     overflow: hidden;
-     padding:10px;
- }
- 
- .product-image img {
-     width: 100%;
-     height: 100%;
-     object-fit: contain;
- }
- 
- .product-info {
-     display: flex;
-     flex-direction: column;
-     gap: 5px;
-     text-align: right;
- }
- 
- .product-name {
-     font-size: 14px;
-     font-weight: 600;
- }
- 
- .product-meta {
-     font-size: 13px;
-     color: #666;
- }
- 
- .shipping-box {
-     margin-top: 5px;
-     border: 1px solid #bbb;
-     border-radius: 5px;
-     padding: 8px;
-     font-size: 12px;
- }
- 
- .color-box {
-     display: flex;
-     justify-content: center;
-     align-items: center;
-     gap: 8px;
-     font-size:15px;
- }
- 
- .color-dot {
-    display:inline-block;
-    width:25px;
-    height:25px;
-    min-width:25px;
-    min-height:25px;
-    border-radius:50%;
-    border:1px solid #ddd;
- }
- 
- .quantity-form {
-     display: flex;
-     justify-content: center;
-     align-items: center;
-     gap: 8px;
-     border:1px solid black;
-     padding:5px;
-     border-radius: 5px;
- }
- 
- .quantity-btn {
-     width: 20px;
-     height: 20px;
-     border: none;
-     background: #f2f2f2;
-     border-radius: 5px;
-     cursor: pointer;
-     font-size: 10px;
-     display:flex;
-     align-items:center;
-     justify-content:center;
- }
- 
- .quantity-value {
-     min-width: 20px;
-     text-align: center;
-     font-weight: 600;
-     font-size:14px;
- }
- 
- .discount-badge {
-     color: #2e7d32;
-     font-size: 13px;
-     font-weight: 700;
- }
- 
- .remove-btn {
-     width: 38px;
-     height: 38px;
-     border: none;
-     border-radius: 50%;
-     background: #f2f2f2;
-     color: #999;
-     cursor: pointer;
-     display:flex;
-     justify-content:center;
-     align-items:center;
- }
- 
- .remove-btn:hover {
-     background: #ffe5e5;
-     color: #d63031;
- }
- 
- .price {
-     color: #4a4a4a;
-     font-weight:600;
-     font-size:14px;
- }
- 
- /* ======================
-    ریسپانسیو
- ====================== */
- @media (max-width: 992px) {
-     .basket-content {
-         flex-direction: column;
-     }
-     .basket-order-section,
-     .basket-products-section {
-         width: 100%;
-         min-width: 0;
-         position: relative;
-         top: 0;
-     }
-     .basket-table {
-         display: block;
-         overflow-x: auto;
-     }
- }
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+
+body {
+    overflow-x: hidden;
+}
+
+/* =============================================
+   متغیرها
+   ============================================= */
+:root {
+    --clr-primary:        #747667;
+    --clr-primary-dark:   #5e5f54;
+    --clr-surface:        #ffffff;
+    --clr-bg:             #f5f5f3;
+    --clr-border:         #e5e5e1;
+    --clr-border-md:      #d0d0ca;
+    --clr-text:           #1a1a18;
+    --clr-text-muted:     #72726c;
+    --clr-success-bg:     #e8f5e9;
+    --clr-success-text:   #2e7d32;
+    --clr-danger-bg:      #ffebee;
+    --clr-danger-text:    #c62828;
+    --radius-sm:  6px;
+    --radius-md:  10px;
+    --radius-lg:  14px;
+    --radius-xl:  30px;
+    --shadow-sm:  0 1px 3px rgba(0,0,0,.06);
+    --transition: 0.2s ease;
+}
+
+/* =============================================
+   کانتینر اصلی
+   ============================================= */
+.basket-page {
+    width: 95%;
+    max-width: 1280px;
+    margin: 20px auto 60px;
+    direction: rtl;
+}
+
+.basket-layout {
+    display: flex;
+    gap: 24px;
+    align-items: flex-start;
+}
+
+/* =============================================
+   لیست محصولات
+   ============================================= */
+.basket-products {
+    flex: 1;
+    background: var(--clr-surface);
+    border: 1px solid var(--clr-border);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+}
+
+.basket-products-header {
+    display: flex;
+    justify-content: space-between;
+    padding: 16px 20px;
+    background: #fafaf9;
+    border-bottom: 1px solid var(--clr-border);
+}
+
+.basket-products-title {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--clr-text);
+}
+
+.basket-products-count {
+    font-size: 13px;
+    color: var(--clr-text-muted);
+    background: var(--clr-bg);
+    padding: 3px 10px;
+    border-radius: 20px;
+    border: 1px solid var(--clr-border);
+}
+
+/* =============================================
+   کارت محصول دسکتاپ
+   ============================================= */
+.product-row {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 20px;
+    border-bottom: 1px solid var(--clr-border);
+    position: relative;
+}
+
+.product-row:last-child {
+    border-bottom: none;
+}
+
+.product-thumb {
+    width: 100px;
+    height: 100px;
+    flex-shrink: 0;
+    background: #fafafa;
+    border: 1px solid var(--clr-border);
+    border-radius: var(--radius-md);
+    padding: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.product-thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.product-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.product-name {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--clr-text);
+}
+
+.product-meta {
+    font-size: 12px;
+    color: var(--clr-text-muted);
+}
+
+.shipping-tag {
+    display: inline-block;
+    font-size: 10px;
+    color: var(--clr-text-muted);
+    background: var(--clr-bg);
+    border: 1px solid var(--clr-border);
+    border-radius: var(--radius-sm);
+    padding: 3px 8px;
+}
+
+.color-info {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    color: var(--clr-text-muted);
+}
+
+.color-dot {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    border: 1px solid #ddd;
+}
+
+/* قیمت دسکتاپ */
+.product-price-col {
+    text-align: center;
+    min-width: 110px;
+}
+
+.product-price {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--clr-text);
+}
+
+.price-unit {
+    font-size: 11px;
+    font-weight: 400;
+    color: var(--clr-text-muted);
+}
+
+.discount-badge {
+    display: inline-block;
+    margin-top: 5px;
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--clr-success-text);
+    background: var(--clr-success-bg);
+    padding: 2px 8px;
+    border-radius: 20px;
+}
+
+/* کنترل تعداد دسکتاپ */
+.qty-control {
+    display: flex;
+    align-items: center;
+    border: 1.5px solid var(--clr-border-md);
+    border-radius: var(--radius-xl);
+    height: 38px;
+    background: var(--clr-surface);
+}
+
+.qty-btn {
+    width: 38px;
+    height: 38px;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    color: var(--clr-text);
+    transition: background var(--transition);
+}
+
+
+.qty-divider {
+    width: 1px;
+    height: 20px;
+    background: var(--clr-border-md);
+}
+
+.qty-value {
+    min-width: 36px;
+    text-align: center;
+    font-weight: 600;
+    font-size: 14px;
+}
+
+/* دکمه حذف - فقط یک دکمه وجود دارد */
+.remove-btn {
+    width: 34px;
+    height: 34px;
+    border: none;
+    border-radius: 50%;
+    background: transparent;
+    color: var(--clr-text-light);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all var(--transition);
+}
+
+.remove-btn:hover {
+    background: var(--clr-danger-bg);
+    color: var(--clr-danger-text);
+}
+
+/* =============================================
+   خلاصه سفارش
+   ============================================= */
+.basket-summary {
+    width: 300px;
+    flex-shrink: 0;
+    position: sticky;
+    top: 160px;
+}
+
+.summary-card {
+    background: var(--clr-surface);
+    border: 1px solid var(--clr-border);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+}
+
+.summary-header {
+    padding: 16px 20px;
+    background: #fafaf9;
+    border-bottom: 1px solid var(--clr-border);
+    text-align: center;
+}
+
+.summary-title {
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.summary-body {
+    padding: 16px 20px;
+}
+
+.summary-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 0;
+    font-size: 13px;
+    border-bottom: 1px dashed var(--clr-border);
+}
+
+.summary-row:last-child {
+    border-bottom: none;
+}
+
+.summary-total {
+    display: flex;
+    justify-content: space-between;
+    padding: 14px 20px;
+    background: #fafaf9;
+    border-top: 2px solid var(--clr-border-md);
+    font-weight: 700;
+}
+
+.pay-btn {
+    display: block;
+    margin: 16px 20px 20px;
+    padding: 12px;
+    background: var(--clr-primary);
+    color: #fff;
+    text-align: center;
+    text-decoration: none;
+    border-radius: var(--radius-md);
+    font-weight: 700;
+    font-size: 15px;
+    transition: background var(--transition);
+}
+
+.pay-btn:hover {
+    background: var(--clr-primary-dark);
+}
+
+/* =============================================
+   سبد خالی
+   ============================================= */
+.empty-basket {
+    text-align: center;
+    padding: 60px 20px;
+}
+
+.empty-basket i {
+    font-size: 55px;
+    color: var(--clr-border-md);
+    margin-bottom: 15px;
+}
+
+.empty-basket h3 {
+    font-size: 18px;
+    margin-bottom: 8px;
+}
+
+.empty-basket p {
+    font-size: 14px;
+    color: var(--clr-text-muted);
+    margin-bottom: 20px;
+}
+
+.empty-basket a {
+    display: inline-block;
+    padding: 10px 28px;
+    background: var(--clr-primary);
+    color: #fff;
+    border-radius: var(--radius-md);
+    text-decoration: none;
+    font-weight: 600;
+}
+
+/* =============================================
+   تبلت و دسکتاپ کوچک (تا 1100px)
+   ============================================= */
+@media (max-width: 1100px) {
+    .basket-page {
+        width: 95%;
+    }
     
-    </style>
+    .basket-layout {
+        gap: 18px;
+    }
+    
+    .basket-summary {
+        width: 280px;
+    }
+    
+    .product-thumb {
+        width: 85px;
+        height: 85px;
+    }
+}
+
+/* =============================================
+   زیر 1000px - ستون خلاصه به زیر منتقل می‌شود
+   ============================================= */
+@media (max-width: 1000px) {
+    .basket-layout {
+        flex-direction: column;
+    }
+    
+    .basket-summary {
+        width: 100%;
+        position: static;
+    }
+    
+    .basket-products {
+        width: 100%;
+    }
+}
+
+/* =============================================
+   موبایل (زیر 768px)
+   ============================================= */
+@media (max-width: 767px) {
+    .basket-page {
+        width: 100%;
+        padding: 0 12px;
+        margin: 10px auto 50px;
+    }
+    
+    /* کارت عمودی */
+    .product-row {
+        flex-direction: column;
+        align-items: stretch;
+        padding: 16px;
+        gap: 12px;
+    }
+    
+    .product-thumb {
+        width: 100%;
+        height: 200px;
+    }
+    
+    .product-thumb img {
+        max-height: 180px;
+    }
+    
+    .product-info {
+        width: 100%;
+    }
+    
+    .product-name {
+        font-size: 15px;
+    }
+    
+    /* مخفی کردن قیمت و تعداد دسکتاپ */
+    .product-price-col,
+    .quantity-col {
+        display: none;
+    }
+    
+    /* ردیف قیمت و تعداد موبایل */
+    .mobile-info-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-top: 12px;
+        padding-top: 12px;
+        border-top: 1px solid var(--clr-border);
+        gap: 16px;
+        flex-wrap: wrap;
+    }
+    
+    .mobile-price {
+        display: flex;
+        align-items: baseline;
+        gap: 8px;
+        flex-wrap: wrap;
+    }
+    
+    .current-price-mobile {
+        font-size: 18px;
+        font-weight: 800;
+        color: var(--clr-text);
+    }
+    
+    .price-unit-mobile {
+        font-size: 11px;
+        font-weight: 400;
+        color: var(--clr-text-muted);
+    }
+    
+    .old-price-mobile {
+        font-size: 13px;
+        color: var(--clr-text-light);
+        text-decoration: line-through;
+    }
+    
+    .discount-mobile {
+        font-size: 11px;
+        font-weight: 700;
+        color: var(--clr-success-text);
+        background: var(--clr-success-bg);
+        padding: 3px 10px;
+        border-radius: 20px;
+    }
+    
+    .mobile-qty {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+    
+    .qty-label {
+        font-size: 12px;
+        color: var(--clr-text-muted);
+    }
+    
+    .qty-control-mobile {
+        display: flex;
+        align-items: center;
+        border: 1.5px solid var(--clr-border-md);
+        border-radius: var(--radius-xl);
+        height: 36px;
+        background: var(--clr-surface);
+    }
+    
+    .qty-control-mobile .qty-btn {
+        width: 36px;
+        height: 36px;
+        border: none;
+        background: transparent;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 12px;
+        color: var(--clr-text);
+    }
+    
+    .qty-control-mobile .qty-value {
+        min-width: 32px;
+        text-align: center;
+        font-weight: 600;
+        font-size: 14px;
+        display:flex;
+        justify-content:center;
+    }
+    
+    /* دکمه حذف - فقط در موبایل در سمت چپ بالا */
+    .remove-btn-mobile {
+        position: absolute;
+        top: 12px;
+        left: 12px;
+        width: 32px;
+        height: 32px;
+        border: none;
+        border-radius: 50%;
+        background: rgba(255,255,255,0.95);
+        color: var(--clr-text-light);
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 14px;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        transition: all var(--transition);
+        z-index: 10;
+    }
+    
+    .remove-btn-mobile:active {
+        background: var(--clr-danger-bg);
+        color: var(--clr-danger-text);
+    }
+    
+    /* مخفی کردن دکمه حذف دسکتاپ در موبایل */
+    .remove-desktop {
+        display: none;
+    }
+    
+    /* خلاصه سفارش موبایل */
+    .summary-header {
+        padding: 12px 16px;
+    }
+    
+    .summary-title {
+        font-size: 15px;
+    }
+    
+    .summary-body {
+        padding: 12px 16px;
+    }
+    
+    .summary-row {
+        font-size: 13px;
+        padding: 8px 0;
+    }
+    
+    .summary-total {
+        padding: 12px 16px;
+    }
+    
+    .pay-btn {
+        margin: 12px 16px 16px;
+        padding: 11px;
+        font-size: 14px;
+    }
+}
+
+/* نمایش/عدم نمایش المان‌ها */
+.mobile-info-row {
+    display: none;
+}
+
+.remove-btn-mobile {
+    display: none;
+}
+
+
+
+@media (max-width: 767px) {
+    .mobile-info-row {
+        display: flex;
+    }
+    
+    .remove-btn-mobile {
+        display: flex;
+    }
+}
+
+/* موبایل خیلی کوچک (زیر 400px) */
+@media (max-width: 400px) {
+    .product-thumb {
+        height: 170px;
+    }
+    
+    .current-price-mobile {
+        font-size: 16px;
+    }
+    
+    .discount-mobile {
+        font-size: 10px;
+    }
+    
+    .qty-control-mobile {
+        height: 32px;
+    }
+    
+    .qty-control-mobile .qty-btn {
+        width: 32px;
+        height: 32px;
+        font-size: 11px;
+    }
+    
+    .qty-control-mobile .qty-value {
+        min-width: 28px;
+        font-size: 13px;
+    }
+}
+
+</style>
+
 {% include 'checkout_steps.html' with current_step=1 %}
 
-<div class="basket-page-container">
-    <div class="basket-content">
-        <!-- جدول محصولات -->
-        <div class="basket-products-section">
-            <table class="basket-table">
-                <thead>
-                    <tr>
-                        <th>محصول</th>
-                        <th>رنگ</th>
-                        <th>قیمت</th>
-                        <th>تعداد</th>
-                        <th>تخفیف</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for item in cart_items %}
-                    <tr>
-                        <td>
-                            <div class="product-cell">
-                                <form method="POST" action="{% url 'cart:cart_remove' item.product.id item.color.id %}">
-                                    {% csrf_token %}
-                                    <button type="submit" class="remove-btn"><i class="fas fa-times"></i></button>
-                                </form>
-                                <div class="product-image">
-                                    <img src="{{ item.product.images.first.image.url }}" alt="{{ item.product.name }}">
-                                </div>
-                                <div class="product-info">
-                                    <div class="product-name">{{ item.product.name }}</div>
-                                    <div class="shipping-box">ارسال از 10 روز کاری آینده</div>
-                                    <div class="product-meta">سایز: {{ item.product.dimensions }}</div>
-                                </div>
-                            </div>
-                        </td>
-                        <td>
-                            <div class="color-box">
-                                <span class="color-dot" style="background:{{ item.color.color_code }}"></span>
-                                {{ item.color.color_name }}
-                            </div>
-                        </td>
-                        <td><span class="price">{{ item.final_price|persian_intcomma }} تومان</span></td>
-                        <td>
-                            <form method="POST" action="{% url 'cart:cart_update' item.product.id item.color.id %}" class="quantity-form">
-                                {% csrf_token %}
-                                <button class="quantity-btn" name="action" value="increase"><i class="fas fa-plus "></i></button>
-                                <span class="quantity-value">{{ item.quantity }}</span>
-                                <button class="quantity-btn" name="action" value="decrease"><i class="fas fa-minus "></i></button>
-                            </form>
-                        </td>
-                        <td>
-                            {% if item.product.off %}
-                                <span class="discount-badge">{{ item.product.off }}٪</span>
+<div class="basket-page">
+    <div class="basket-layout">
+
+        <!-- ==================== ستون محصولات ==================== -->
+        <div class="basket-products">
+            <div class="basket-products-header">
+                <span class="basket-products-title"> سبد خرید</span>
+                <span class="basket-products-count">{{ cart_items|length }} محصول</span>
+            </div>
+
+            {% if cart_items %}
+                {% for item in cart_items %}
+                <div class="product-row">
+
+                    <!-- دکمه حذف دسکتاپ -->
+                    <div class="remove-desktop">
+                        <form method="POST" action="{% url 'cart:cart_remove' item.product.id item.color.id %}">
+                            {% csrf_token %}
+                            <button type="submit" class="remove-btn" title="حذف">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </form>
+                    </div>
+
+                    <!-- دکمه حذف موبایل -->
+                    <form method="POST" action="{% url 'cart:cart_remove' item.product.id item.color.id %}">
+                        {% csrf_token %}
+                        <button type="submit" class="remove-btn-mobile" title="حذف">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </form>
+
+                    <!-- تصویر محصول -->
+                    <div class="product-thumb">
+                        {% with item.product.images.all|first as first_image %}
+                            {% if first_image %}
+                                <img src="{{ first_image.image.url }}" alt="{{ item.product.name }}" loading="lazy">
                             {% else %}
-                                _
+                                <img src="{% static 'images/no-image.png' %}" alt="بدون تصویر">
                             {% endif %}
-                        </td>
-                        
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+                        {% endwith %}
+                    </div>
+
+                    <!-- اطلاعات محصول -->
+                    <div class="product-info">
+                        <div class="product-name">{{ item.product.name }}</div>
+                        <div class="product-meta">سایز: {{ item.product.dimensions|default:"-" }}</div>
+                        <div class="shipping-tag"> ارسال از ۱۰ روز کاری آینده</div>
+                        <div class="color-info">
+                            <span class="color-dot" style="background: {{ item.color.color_code }}"></span>
+                            {{ item.color.name }}
+                        </div>
+
+                        <!-- ردیف قیمت و تعداد مخصوص موبایل -->
+                        <div class="mobile-info-row">
+                            <div class="mobile-price">
+                                <span class="current-price-mobile">
+                                    {{ item.final_price|persian_intcomma }}
+                                    <span class="price-unit-mobile">تومان</span>
+                                </span>
+                                {% if item.product.off %}
+                                    <del class="old-price-mobile">{{ item.product.old_price|persian_intcomma }} تومان</del>
+                                    <span class="discount-mobile">{{ item.product.off }}% تخفیف</span>
+                                {% endif %}
+                            </div>
+                            <div class="mobile-qty">
+                                <span class="qty-label">تعداد:</span>
+                                <form method="POST" action="{% url 'cart:cart_update' item.product.id item.color.id %}" style="display: inline;">
+                                    {% csrf_token %}
+                                    <div class="qty-control-mobile">
+                                        <button type="submit" class="qty-btn" name="action" value="increase">
+                                            <i class="fas fa-plus"></i>
+                                        </button>
+                                        <span class="qty-divider"></span>
+                                        <span class="qty-value">{{ item.quantity }}</span>
+                                        <span class="qty-divider"></span>
+                                        <button type="submit" class="qty-btn" name="action" value="decrease">
+                                            <i class="fas fa-minus"></i>
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- قیمت دسکتاپ -->
+                    <div class="product-price-col">
+                        <div class="product-price">
+                            {{ item.final_price|persian_intcomma }}
+                            <span class="price-unit">تومان</span>
+                        </div>
+                        {% if item.product.off %}
+                            <div class="discount-badge">{{ item.product.off }}% تخفیف</div>
+                        {% endif %}
+                    </div>
+
+                    <!-- تعداد دسکتاپ -->
+                    <div class="quantity-col">
+                        <form method="POST" action="{% url 'cart:cart_update' item.product.id item.color.id %}">
+                            {% csrf_token %}
+                            <div class="qty-control">
+                                <button type="submit" class="qty-btn" name="action" value="increase">
+                                    <i class="fas fa-plus"></i>
+                                </button>
+                                <span class="qty-divider"></span>
+                                <span class="qty-value">{{ item.quantity }}</span>
+                                <span class="qty-divider"></span>
+                                <button type="submit" class="qty-btn" name="action" value="decrease">
+                                    <i class="fas fa-minus"></i>
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+
+                </div>
+                {% endfor %}
+
+            {% else %}
+                <div class="empty-basket">
+                    <i class="fas fa-shopping-cart"></i>
+                    <h3>سبد خرید شما خالی است</h3>
+                    <p>محصولات مورد نظر خود را به سبد اضافه کنید</p>
+                    <a href="{% url 'home' %}"> شروع خرید</a>
+                </div>
+            {% endif %}
         </div>
-        
 
-
-        <div class="basket-order-section">
-            <div class="order-summary-card">
-                <h3 class="order-summary-title">خلاصه سفارش</h3>
-
-                <div class="order-info-row">
-                    <span class="label">تعداد کالا</span>
-                    <span class="value">{{ user_order_basket.total_number }} عدد</span>
+        <!-- ==================== ستون خلاصه سفارش ==================== -->
+        {% if cart_items %}
+        <div class="basket-summary">
+            <div class="summary-card">
+                <div class="summary-header">
+                    <h3 class="summary-title"> خلاصه سفارش</h3>
                 </div>
-
-                <div class="order-info-row">
-                    <span class="label">جمع جزء</span>
-                    <span class="value">{{ user_order_basket.total_price|persian_intcomma }} تومان</span>
+                <div class="summary-body">
+                    <div class="summary-row">
+                        <span>تعداد کالا</span>
+                        <span>{{ user_order_basket.total_number }} عدد</span>
+                    </div>
+                    <div class="summary-row">
+                        <span>جمع مبلغ</span>
+                        <span>{{ user_order_basket.total_price|persian_intcomma }} تومان</span>
+                    </div>
+                    <div class="summary-row">
+                        <span>هزینه ارسال</span>
+                        <span>پس کرایه</span>
+                    </div>
                 </div>
-
-                <div class="order-info-row">
-                    <span class="label">حمل و نقل</span>
-                    <span class="value">پس کرایه شهرهای تهران</span>
+                <div class="summary-total">
+                    <span> مبلغ قابل پرداخت</span>
+                    <span class="total-price">{{ user_order_basket.total_price|persian_intcomma }} تومان</span>
                 </div>
-
-                <div class="order-total-row">
-                    <span class="label">مبلغ قابل پرداخت</span>
-                    <span class="value">{{ user_order_basket.total_price|persian_intcomma }} تومان</span>
-                </div>
-
-                {% comment %} <button class="pre-factor-btn">درخواست پیش فاکتور</button> {% endcomment %}
-                <a href="{% url 'ordering' %}">
-                    <button class="submit-order-btn">اقدام به پرداخت</button>
-                </a>
-
+                <a href="{% url 'ordering' %}" class="pay-btn">ثبت سفارش</a>
             </div>
         </div>
+        {% endif %}
+
     </div>
 </div>
 

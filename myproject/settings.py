@@ -334,3 +334,8 @@ KAVENEGAR_API_KEY = os.getenv("KAVENEGAR_API_KEY")
 
 KAVENEGAR_SENDER = os.getenv("KAVENEGAR_SENDER")
 
+
+
+CSRF_TRUSTED_ORIGINS = [
+    "https://rumor-roving-goldfish.ngrok-free.dev",
+]

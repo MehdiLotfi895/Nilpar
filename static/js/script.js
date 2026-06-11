@@ -552,64 +552,64 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 
-// ═══════════════════════════════════════════════════════════════
-// SMART MOBILE HEADER
-// ═══════════════════════════════════════════════════════════════
-(function () {
+// // ═══════════════════════════════════════════════════════════════
+// // SMART MOBILE HEADER
+// // ═══════════════════════════════════════════════════════════════
+// (function () {
 
-    const mobileHeader = document.querySelector('.mobile-header-wrapper');
+//     const mobileHeader = document.querySelector('.mobile-header-wrapper');
 
-    if (!mobileHeader) return;
+//     if (!mobileHeader) return;
 
-    let lastScrollY = window.pageYOffset || document.documentElement.scrollTop;
-    let ticking = false;
+//     let lastScrollY = window.pageYOffset || document.documentElement.scrollTop;
+//     let ticking = false;
 
-    function updateHeader() {
+//     function updateHeader() {
 
-        if (document.body.classList.contains('scroll-locked')) {
-            lastScrollY = window.pageYOffset || document.documentElement.scrollTop;
-            ticking = false;
-            return;
-        }
+//         if (document.body.classList.contains('scroll-locked')) {
+//             lastScrollY = window.pageYOffset || document.documentElement.scrollTop;
+//             ticking = false;
+//             return;
+//         }
 
-        const currentScrollY =
-            window.pageYOffset || document.documentElement.scrollTop;
+//         const currentScrollY =
+//             window.pageYOffset || document.documentElement.scrollTop;
 
-        const diff = currentScrollY - lastScrollY;
+//         const diff = currentScrollY - lastScrollY;
 
-        //  بالای صفحه همیشه نمایش داده شود
-         if (currentScrollY < 100) {
-             mobileHeader.classList.remove('mobile-nav-hidden');
-        }
+//         //  بالای صفحه همیشه نمایش داده شود
+//          if (currentScrollY < 100) {
+//              mobileHeader.classList.remove('mobile-nav-hidden');
+//         }
 
-        // جلوگیری از لرزش روی اسکرول‌های ریز
-        else if (Math.abs(diff) > 5) {
+//         // جلوگیری از لرزش روی اسکرول‌های ریز
+//         else if (Math.abs(diff) > 5) {
 
-            // اسکرول به پایین
-            if (diff > 0) {
-                mobileHeader.classList.add('mobile-nav-hidden');
-            }
+//             // اسکرول به پایین
+//             if (diff > 0) {
+//                 mobileHeader.classList.add('mobile-nav-hidden');
+//             }
 
-            // اسکرول به بالا
-            else {
-                mobileHeader.classList.remove('mobile-nav-hidden');
-            }
-        }
+//             // اسکرول به بالا
+//             else {
+//                 mobileHeader.classList.remove('mobile-nav-hidden');
+//             }
+//         }
 
-        lastScrollY = currentScrollY;
-        ticking = false;
-    }
+//         lastScrollY = currentScrollY;
+//         ticking = false;
+//     }
 
-    window.addEventListener('scroll', function () {
+//     window.addEventListener('scroll', function () {
 
-        if (!ticking) {
-            requestAnimationFrame(updateHeader);
-            ticking = true;
-        }
+//         if (!ticking) {
+//             requestAnimationFrame(updateHeader);
+//             ticking = true;
+//         }
 
-    }, { passive: true });
+//     }, { passive: true });
 
-})();
+// })();
 
 
 
