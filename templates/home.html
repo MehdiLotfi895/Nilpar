@@ -8,24 +8,26 @@
 <!-- اسلایدر تصاویر بزرگ -->
 <div class="image-slider-section">
     <div class="image-slider-container">
-      <div class="image-slider-wrapper">
-        {% for item in slider_image %}
-          <a href='{% if item.category_main %}{% url 'products' item.category_main %}{% else %}{% url 'products' %}{% endif %}'>
-            <picture>
-              <source media="(max-width: 599px)" srcset="{{ item.mobile_image.url }}">
-              <source media="(min-width: 600px)" srcset="{{ item.desktop_image.url }}">
-              <img src="{{ item.desktop_image.url }}" alt="Slide" class="slider-image {% if forloop.first %}active{% endif %}">
-            </picture>
-          </a>
-        {% endfor %}
-      </div>
-      <button class="slider-nav slider-prev" id="sliderPrevBtn"><i class="fas fa-chevron-right"></i></button>
-      <button class="slider-nav slider-next" id="sliderNextBtn"><i class="fas fa-chevron-left"></i></button>
-      <div class="slider-dots" id="sliderDots">
-        {% for item in slider_image %}
-          <span class="dot {% if forloop.first %}active{% endif %}" data-index="{{ forloop.counter0 }}"></span>
-        {% endfor %}
-      </div>
+        <div class="image-slider-wrapper">
+            {% for item in slider_image %}
+                <a href='{% if item.category_main %}{% url 'products' item.category_main %}{% else %}{% url 'products' %}{% endif %}'>
+                    <img src="{{ item.desktop_image.url }}" 
+                         alt="Slide" 
+                         class="slider-image {% if forloop.first %}active{% endif %}">
+                </a>
+            {% endfor %}
+        </div>
+        <button class="slider-nav slider-prev" id="sliderPrevBtn">
+            <i class="fas fa-chevron-right"></i>
+        </button>
+        <button class="slider-nav slider-next" id="sliderNextBtn">
+            <i class="fas fa-chevron-left"></i>
+        </button>
+        <div class="slider-dots" id="sliderDots">
+            {% for item in slider_image %}
+                <span class="dot {% if forloop.first %}active{% endif %}" data-index="{{ forloop.counter0 }}"></span>
+            {% endfor %}
+        </div>
     </div>
 </div>
 <div class="container">

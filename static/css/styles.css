@@ -2658,8 +2658,7 @@ footer {
         margin: 20px 0;
     }
     .image-slider-container {
-        aspect-ratio: 2 / 3;
-        height: auto !important;
+        height: 180px !important;
         padding: 0 10px;
     }
     .slider-nav{
