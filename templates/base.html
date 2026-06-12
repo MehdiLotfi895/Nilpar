@@ -391,14 +391,106 @@
     
     <div class="mobile-header-wrapper">
         <div class="mobile-header-container">
-            <div class="mobile-header-menu">
+            <div class="mobile-header-menu" id="menuToggleBtn">
                 <i class="fas fa-bars"></i>
             </div>
             <a class="mobile-header-logo" href="{% url "home" %}">
                 <img src="/static/images/new_ai/ComfyUI_00286_.png" alt="logo">
             </a>
-            <div class="mobile-header-search">
+            <div class="mobile-header-search" id="magicOpenBtn">
                 <i class="fas fa-search"></i>
+            </div>
+        </div>
+    </div>
+    <div class="drawer-sidebar" id="drawerSidebar">
+        <div class="drawer-header">
+            <div class="drawer-title">منو</div>
+            <button class="drawer-close-btn" id="closeDrawerBtn">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="drawer-content">
+            <ul class="drawer-menu">
+                <li><a href="{% url "home" %}"><i class="fas fa-home"></i> صفحه اصلی</a></li>
+                <li><a href="{% url "products" %}"><i class="fas fa-store"></i> محصولات</a></li>
+                <li><a href="#"><i class="fas fa-info-circle"></i> درباره ما</a></li>
+                <li><a href="#"><i class="fas fa-phone-alt"></i> تماس با ما</a></li>
+                <li><a href="{% url 'order_list'%}"><img src="{% static 'images/shop.png'%}" alt="" style="width:18px"></i> لیست سفارش‌ها</a></li>
+                <li><a href="{% url 'user_activity'%}"><i class="fas fa-comments"></i> پرسش‌ها و دیدگاه‌ها</a></li>
+                <li><a href="{% url 'edit_profile'%}"><i class="fas fa-user-edit"></i> ویرایش پروفایل</a></li>
+                <li><a href="{% url 'addresses'%}"><i class="fas fa-map-marker-alt"></i> لیست آدرس‌ها</a></li>
+                <li><a href="{% url 'favorite_products' %}"><i class="fas fa-heart"></i> لیست علاقه‌مندی‌ها</a></li>
+                {% if  user.is_authenticated%}
+                    <li><a href="{% url 'logout'%}"><i class="fas fa-sign-out-alt"></i> خروج از حساب کاربری</a></li>
+                {% else %}
+                    <li><a href="{% url 'send_otp'%}"><i class="fas fa-sign-in-alt"></i> ورود یا ثبت نام</a></li>
+                {% endif %}
+            </ul>
+            <div class="drawer-divider"></div>
+            <div class="drawer-footer">
+                <span>نسخه 1.0</span>
+            </div>
+        </div>
+    </div>
+    
+    <!-- اوورلی تیره پشت سایدبار -->
+    <div class="drawer-overlay" id="drawerOverlay"></div>
+    <div class="supreme-fullscreen-layer" id="fullscreenLayer">
+        <div class="layer-inner-card">
+            <!-- هدر: دکمه بستن + فرم -->
+            <div class="layer-header">
+                <button class="close-layer-btn" id="closeLayerBtn">
+                    <i class="fas fa-arrow-right"></i>
+                </button>
+                <form class="layer-search-form" method="POST" action="">
+                    {% csrf_token %}
+                    <input type="text" class="layer-search-input"  placeholder="جستجو..."  name="search_input" autofocus >
+                    <button type="submit" class="layer-submit-btn" name="action" value="search_box">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </form>
+            </div>
+    
+            <!-- پیشنهادات -->
+            <div class="layer-suggestions">
+                <div class="layer-suggest-title">
+                    پیشنهادات
+                </div>
+                <div class="suggest-flex">
+                    <div class="suggest-chip" data-term="کابینت آشپزخانه">
+                        <i class="fas fa-search"></i> کابینت آشپزخانه
+                    </div>
+                    <div class="suggest-chip" data-term="کمد دیواری">
+                        <i class="fas fa-search"></i> کمد دیواری
+                    </div>
+                    <div class="suggest-chip" data-term="کتابخانه">
+                        <i class="fas fa-search"></i> کتابخانه
+                    </div>
+                    <div class="suggest-chip" data-term="کمد لباس">
+                        <i class="fas fa-search"></i> کمد لباس
+                    </div>
+                    <div class="suggest-chip" data-term="کابینت مدرن">
+                        <i class="fas fa-search"></i> کابینت مدرن
+                    </div>
+                    <div class="suggest-chip" data-term="کابینت کلاسیک">
+                        <i class="fas fa-search"></i> کابینت کلاسیک
+                    </div>
+                </div>
+            </div>
+    
+            <!-- جستجوهای اخیر -->
+            <div class="layer-recents">
+                <div class="layer-recent-title">
+                    <i class="fas fa-clock"></i> جستجوهای اخیر
+                </div>
+                <div class="recent-tag-list" id="recentTagList">
+                    <span class="recent-tag-item" data-term="کابینت مدرن">کابینت مدرن</span>
+                    <span class="recent-tag-item" data-term="هایگلاس">هایگلاس</span>
+                    <span class="recent-tag-item" data-term="کلاسیک">کلاسیک</span>
+                </div>
+            </div>
+            <div class="layer-note">
+                 روی هر گزینه کلیک کنید
             </div>
         </div>
     </div>

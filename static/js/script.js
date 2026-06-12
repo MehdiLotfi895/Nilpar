@@ -634,3 +634,94 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
 });
+
+// ========== کد مربوط به سرچ لایه تمام صفحه (فقط باز و بسته شدن) ==========
+(function() {
+    const fullLayer = document.getElementById('fullscreenLayer');
+    const openBtn = document.getElementById('magicOpenBtn');
+    const closeBtn = document.getElementById('closeLayerBtn');
+
+    // باز کردن لایه
+    function openLayer() {
+        if (fullLayer) {
+            fullLayer.classList.add('active');
+            document.body.classList.add('no-scroll');
+        }
+    }
+
+    // بستن لایه
+    function closeLayer() {
+        if (fullLayer) {
+            fullLayer.classList.remove('active');
+            document.body.classList.remove('no-scroll');
+        }
+    }
+
+    // رویداد باز کردن
+    if (openBtn) {
+        openBtn.addEventListener('click', openLayer);
+    }
+
+    // رویداد بستن
+    if (closeBtn) {
+        closeBtn.addEventListener('click', closeLayer);
+    }
+
+    // بستن با کلیک روی پس‌زمینه لایه
+    if (fullLayer) {
+        fullLayer.addEventListener('click', function(e) {
+            if (e.target === fullLayer) {
+                closeLayer();
+            }
+        });
+    }
+
+    // بستن با دکمه Escape
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && fullLayer && fullLayer.classList.contains('active')) {
+            closeLayer();
+        }
+    });
+})();
+
+// ========== کد مربوط به منوی کناری (سایدبار) ==========
+(function() {
+    const menuBtn = document.getElementById('menuToggleBtn');
+    const drawer = document.getElementById('drawerSidebar');
+    const closeBtn = document.getElementById('closeDrawerBtn');
+    const overlay = document.getElementById('drawerOverlay');
+
+    function openDrawer() {
+        if (drawer) drawer.classList.add('open');
+        if (overlay) overlay.classList.add('active');
+        document.body.classList.add('no-scroll');
+    }
+
+    function closeDrawer() {
+        if (drawer) drawer.classList.remove('open');
+        if (overlay) overlay.classList.remove('active');
+        document.body.classList.remove('no-scroll');
+    }
+
+    // باز کردن
+    if (menuBtn) {
+        menuBtn.addEventListener('click', openDrawer);
+    }
+
+    // بستن با دکمه ضربدر
+    if (closeBtn) {
+        closeBtn.addEventListener('click', closeDrawer);
+    }
+
+    // بستن با کلیک روی اوورلی
+    if (overlay) {
+        overlay.addEventListener('click', closeDrawer);
+    }
+
+    // بستن با Escape
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && drawer && drawer.classList.contains('open')) {
+            closeDrawer();
+        }
+    });
+})();

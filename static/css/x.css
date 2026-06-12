@@ -99,26 +99,41 @@ body {
     left: 50%;
     bottom: -23px;
     transform: translateX(-50%);
-
     display: flex;
     align-items: center;
     gap: 10px;
-
-    background: #ffffff;
-    padding: 10px 22px 30px 22px ;
-
-    border-radius: 999px;
-
+    background: #fff;
+    padding: 10px 22px 30px;
+    border-radius: 10px 10px 0 0;
     z-index: 10;
+    -webkit-border-radius: 10px 10px 0 0;
+    -moz-border-radius: 10px 10px 0 0;
+    -ms-border-radius: 10px 10px 0 0;
+    -o-border-radius: 10px 10px 0 0;
+}
 
-    box-shadow:
-        0 4px 12px rgba(0, 0, 0, 0.08),
-        0 1px 2px rgba(0, 0, 0, 0.04);
+.slider-dots::before,
+.slider-dots::after{
+    content: "";
+    position: absolute;
+    top: 0;
 
-    -webkit-transform: translateX(-50%);
-    -moz-transform: translateX(-50%);
-    -ms-transform: translateX(-50%);
-    -o-transform: translateX(-50%);
+    width: 30px;
+    height: 30px;
+
+    background: #fff;
+}
+
+.slider-dots::before{
+    left: -15px;
+    transform: skewX(-35deg);
+    border-radius: 15px 0 0 0;
+}
+
+.slider-dots::after{
+    right: -15px;
+    transform: skewX(35deg);
+    border-radius: 0 15px 0 0;
 }
 
 .dot {
@@ -149,11 +164,7 @@ body {
     box-shadow: none;
 }
 
-@media (max-width: 1200px) {
-    .slider-dots {
-       
-}
-}
+
 
 
 
