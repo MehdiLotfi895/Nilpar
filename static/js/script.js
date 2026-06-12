@@ -410,46 +410,46 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 
-// ═══════════════════════════════════════════════════════════════
-// SMART NAVIGATION - هماهنگ با هدر استیکی و بدون لگ
-// ═══════════════════════════════════════════════════════════════
-(function() {
-    const nav = document.querySelector('.main-nav');
-    if (!nav) return;
+// // ═══════════════════════════════════════════════════════════════
+// // SMART NAVIGATION - هماهنگ با هدر استیکی و بدون لگ
+// // ═══════════════════════════════════════════════════════════════
+// (function() {
+//     const nav = document.querySelector('.main-nav');
+//     if (!nav) return;
 
-    let lastScrollS = window.pageYOffset || document.documentElement.scrollTop;
-    let ticking = false;
+//     let lastScrollS = window.pageYOffset || document.documentElement.scrollTop;
+//     let ticking = false;
 
-    function updateNav() {
-        if (document.body.classList.contains('scroll-locked')) {
-            ticking = false;
-            return;
-        }
+//     function updateNav() {
+//         if (document.body.classList.contains('scroll-locked')) {
+//             ticking = false;
+//             return;
+//         }
 
-        const currentScrollY = window.pageYOffset || document.documentElement.scrollTop;
+//         const currentScrollY = window.pageYOffset || document.documentElement.scrollTop;
 
-        if (currentScrollY < 100) {
-            nav.classList.remove('nav-hidden');
-        } 
-        else if (Math.abs(currentScrollY - lastScrollS) > 5) {
-            if (currentScrollY > lastScrollS) {
-                nav.classList.add('nav-hidden');
-            } else {
-                nav.classList.remove('nav-hidden');
-            }
-        }
+//         if (currentScrollY < 100) {
+//             nav.classList.remove('nav-hidden');
+//         } 
+//         else if (Math.abs(currentScrollY - lastScrollS) > 5) {
+//             if (currentScrollY > lastScrollS) {
+//                 nav.classList.add('nav-hidden');
+//             } else {
+//                 nav.classList.remove('nav-hidden');
+//             }
+//         }
 
-        lastScrollS = currentScrollY;
-        ticking = false;
-    }
+//         lastScrollS = currentScrollY;
+//         ticking = false;
+//     }
 
-    window.addEventListener('scroll', function() {
-        if (!ticking) {
-            window.requestAnimationFrame(updateNav);
-            ticking = true;
-        }
-    }, { passive: true });
-})();
+//     window.addEventListener('scroll', function() {
+//         if (!ticking) {
+//             window.requestAnimationFrame(updateNav);
+//             ticking = true;
+//         }
+//     }, { passive: true });
+// })();
 
 
 // ═══════════════════════════════════════════════════════════════

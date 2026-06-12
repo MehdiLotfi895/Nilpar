@@ -1,40 +1,56 @@
-/* ==================== PRODUCT DETAIL ==================== */
+/* ==========================================================================
+   1. PRODUCT DETAIL BASE LAYOUT
+   ========================================================================== */
 .product-detail-container {
     padding: 30px 0;
 }
-/* دیو خالی برای هایت */
+
+/* Hero & Breadcrumb Section */
 .product-hero-section {
     height: 100px;
     display: flex;
     align-items: center;
     margin-bottom: 20px;
 }
+
 .product-hero-content {
-    color:var(--blue);
+    color: var(--blue);
     font-weight: 600;
     display: flex;
     align-items: center;
     gap: 15px;
 }
+
 .product-hero-title {
     font-size: 14px;
     color: var(--gray-400);
     margin-bottom: 5px;
 }
+
 .product-hero-breadcrumb {
     font-size: 12px;
     color: var(--gray-500);
 }
-/* هدر محصول */
+
+/* Product Main Header Layout */
 .product-header-section {
     display: flex;
     gap: 60px;
     margin-bottom: 30px;
 }
-/* عکس بزرگ */
+
+/* Links */
+.links {
+    color: #2563EB;
+}
+
+/* ==========================================================================
+   2. PRODUCT IMAGE GALLERY & THUMBNAILS
+   ========================================================================== */
 .product-image-section {
     flex: 0 0 600px;
 }
+
 .product-main-image {
     width: 100%;
     height: 600px;
@@ -48,21 +64,47 @@
     cursor: zoom-in;
 }
 
-.links{
-    color:#2563EB;
-}
-.product-main-image img{
+.product-main-image img {
     width: 90%;
     max-height: 540px;
     object-fit: contain;
     transition: transform 0.2s ease-out;
     cursor: zoom-in;
 }
+
+.product-main-image.zoomed,
+.product-main-image.zoomed img {
+    cursor: zoom-out;
+}
+
+.zoom-icon {
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    background: rgba(0, 0, 0, 0.6);
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: white;
+    transition: all 0.3s ease;
+    z-index: 10;
+}
+
+.zoom-icon:hover {
+    background: rgba(0, 0, 0, 0.8);
+    transform: scale(1.1);
+}
+
 .product-thumbnails {
     display: flex;
     flex-direction: column;
     gap: 10px;
 }
+
 .product-thumb {
     width: 100px;
     height: 100px;
@@ -73,31 +115,26 @@
     transition: all 0.3s;
     background-color: #f5f5f5;
 }
+
 .product-thumb:hover,
 .product-thumb.active {
     border-color: var(--gray-400);
 }
-/* اطلاعات محصول */
+
+.gallery-open-btn {
+    padding: 10px 0;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+/* ==========================================================================
+   3. PRODUCT INFO & PRICING
+   ========================================================================== */
 .product-info-section {
     flex: 1;
 }
-.value_info{
-    color:#169c5c;
-    font-size: 18px;
-}
-.product-price{
-    color:black;
-    font-size: 20px;
-}
-.product-detail-old-price{
-    font-size: 18px;
-    color: var(--gray-500);
-}
-.product-new-price{
-    font-size: 20px;
-    color:var(--primary);
-    margin-left: 20px;
-}
+
 .product-main-title {
     font-size: 28px;
     font-weight: 500;
@@ -105,18 +142,43 @@
     margin-bottom: 15px;
     line-height: 1.4;
 }
+
 .product-introduction {
     font-size: 15px;
     color: var(--gray-500);
     line-height: 1.8;
     margin-bottom: 20px;
 }
+
+.value_info {
+    color: #169c5c;
+    font-size: 18px;
+}
+
+.product-price {
+    color: black;
+    font-size: 20px;
+}
+
+.product-detail-old-price {
+    font-size: 18px;
+    color: var(--gray-500);
+}
+
+.product-new-price {
+    font-size: 20px;
+    color: var(--primary);
+    margin-left: 20px;
+}
+
+/* Meta & Features */
 .product-meta {
     display: flex;
     flex-direction: column;
     gap: 10px;
     margin-bottom: 20px;
 }
+
 .meta-item {
     display: flex;
     align-items: center;
@@ -124,107 +186,17 @@
     font-size: 16px;
     color: var(--gray-600);
 }
+
 .meta-item i {
     color: var(--primary);
 }
+
 .product-features-list {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
     gap: 10px;
     margin-top: 20px;
 }
-.product-actions {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    gap: 30px;
-  }
-.action-icon {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 50%;
-    background-color: var(--gray-100);
-    color: #333;
-    font-size: 23px;
-    text-decoration: none;
-    transition: all 0.3s ease;
-    border:none;
-    position: relative;
-    border: none;
-    cursor: pointer;
-    padding: 8px;
-    margin: 0 5px;
-    -webkit-transition: all 0.3s ease;
-    -moz-transition: all 0.3s ease;
-    -ms-transition: all 0.3s ease;
-    -o-transition: all 0.3s ease;
-    -webkit-border-radius: 50%;
-    -moz-border-radius: 50%;
-    -ms-border-radius: 50%;
-    -o-border-radius: 50%;
-
-}
-
-  
-  
-  /* استایل tooltip */
-  .description-detail::before {
-      content: attr(data-tooltip);
-      position: absolute;
-      bottom: 40px;
-      left: 20px;
-      transform: translateX(-50%);
-      background-color: rgba(0, 0, 0, 0.8);
-      color: white;
-      width:150px;
-      height:30px;
-      border-radius: 6px;
-      font-size: 12px;
-      white-space: nowrap;
-      opacity: 0;
-      visibility: hidden;
-      transition: all 0.3s ease;
-      z-index: 1000;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-  }
-  
-  
-  
-  /* نمایش tooltip در هاور */
-  .action-icon:hover::before,
-  .action-icon:hover::after {
-      opacity: 1;
-      visibility: visible;
-  }
-  
-  /* استایل پیام کپی شد */
-  .copy-message {
-      position: fixed;
-      bottom: 20px;
-      left: 50%;
-      transform: translateX(-50%);
-      background-color: rgba(0, 0, 0, 0.9);
-      color: white;
-      padding: 8px 16px;
-      border-radius: 8px;
-      font-size: 14px;
-      z-index: 2000;
-      opacity: 0;
-      visibility: hidden;
-      transition: all 0.3s ease;
-      white-space: nowrap;
-      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-  }
-  
-  .copy-message.show {
-      opacity: 1;
-      visibility: visible;
-      bottom: 30px;
-  }
 
 .product-feature-tag {
     padding: 8px 12px;
@@ -240,455 +212,92 @@
     text-align: center;
     gap: 5px;
 }
-/* فرم سفارش - فیکسد */
-.order-form-section {
-    flex: 0 0 350px;
-    position: sticky;
-    top: 0px;
-    height: fit-content;
-}
-.order-card {
-    background: #f7f7f7;
-    border-radius: 5px;
-    padding: 20px;
-    border: 1px solid var(--gray-200);
-    -webkit-border-radius: 5px;
-    -moz-border-radius: 5px;
-    -ms-border-radius: 5px;
-    -o-border-radius: 5px;
-}
-.order-price {
-    font-size: 18px;
-    font-weight: 600;
-    color: black;
-}
-.order-price span {
-    font-size: 16px;
-    font-weight: 400;
-    color: var(--gray-500);
-}
-.order-stock {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 14px;
-    margin-bottom: 20px;
-}
-.stock-available { color: var(--green); }
-.stock-low { color: #ff9800; }
-.stock-out { color: var(--primary); }
-.order-quantity {
-    margin-bottom: 20px;
-}
-.order-quantity label {
-    display: block;
-    font-size: 14px;
-    font-weight: 600;
-    margin-bottom: 10px;
-    color: var(--gray-600);
-}
-.quantity-input {
-    display: flex;
-    align-items: center;
-    gap: 0;
-    border: 1px solid var(--gray-200);
-    border-radius: 8px;
-    overflow: hidden;
-    width: fit-content;
-}
-.quantity-btn {
-    width: 40px;
-    height: 40px;
-    border: none;
-    background: var(--gray-100);
-    cursor: pointer;
-    font-size: 12px;
-    transition: all 0.3s;
-    
-}
 
-.quantity-btn:hover {
-    background: var(--primary);
-    color: white;
-}
-.quantity-value {
-    width: 60px;
-    height: 40px;
-    border: none;
-    text-align: center;
-    font-size: 16px;
-    font-weight: 600;
-    border-right: 1px solid var(--gray-200);
-    border-left: 1px solid var(--gray-200);
-}
-.order-total {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 15px;
-    background: var(--gray-100);
-    border-radius: 8px;
-    margin-bottom: 20px;
-}
-.order-total-label {
-    font-size: 14px;
-    color: var(--gray-500);
-}
-.order-total-price {
-    font-size: 20px;
-    font-weight: 700;
-    color: var(--secondary);
-}
-.add-to-cart-btn {
-    width: 100%;
-    padding: 15px;
-    background: var(--primary);
-    color: white;
-    border: none;
-    border-radius: 10px;
-    font-size: 16px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.3s;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-}
-
-.add-to-cart-btn:disabled {
-    background: var(--gray-300);
-    cursor: not-allowed;
-    transform: none;
-    box-shadow: none;
-}
-.order-extras {
-    margin-top: 20px;
-    padding-top: 20px;
-    border-top: 1px solid var(--gray-200);
-}
-.extra-item {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    font-size: 13px;
-    color: var(--gray-500);
-    margin-bottom: 10px;
-}
-.extra-item i { color: var(--green); }
-/* تب‌های محصول */
-.product-tabs {
-    margin-top: 40px;
-}
-.tabs-header {
-    display: flex;
-    gap: 5px;
-    border-bottom: 2px solid var(--gray-200);
-    margin-bottom: 0;
-    position: sticky;
-    top: 130px;
-    background: white;
-    z-index: 200;
-    padding: 15px 0 0;
-    transition: top 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-body:has(.main-nav.nav-hidden) .tabs-header {
-    top: 85px !important; /* جابجایی تب‌ها به بالا برای پر کردن فضای خالی */
-}
-.tabs-header .tab-btn {
-    padding: 15px 30px;
-    background: none;
-    border: none;
-    font-size: 15px;
-    font-weight: 600;
-    color: var(--gray-500);
-    cursor: pointer;
-    position: relative;
-    transition: all 0.3s;
-    text-decoration: none;
-}
-.tabs-header .tab-btn::after {
-    content: '';
-    position: absolute;
-    bottom: -2px;
-    left: 0;
-    width: 100%;
-    height: 2px;
-    background: var(--primary);
-    transform: scaleX(0);
-    transition: transform 0.3s;
-}
-.tabs-header .tab-btn:hover { color: var(--secondary); }
-.tabs-header .tab-btn.active { color: var(--primary); }
-.tabs-header .tab-btn.active::after { transform: scaleX(1); }
-/* بخش مشخصات */
-.details-section {
-    margin-bottom: 40px;
-}
-.section-title {
-    margin-top: 30px;
-    font-size: 20px;
-    font-weight: 700;
-    color: var(--secondary);
-    margin-bottom: 20px;
-    padding-bottom: 10px;
-    border-bottom: 2px solid var(--primary);
-    display: inline-block;
-}
-.details-list {
-    padding: 0 10px;
+/* ==========================================================================
+   4. ACTIONS, TOOLTIPS & MESSAGES
+   ========================================================================== */
+.product-actions {
     display: flex;
     flex-direction: column;
-    gap:20px;
-}
-.detail-row {
-    display: flex;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
-    padding: 12px 0;
+    gap: 30px;
+}
+
+.action-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background-color: var(--gray-100);
+    color: #333;
+    font-size: 23px;
+    text-decoration: none;
+    border: none;
     position: relative;
+    cursor: pointer;
+    padding: 8px;
+    margin: 0 5px;
+    transition: all 0.3s ease;
 }
-.detail-row::after {
-    content: '';
+
+/* Tooltip implementation */
+.description-detail::before {
+    content: attr(data-tooltip);
     position: absolute;
-    bottom: 0;
-    right: 30%;
-    left: 30%;
-    height: 1px;
-    background: linear-gradient(to left, transparent, var(--gray-300), transparent);
-}
-.detail-row:last-child::after {
-    display: none;
-}
-.detail-row .label {
-    flex: 0 0 30%;
-    font-weight: 600;
-    color: var(--gray-600);
-    text-align: right;
-}
-.detail-row .value {
-    flex: 1;
-    color: var(--secondary);
-    text-align: right;
-    font-family: 'Tahoma', sans-serif;
-}
-.more-details-section {
-    margin-top: 20px;
-}
-.more-details-section .section-title {
-    margin-top: 30px;
-}
-.more-details-content {
-    padding: 20px;
-    line-height: 1.8;
-    color: var(--gray-600);
-}
-/* نظرات */
-.comments-section {
-    margin-bottom: 40px;
-}
-.comment-card {
-    padding: 20px;
-    border: 1px solid var(--gray-200);
-    border-radius: 12px;
-    margin-bottom: 15px;
-}
-.comment-header {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-bottom: 15px;
-}
-.comment-avatar {
-    width: 45px;
-    height: 45px;
-    border-radius: 50%;
-    background: var(--primary);
+    bottom: 40px;
+    left: 20px;
+    transform: translateX(-50%);
+    background-color: rgba(0, 0, 0, 0.8);
     color: white;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: 700;
-    font-size: 18px;
-}
-.comment-user {
-    font-weight: 600;
-    color: var(--secondary);
-}
-.comment-date {
+    width: 150px;
+    height: 30px;
+    border-radius: 6px;
     font-size: 12px;
-    color: var(--gray-400);
-}
-.comment-body {
-    color: var(--gray-600);
-    line-height: 1.7;
-}
-/* فرم نظر */
-.comment-form-section {
-    margin-top: 30px;
-    padding: 25px;
-    border: 1px solid var(--gray-200);
-    border-radius: 12px;
-}
-.comment-form-section h4 {
-    margin-bottom: 15px;
-    color: var(--secondary);
-}
-.comment-form-section textarea {
-    width: 100%;
-    padding: 15px;
-    border: 1px solid var(--gray-200);
-    border-radius: 8px;
-    font-family: inherit;
-    font-size: 14px;
-    resize: vertical;
-    min-height: 100px;
-    margin-bottom: 15px;
-}
-.comment-form-section textarea:focus {
-    outline: none;
-    border-color: var(--primary);
-}
-.submit-comment-btn {
-    padding: 12px 25px;
-    background: var(--primary);
-    color: white;
-    border: none;
-    border-radius: 8px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.3s;
+    white-space: nowrap;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+    z-index: 1000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
-.no-comments {
-    text-align: center;
-    padding: 40px;
-    color: var(--gray-400);
-    border: 1px solid var(--gray-200);
-    border-radius: 12px;
-}
-/* سوالات */
-.questions-section {
-    margin-bottom: 40px;
-}
-.question-card {
-    padding: 20px;
-    border: 1px solid var(--gray-200);
-    border-radius: 12px;
-    margin-bottom: 15px;
-}
-.question-header {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-bottom: 10px;
-}
-.question-icon {
-    width: 35px;
-    height: 35px;
-    border-radius: 50%;
-    background: var(--blue);
-    color: white;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-.question-user {
-    font-weight: 600;
-    color: var(--secondary);
-}
-.question-date {
-    font-size: 12px;
-    color: var(--gray-400);
-}
-.question-body {
-    color: var(--gray-600);
-    margin-bottom: 15px;
-    padding-right: 45px;
-}
-/* پاسخ */
-.answer-card {
-    padding: 15px 20px;
-    margin-right: 45px;
-    margin-top: 10px;
-    font-size: 16px;
-    color: #555;
-    line-height: 1.8;
-    margin-bottom: 25px;
-    padding: 15px;
-    background: #faf8f3;
-    border-radius: 8px;
-    border-right: 4px solid #747667;
-}
-.answer-header {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    margin-bottom: 10px;
-}
-.answer-label {
-    background: var(--primary);
-    color: white;
-    padding: 3px 10px;
-    border-radius: 15px;
-    font-size: 11px;
-    font-weight: 600;
-}
-.answer-date {
-    font-size: 12px;
-    color: var(--gray-400);
-}
-.answer-body {
-    color: var(--gray-600);
-    line-height: 1.6;
-}
-.no-questions {
-    text-align: center;
-    padding: 40px;
-    color: var(--gray-400);
-    border: 1px solid var(--gray-200);
-    border-radius: 12px;
-}
-/* فرم سوال */
-.ask-question-form {
-    margin-top: 30px;
-    padding: 25px;
-    border: 1px solid var(--gray-200);
-    border-radius: 12px;
-}
-.ask-question-form h4 {
-    margin-bottom: 15px;
-    color: var(--secondary);
-}
-.ask-question-form textarea {
-    width: 100%;
-    padding: 15px;
-    border: 1px solid var(--gray-200);
-    border-radius: 8px;
-    font-family: inherit;
-    font-size: 14px;
-    resize: vertical;
-    min-height: 100px;
-    margin-bottom: 15px;
-}
-.ask-question-form textarea:focus {
-    outline: none;
-    border-color: var(--primary);
-}
-.submit-question-btn {
-    padding: 12px 25px;
-    background: var(--primary);
-    color: white;
-    border: none;
-    border-radius: 8px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.3s;
+.action-icon:hover::before,
+.action-icon:hover::after {
+    opacity: 1;
+    visibility: visible;
 }
 
-/* ═══════════════════════════════════════
-   COLOR SELECTOR COMPONENT
-   ═══════════════════════════════════════ */
+/* Copy Message Toast */
+.copy-message {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: rgba(0, 0, 0, 0.9);
+    color: white;
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-size: 14px;
+    z-index: 2000;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+}
+
+.copy-message.show {
+    opacity: 1;
+    visibility: visible;
+    bottom: 30px;
+}
+
+/* ==========================================================================
+   5. COLOR SELECTOR COMPONENT
+   ========================================================================== */
 .color-selector-component {
     margin: 1.5rem 0;
     padding: 1rem 1.5rem;
@@ -697,7 +306,6 @@ body:has(.main-nav.nav-hidden) .tabs-header {
     border: 1px solid #e9ecef;
 }
 
-/* سطر اول: لیبل + نام رنگ انتخاب‌شده */
 .selected-color-row {
     display: flex;
     align-items: center;
@@ -724,7 +332,6 @@ body:has(.main-nav.nav-hidden) .tabs-header {
     border: 1px solid #ddd;
 }
 
-/* ظرف دایره‌ها */
 .circles-container {
     display: flex;
     gap: 15px;
@@ -735,7 +342,7 @@ body:has(.main-nav.nav-hidden) .tabs-header {
 .color-circle {
     width: 50px;
     height: 50px;
-    border-radius: 100% !important;
+    border-radius: 50%;
     cursor: pointer;
     position: relative;
     display: flex;
@@ -745,390 +352,984 @@ body:has(.main-nav.nav-hidden) .tabs-header {
     border: 3px solid transparent;
     outline: none;
     box-shadow: 0 2px 8px rgba(0,0,0,0.15);
-    -webkit-border-radius: 100% !important;
-    -moz-border-radius: 100% !important;
-    -ms-border-radius: 100% !important;
-    -o-border-radius: 100% !important;
 }
 
-/* حالت hover */
 .color-circle:hover {
     transform: scale(1.1);
     box-shadow: 0 4px 15px rgba(0,0,0,0.25);
 }
 
-/* حالت فوکوس (دسترسی‌پذیری) */
 .color-circle:focus {
     box-shadow: 0 0 0 3px rgba(0,123,255,0.4);
 }
 
-/* ═══════════════════════════════════════
-   ⭐ تیک - فقط روی فعال نشون داده میشه
-   ═══════════════════════════════════════ */
-.color-circle .checkmark {
-    opacity: 0;
-    transform: scale(0);
-    transition: all 0.2s ease;
-    font-size: 1.5rem;
-    font-weight: bold;
-    color: white;
-    text-shadow: 0 0 4px rgba(0,0,0,0.6);
-    user-select: none;
-}
-
-/* ✅ فقط وقتی active باشه تیک نشون داده میشه */
-.color-circle.active .checkmark {
-    opacity: 1;
-    transform: scale(1);
-}
-
-/* ✅ فقط وقتی active باشه حاشیه دورش */
-.color-circle.active {
-    border-color: #333;
-    transform: scale(1.1);
-}
-
-/* ═══════════════════════════════════════
-   RESPONSIVE - موبایل
-   ═══════════════════════════════════════ */
-@media (max-width: 768px) {
-    .color-circle {
-        width: 42px;
-        height: 42px;
-    }
-    
-    .color-circle .checkmark {
-        font-size: 1.2rem;
-    }
-    
-    .circles-container {
-        gap: 12px;
-    }
-    
-    .color-label {
-        font-size: 0.9rem;
-    }
-    
-    .selected-color-value {
-        font-size: 1rem;
-        padding: 0.3rem 1rem;
-    }
-}
-/* Responsive */
-@media (max-width: 1200px) {
-    .product-header-section {
-        flex-wrap: wrap;
-    }
-    
-    .product-image-section {
-        flex: 0 0 100%;
-    }
-    
-    .order-form-section {
-        flex: 0 0 100%;
-        position: static;
-    }
-}
-@media (max-width: 768px) {
-    .product-hero-section {
-        height: 60px;
-    }
-    
-    .product-main-title {
-        font-size: 22px;
-    }
-    
-    .order-price {
-        font-size: 26px;
-    }
-    
-    .tabs-header {
-        overflow-x: auto;
-        top: 110px;
-    }
-    
-    .tab-btn {
-        padding: 12px 20px;
-        white-space: nowrap;
-    }
-    
-    .detail-row {
-        flex-direction: column;
-        gap: 5px;
-    }
-    
-    .detail-row .label {
-        flex: none;
-    }
-}
-
-
-.zoom-icon {
-    position: absolute;
-    top: 15px;
-    left: 15px;
-    background: rgba(0, 0, 0, 0.6);
-    border-radius: 50%;
-    width: 40px;
-    height: 40px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    color: white;
-    transition: all 0.3s ease;
-    z-index: 10;
-}
-
-.zoom-icon:hover {
-    background: rgba(0, 0, 0, 0.8);
-    transform: scale(1.1);
-}
-
-.product-main-image.zoomed {
-    cursor: zoom-out;
-}
-
-.product-main-image.zoomed img {
-    cursor: zoom-out;
-}
-
-.gallery-open-btn{
-    padding:10px 0;
-    border:none;
-    cursor:pointer;
-    border-radius:5px;
-}
-
-
-/* مودال */
-
-.gallery-modal{
-    position:fixed;
-    inset:0;
-    background:#000;
-    z-index:99999;
-
-    display:none;
-
-    justify-content:center;
-    align-items:center;
-}
-
-.gallery-modal.show{
-    display:flex;
-}
-
-
-/* دکمه بستن */
-
-.gallery-close-btn{
-    position:absolute;
-    top:15px;
-    right:20px;
-
-    background:none;
-    border:none;
-
-    color:#fff;
-    font-size:45px;
-
-    cursor:pointer;
-}
-
-
-/* تصویر اصلی */
-
-.gallery-viewer{
-    width:100%;
-    height:80vh;
-
-    display:flex;
-    justify-content:center;
-    align-items:center;
-
-    padding:40px 120px 140px;
-}
-
-.gallery-main-image{
-    display:none;
-
-    max-width:100%;
-    max-height:100%;
-
-    object-fit:contain;
-}
-
-.gallery-main-image.active{
-    display:block;
-}
-
-
-/* فلش ها */
-
-.gallery-nav-btn{
-    position:absolute;
-    top:50%;
-    transform:translateY(-50%);
-
-    width:55px;
-    height:55px;
-
-    border:none;
-    border-radius:50%;
-
-    background:rgba(255,255,255,.15);
-
-    color:white;
-
-    font-size:28px;
-
-    cursor:pointer;
-
-    transition:.3s;
-}
-
-.gallery-nav-btn:hover{
-    background:rgba(255,255,255,.35);
-}
-
-.gallery-prev-btn{
-    right:20px;
-   
-}
-
-.gallery-next-btn{
-    left:20px;
-}
-
-
-/* تصاویر کوچک */
-
-.gallery-thumbnails-wrapper{
-    position:absolute;
-
-    bottom:15px;
-    left:50%;
-
-    transform:translateX(-50%);
-
-    width:95%;
-}
-
-.gallery-thumbnails{
-    display:flex;
-    justify-content:center;
-
-    gap:12px;
-
-    overflow-x:auto;
-    overflow-y:hidden;
-
-    padding:10px;
-
-    width:100%;
-}
-
-.gallery-thumbnails::-webkit-scrollbar{
-    height:5px;
-}
-
-.gallery-thumbnails::-webkit-scrollbar-thumb{
-    background:#555;
-}
-
-.gallery-thumb{
-    width:110px;
-    height:80px;
-
-    object-fit:contain;
-
-    border:2px solid transparent;
-
-    border-radius:6px;
-
-    cursor:pointer;
-
-    flex-shrink:0;
-
-    opacity:.6;
-
-    transition:.3s;
-}
-
-.gallery-thumb:hover{
-    opacity:1;
-}
-
-.gallery-thumb.active{
-    opacity:1;
-    border-color:#fff;
-}
-
-
-/* موبایل */
-
-@media(max-width:768px){
-
-    .gallery-viewer{
-        padding:20px 60px 130px;
-    }
-
-    .gallery-thumb{
-        width:80px;
-        height:60px;
-    }
-
-    .gallery-nav-btn{
-        width:45px;
-        height:45px;
-        font-size:22px;
-    }
-
-    .gallery-close-btn{
-        font-size:35px;
-    }
-}
-
-
-
-
-/* ═══════════════════════════════════════
-    ⭐ رفع باگ قطعی تیک دایره رنگ‌ها
-   ═══════════════════════════════════════ */
-
-/* ۱. حالت پیش‌فرض: تیک در مرکز دایره قفل و مخفی است */
+/* Checkmark Bug Fix & Placement */
 .color-circle .checkmark {
     opacity: 0 !important;
-    transform: scale(0) !important;
     transition: all 0.2s ease-in-out !important;
-    
-    /* وسط‌چین کردن دقیق علامت ✓ داخل دایره ۵۰ پیکسلی */
     position: absolute !important;
     top: 50% !important;
     left: 50% !important;
-    transform: translate(-50%, -50%) scale(0) !important; /* ترکیب وسط‌چین و سایز صفر */
+    transform: translate(-50%, -50%) scale(0) !important;
     margin: 0 !important;
     padding: 0 !important;
-    
-    /* استایل و سایز تیک متنی شما */
-    font-size: 20px !important; 
+    font-size: 20px !important;
     font-weight: bold !important;
     line-height: 1 !important;
     display: block !important;
     user-select: none !important;
     z-index: 10 !important;
+    color: white;
+    text-shadow: 0 0 4px rgba(0,0,0,0.6);
 }
 
-/* ۲. حالت فعال: به محض اینکه جاوااسکریپت کلاس active را داد، تیک با انیمیشن بزرگ و نمایان می‌شود */
 .color-circle.active .checkmark {
     opacity: 1 !important;
-    transform: translate(-50%, -50%) scale(1) !important; /* نمایان شدن در مرکز دقیق */
+    transform: translate(-50%, -50%) scale(1) !important;
 }
 
-/* ۳. استایل دور دایره‌ای که در حال حاضر انتخاب شده است */
 .color-circle.active {
-    border: 3px solid #333333 !important; /* بوردر ضخیم مشکی دور رنگ انتخابی */
-    transform: scale(1.1); /* کمی بزرگ‌تر شدن دایره انتخابی */
+    border: 3px solid #333333 !important;
+    transform: scale(1.1);
     box-shadow: 0 4px 12px rgba(0,0,0,0.25) !important;
+}
+
+/* ==========================================================================
+   6. ORDER FORM & STICKY CARD
+   ========================================================================== */
+.order-form-section {
+    flex: 0 0 350px;
+    position: sticky;
+    top: 0px;
+    height: fit-content;
+}
+
+.order-card {
+    background: #f7f7f7;
+    border-radius: 5px;
+    padding: 20px;
+    border: 1px solid var(--gray-200);
+}
+
+.order-price {
+    font-size: 18px;
+    font-weight: 600;
+    color: black;
+}
+
+.order-price span {
+    font-size: 16px;
+    font-weight: 400;
+    color: var(--gray-500);
+}
+
+.order-stock {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    margin-bottom: 20px;
+}
+
+.stock-available { color: var(--green); }
+.stock-low { color: #ff9800; }
+.stock-out { color: var(--primary); }
+
+.order-quantity {
+    margin-bottom: 20px;
+}
+
+.order-quantity label {
+    display: block;
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 10px;
+    color: var(--gray-600);
+}
+
+.quantity-input {
+    display: flex;
+    align-items: center;
+    border: 1px solid var(--gray-200);
+    border-radius: 8px;
+    overflow: hidden;
+    width: fit-content;
+}
+
+.quantity-btn {
+    width: 40px;
+    height: 40px;
+    border: none;
+    background: var(--gray-100);
+    cursor: pointer;
+    font-size: 12px;
+    transition: all 0.3s;
+}
+
+.quantity-btn:hover {
+    background: var(--primary);
+    color: white;
+}
+
+.quantity-value {
+    width: 60px;
+    height: 40px;
+    border: none;
+    text-align: center;
+    font-size: 16px;
+    font-weight: 600;
+    border-right: 1px solid var(--gray-200);
+    border-left: 1px solid var(--gray-200);
+}
+
+.order-total {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    background: var(--gray-100);
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+.order-total-label {
+    font-size: 14px;
+    color: var(--gray-500);
+}
+
+.order-total-price {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--secondary);
+}
+
+.add-to-cart-btn {
+    width: 100%;
+    padding: 15px;
+    background: var(--primary);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.add-to-cart-btn:disabled {
+    background: var(--gray-300);
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+.order-extras {
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid var(--gray-200);
+}
+
+.extra-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 13px;
+    color: var(--gray-500);
+    margin-bottom: 10px;
+}
+
+.extra-item i { 
+    color: var(--green); 
+}
+
+.last-product-header {
+    margin-top: 0 !important;
+}
+
+/* ==========================================================================
+   7. TABS SECTION
+   ========================================================================== */
+.product-tabs {
+    margin-top: 40px;
+}
+
+.tabs-header {
+    display: flex;
+    gap: 5px;
+    border-bottom: 2px solid var(--gray-200);
+    margin-bottom: 0;
+    position: sticky;
+    top: 130px;
+    background: white;
+    z-index: 200;
+    padding: 15px 0 0;
+    transition: top 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+body:has(.main-nav.nav-hidden) .tabs-header {
+    top: 85px !important;
+}
+
+.tabs-header .tab-btn {
+    padding: 15px 30px;
+    background: none;
+    border: none;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--gray-500);
+    cursor: pointer;
+    position: relative;
+    transition: all 0.3s;
+    text-decoration: none;
+}
+
+.tabs-header .tab-btn::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: var(--primary);
+    transform: scaleX(0);
+    transition: transform 0.3s;
+}
+
+.tabs-header .tab-btn:hover { color: var(--secondary); }
+.tabs-header .tab-btn.active { color: var(--primary); }
+.tabs-header .tab-btn.active::after { transform: scaleX(1); }
+
+/* ==========================================================================
+   8. SPECIFICATIONS (DETAILS LAYOUT)
+   ========================================================================== */
+.details-section {
+    margin-bottom: 40px;
+}
+
+.section-title {
+    margin-top: 30px;
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--secondary);
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid var(--primary);
+    display: inline-block;
+}
+
+.details-list {
+    padding: 0 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.detail-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 0;
+    position: relative;
+}
+
+.detail-row::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    right: 30%;
+    left: 30%;
+    height: 1px;
+    background: linear-gradient(to left, transparent, var(--gray-300), transparent);
+}
+
+.detail-row:last-child::after {
+    display: none;
+}
+
+.detail-row .label {
+    flex: 0 0 30%;
+    font-weight: 600;
+    color: var(--gray-600);
+    text-align: right;
+}
+
+.detail-row .value {
+    flex: 1;
+    color: var(--secondary);
+    text-align: right;
+    font-family: 'Tahoma', sans-serif;
+}
+
+.more-details-section {
+    margin-top: 20px;
+}
+
+.more-details-section .section-title {
+    margin-top: 30px;
+}
+
+.more-details-content {
+    padding: 20px;
+    line-height: 1.8;
+    color: var(--gray-600);
+}
+
+/* ==========================================================================
+   9. COMMENTS & QUESTIONS
+   ========================================================================== */
+/* Comments Structure */
+.comments-section {
+    margin-bottom: 40px;
+}
+
+.comment-card {
+    padding: 20px;
+    border: 1px solid var(--gray-200);
+    border-radius: 12px;
+    margin-bottom: 15px;
+}
+
+.comment-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.comment-avatar {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    background: var(--primary);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 18px;
+}
+
+.comment-user {
+    font-weight: 600;
+    color: var(--secondary);
+}
+
+.comment-date {
+    font-size: 12px;
+    color: var(--gray-400);
+}
+
+.comment-body {
+    color: var(--gray-600);
+    line-height: 1.7;
+}
+
+.comment-form-section,
+.ask-question-form {
+    margin-top: 30px;
+    padding: 25px;
+    border: 1px solid var(--gray-200);
+    border-radius: 12px;
+}
+
+.comment-form-section h4,
+.ask-question-form h4 {
+    margin-bottom: 15px;
+    color: var(--secondary);
+}
+
+.comment-form-section textarea,
+.ask-question-form textarea {
+    width: 100%;
+    padding: 15px;
+    border: 1px solid var(--gray-200);
+    border-radius: 8px;
+    font-family: inherit;
+    font-size: 14px;
+    resize: vertical;
+    min-height: 100px;
+    margin-bottom: 15px;
+}
+
+.comment-form-section textarea:focus,
+.ask-question-form textarea:focus {
+    outline: none;
+    border-color: var(--primary);
+}
+
+.submit-comment-btn,
+.submit-question-btn {
+    padding: 12px 25px;
+    background: var(--primary);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.no-comments,
+.no-questions {
+    text-align: center;
+    padding: 40px;
+    color: var(--gray-400);
+    border: 1px solid var(--gray-200);
+    border-radius: 12px;
+}
+
+/* Questions & Answers Structure */
+.questions-section {
+    margin-bottom: 40px;
+}
+
+.question-card {
+    padding: 20px;
+    border: 1px solid var(--gray-200);
+    border-radius: 12px;
+    margin-bottom: 15px;
+}
+
+.question-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.question-icon {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    background: var(--blue);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.question-user {
+    font-weight: 600;
+    color: var(--secondary);
+}
+
+.question-date {
+    font-size: 12px;
+    color: var(--gray-400);
+}
+
+.question-body {
+    color: var(--gray-600);
+    margin-bottom: 15px;
+    padding-right: 45px;
+}
+
+.answer-card {
+    margin-right: 45px;
+    margin-top: 10px;
+    font-size: 16px;
+    color: #555;
+    line-height: 1.8;
+    margin-bottom: 25px;
+    padding: 15px;
+    background: #faf8f3;
+    border-radius: 8px;
+    border-right: 4px solid #747667;
+}
+
+.answer-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 10px;
+}
+
+.answer-label {
+    background: var(--primary);
+    color: white;
+    padding: 3px 10px;
+    border-radius: 15px;
+    font-size: 11px;
+    font-weight: 600;
+}
+
+.answer-date {
+    font-size: 12px;
+    color: var(--gray-400);
+}
+
+.answer-body {
+    color: var(--gray-600);
+    line-height: 1.6;
+}
+
+/* ==========================================================================
+   10. LIGHTBOX GALLERY MODAL
+   ========================================================================== */
+.gallery-modal {
+    position: fixed;
+    inset: 0;
+    background: #000;
+    z-index: 99999;
+    display: none;
+    justify-content: center;
+    align-items: center;
+}
+
+.gallery-modal.show {
+    display: flex;
+}
+
+.gallery-close-btn {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    background: none;
+    border: none;
+    color: #fff;
+    font-size: 45px;
+    cursor: pointer;
+}
+
+.gallery-viewer {
+    width: 100%;
+    height: 80vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 40px 120px 140px;
+}
+
+.gallery-main-image {
+    display: none;
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+}
+
+.gallery-main-image.active {
+    display: block;
+}
+
+/* Nav buttons inside Modal */
+.gallery-nav-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 55px;
+    height: 55px;
+    border: none;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, .15);
+    color: white;
+    font-size: 28px;
+    cursor: pointer;
+    transition: .3s;
+}
+
+.gallery-nav-btn:hover {
+    background: rgba(255, 255, 255, .35);
+}
+
+.gallery-prev-btn { right: 20px; }
+.gallery-next-btn { left: 20px; }
+
+/* Modal Thumbnails */
+.gallery-thumbnails-wrapper {
+    position: absolute;
+    bottom: 15px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 95%;
+}
+
+.gallery-thumbnails {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding: 10px;
+    width: 100%;
+}
+
+.gallery-thumbnails::-webkit-scrollbar {
+    height: 5px;
+}
+
+.gallery-thumbnails::-webkit-scrollbar-thumb {
+    background: #555;
+}
+
+.gallery-thumb {
+    width: 110px;
+    height: 80px;
+    object-fit: contain;
+    border: 2px solid transparent;
+    border-radius: 6px;
+    cursor: pointer;
+    flex-shrink: 0;
+    opacity: .6;
+    transition: .3s;
+}
+
+.gallery-thumb:hover { opacity: 1; }
+.gallery-thumb.active {
+    opacity: 1;
+    border-color: #fff;
+}
+
+/* ==========================================================================
+   11. RESPONSIVE MEDIA QUERIES
+   ========================================================================== */
+
+/* --- Tablet / Small Desktop Viewports --- */
+@media (max-width:1200px) and (min-width: 769px){
+
+    .product-header-section{
+        display:flex;
+        flex-wrap:wrap;
+        align-items:flex-start;
+        gap:10px;
+    }
+
+    .product-thumbnails{
+        width:120px;
+        flex:0 0 120px;
+        align-items: center;
+    }
+
+    .product-image-section{
+        flex:1;
+        min-width:0;
+    }
+
+    .product-info-section{
+        width:100%;
+        flex:0 0 100%;
+        margin-top:30px;
+    }
+    .product-header-section > div[style*="width: 60px"] {
+        width: 100% !important;
+        flex-direction: row !important;
+        justify-content: center !important;
+        padding: 10px 0 !important;
+    }
+    .gallery-open-btn{
+        width: 100%;
+    }
+    .tabs-header{
+        top:50px;
+    }
+}
+
+/* --- Mobile Viewports (Merged All 768px Queries For Performance) --- */
+@media (max-width: 768px) {
+    /* Layout Framework & Containers */
+    .product-detail-container {
+        padding: 15px 0;
+    }
+    .container {
+        padding-right: 15px;
+        padding-left: 15px;
+    }
+    
+    /* Hero Breadcrumb */
+    .product-hero-section {
+        height: auto;
+        margin: 20px 0;
+    }
+    .product-hero-content {
+        flex-wrap: wrap;
+        gap: 6px;
+        font-size: 12px;
+        line-height: 1.8;
+    }
+
+    /* Product Layout Header */
+    .product-header-section {
+        flex-direction: column;
+        gap: 20px;
+    }
+    .product-image-section {
+        order: 1;
+        flex: unset;
+        width: 100%;
+    }
+    .product-thumbnails {
+        order: 2;
+        flex-direction: row;
+        overflow-x: auto;
+        overflow-y: hidden;
+        width: 100%;
+        max-width: 100%;
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+    }
+    .product-thumbnails::-webkit-scrollbar {
+        display: none;
+    }
+    
+    /* Gallery Tweaks */
+    .product-main-image {
+        height: 350px;
+    }
+    .product-main-image img {
+        max-height: 300px;
+        width: 100%;
+    }
+    .product-thumb {
+        width: 70px;
+        height: 70px;
+        flex-shrink: 0;
+    }
+    .gallery-open-btn {
+        min-width: 110px;
+        flex-shrink: 0;
+        margin: auto 0;
+    }
+
+    /* Info Section */
+    .product-info-section {
+        order: 3;
+        width: 100%;
+    }
+    .product-main-title {
+        font-size: 22px;
+        line-height: 1.8;
+        text-align: center;
+    }
+    .meta-item {
+        font-size: 14px;
+        flex-wrap: wrap;
+    }
+    .value_info {
+        font-size: 15px;
+    }
+    .product-price,
+    .product-new-price {
+        font-size: 24px;
+        display: block;
+        margin: 10px 0;
+    }
+    .product-detail-old-price {
+        display: block;
+        margin-top: 5px;
+    }
+
+    /* Color Selector Component Mobile overrides */
+    .color-selector-component {
+        padding: 15px;
+    }
+    .selected-color-row,
+    .circles-container {
+        justify-content: center;
+    }
+    .color-circle {
+        width: 42px;
+        height: 42px;
+    }
+    .color-circle .checkmark {
+        font-size: 1.2rem;
+    }
+    .circles-container {
+        gap: 12px;
+    }
+    .color-label {
+        font-size: 0.9rem;
+    }
+    .selected-color-value {
+        font-size: 1rem;
+        padding: 0.3rem 1rem;
+    }
+
+    /* Quantity, Counter & Buttons Grid */
+    .product-info-section > div[style*="display: flex;gap:20px;align-items: center;"] {
+        flex-direction: column;
+        align-items: stretch !important;
+        gap: 15px !important;
+    }
+    .counter-container {
+        width: 100%;
+        justify-content: center;
+    }
+    .add-to-cart {
+        width: 100% !important;
+        height: 50px !important;
+        border-radius: 10px !important;
+        font-size: 15px !important;
+    }
+    .product-info-section form {
+        width: 100%;
+    }
+
+    /* Features Component Mobile */
+    .product-features-list {
+        grid-template-columns: repeat(2, 1fr);
+        margin-top: 25px;
+    }
+
+    /* Social Share Container Layout */
+    .product-header-section > div[style*="width: 60px"] {
+        width: 100% !important;
+        flex-direction: row !important;
+        justify-content: center !important;
+        padding: 10px 0 !important;
+    }
+
+    /* Tabs & Sticky Layout Fixes */
+    .tabs-header {
+        top: 60px;
+        white-space: nowrap;
+        padding-top: 0;
+    }
+    .tabs-header .tab-btn {
+        padding: 15px;
+        flex-shrink: 0;
+    }
+    .tab-btn {
+        white-space: nowrap;
+    }
+    .product-tabs > div[style*="display: flex"] {
+        flex-direction: column;
+        gap: 20px !important;
+    }
+    .product-tabs > div[style*="display: flex"] > div {
+        width: 100% !important;
+    }
+
+    /* Specs Details Mobile Cards */
+    .details-list > div[style*="display: flex"] {
+        flex-direction: column;
+        gap: 10px;
+        padding: 15px;
+        border: 1px solid #eee;
+        border-radius: 10px;
+    }
+    .details-list > div[style*="display: flex"] > div:first-child {
+        width: 100% !important;
+        margin-right: 0 !important;
+        color: #999 !important;
+        font-size: 13px !important;
+    }
+    .details-list > div[style*="display: flex"] > div:last-child {
+        width: 100% !important;
+        border: none !important;
+        padding-bottom: 0 !important;
+        font-size: 14px !important;
+        line-height: 1.8;
+    }
+    .detail-row {
+        flex-direction: column;
+        gap: 5px;
+    }
+    .detail-row .label {
+        flex: none;
+    }
+
+    /* Hidden elements on Mobile */
+    .order-card {
+        display: none;
+    }
+
+    /* Forms, QA & Comments */
+    .comment-form-section,
+    .ask-question-form {
+        padding: 15px;
+    }
+    .answer-card {
+        margin-right: 0;
+    }
+
+    /* Fullscreen Modal Gallery Mobile fixes */
+    .gallery-viewer {
+        padding: 20px 15px 120px;
+    }
+    .gallery-thumb {
+        width: 80px;
+        height: 60px;
+    }
+    .gallery-nav-btn {
+        width: 40px;
+        height: 40px;
+        font-size: 22px;
+    }
+    .gallery-close-btn {
+        font-size: 35px;
+    }
+}
+/* ردیف باکس تعداد و فرم سبد خرید */
+.purchase-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 20px;
+    width: 100%;
+}
+
+.purchase-wrapper .add-to-cart-form {
+    flex: 1;
+    display: flex;
+}
+
+.purchase-wrapper .add-to-cart {
+    background-color: #169c5c;
+    color: white;
+    width: 100%;
+    height: 44px; /* هم ارتفاع با باکس کانتر */
+    border-radius: 25px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+/* ردیف دکمه‌های علاقه‌مندی و اشتراک گذاری متنی */
+.social-actions-wrapper {
+    display: flex;
+    gap: 15px;
+    width: 100%;
+    margin-top: 15px;
+}
+
+.social-actions-wrapper .favorite-form,
+.social-actions-wrapper .share-btn-wrapper {
+    flex: 1; /* تقسیم دقیق به دو بخش ۵۰ درصدی */
+    display: flex;
+    position: relative;
+}
+
+.text-action-btn {
+    width: 100%;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    background-color: #e2e8f0;
+    border: 1px solid transparent;
+    border-radius: 8px;
+    font-size: 13px;
+    color: #1a1a1a;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+/* واکنش‌گرایی برای موبایل (زیر 768px) */
+@media (max-width:350px){
+    .purchase-wrapper {
+        flex-direction: column; /* زیر هم شدن خرید و تعداد در موبایل جهت کاربری راحت‌تر */
+        align-items: stretch;
+    }
+}
+@media (max-width: 768px) {
+    .text-action-btn span {
+        font-size: 11px; /* کوچک‌تر کردن متن دکمه‌ها در موبایل جهت جلوگیری از شکستن خط */
+    }
 }
