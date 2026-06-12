@@ -2678,11 +2678,9 @@ footer {
         width:100%;
         gap:10px;
     }
-    .image-slider-section{
-        margin: 20px 0;
-    }
     .image-slider-container {
-        height: 150px !important;
+        height: auto !important;
+        aspect-ratio: 4 / 3;
     }
     .slider-nav{
         display: none !important;

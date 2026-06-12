@@ -11,9 +11,12 @@
         <div class="image-slider-wrapper">
             {% for item in slider_image %}
                 <a href='{% if item.category_main %}{% url 'products' item.category_main %}{% else %}{% url 'products' %}{% endif %}'>
-                    <img src="{{ item.desktop_image.url }}" 
-                         alt="Slide" 
-                         class="slider-image {% if forloop.first %}active{% endif %}">
+                    <picture>
+                        <source media="(max-width: 600px)" srcset="{{ item.mobile_image.url }}">
+                        <img src="{{ item.desktop_image.url }}"
+                             alt="Slide"
+                             class="slider-image {% if forloop.first %}active{% endif %}">
+                    </picture>
                 </a>
             {% endfor %}
         </div>
