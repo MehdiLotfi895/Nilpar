@@ -468,41 +468,133 @@ body {
   text-decoration: none;
 }
 
-.suggest_section {
-  margin-top: 50px;
+/* ========== بخش suggest ادز (کلاس‌های یکتا) ========== */
+
+/* هدر بخش */
+.ad-suggest-header {
   display: flex;
-  gap: 20px;
-  width: 100%;
+  justify-content: space-between;
+  margin: 50px 0 20px 0;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 15px;
 }
 
-.box {
-  flex: 1;
+.ad-suggest-header span {
+  color: black;
+  font-size: 22px;
+}
+
+.ad-suggest-header a {
+  color: #1e3a8a;
+  display: flex;
+  align-items: center;
+  font-size: 16px;
+  gap: 10px;
+  text-decoration: none;
+}
+
+/* کانتینر اصلی - نسبی برای قرارگیری دکمه‌ها روی عکس */
+.ad-suggest-wrapper {
+  position: relative;
+  display: block;
+  margin-top: 20px;
+}
+
+/* بخش اسکرول اصلی */
+.ad-suggest-container {
+  display: flex;
+  gap: 20px;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+}
+
+/* مخفی کردن اسکرول بار در موبایل و تبلت */
+@media (max-width: 1268px) {
+  .ad-suggest-container {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  .ad-suggest-container::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+/* باکس‌ها - عرض 100% در موبایل */
+.ad-suggest-box {
+  flex-shrink: 0;
   height: 250px;
   border: none;
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 4px;
+  border-radius: 8px;
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
+  transition: transform 0.3s ease;
+  text-decoration: none;
+}
+
+.ad-suggest-box:hover {
+  transform: scale(1.02);
+}
+
+/* ========== دکمه‌های چپ و راست (روی عکس) ========== */
+.ad-scroll-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: rgba(0, 0, 0, 0.6);
+  border: none;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  cursor: pointer;
+  font-size: 20px;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  z-index: 10;
+  color: white;
+  backdrop-filter: blur(2px);
+}
+
+.ad-scroll-btn:hover {
+  background-color: rgba(0, 0, 0, 0.8);
+  transform: translateY(-50%) scale(1.05);
+}
+
+.ad-scroll-left {
+  left: 10px;
+}
+
+.ad-scroll-right {
+  right: 10px;
 }
 
 /* ======================
-ریسپانسیو بخش suggest
+ریسپانسیو کامل
 ====================== */
 
-/* دسکتاپ بزرگ (حداقل 1269px) - 3 تا کنار هم ثابت، بدون اسکرول */
+/* دسکتاپ بزرگ (حداقل 1269px) - 3 تا کنار هم، بدون دکمه */
 @media (min-width: 1269px) {
-  .suggest_section {
+  .ad-scroll-btn {
+    display: none;
+  }
+  
+  .ad-suggest-container {
     display: flex;
     flex-direction: row;
     gap: 20px;
     overflow-x: visible;
-    margin-top: 50px;
   }
-
-  .box {
+  
+  .ad-suggest-box {
     flex: 1;
     width: auto;
     min-width: 0;
@@ -510,163 +602,130 @@ body {
   }
 }
 
-/* تبلت و دسکتاپ کوچک (768px تا 1268px) - اسکرول افقی بدون اسکرول بار */
+/* تبلت (768px تا 1268px) - 2 تا کنار هم + دکمه روی عکس */
 @media (min-width: 768px) and (max-width: 1268px) {
-  .suggest-section-header {
+  .ad-suggest-header {
     margin: 40px 0 20px 0;
   }
-
-  .suggest-section-header span {
+  
+  .ad-suggest-header span {
     font-size: 20px;
   }
-
-  .suggest-section-header a {
+  
+  .ad-suggest-header a {
     font-size: 14px;
   }
-
-  .suggest_section {
+  
+  .ad-suggest-container {
     display: flex;
     flex-direction: row;
     gap: 15px;
     overflow-x: auto;
     overflow-y: hidden;
-    scroll-behavior: smooth;
-    -webkit-overflow-scrolling: touch;
-    margin-top: 40px;
-    /* مخفی کردن اسکرول بار */
-    scrollbar-width: none;
-    -ms-overflow-style: none;
   }
-
-  .suggest_section::-webkit-scrollbar {
-    display: none;
-  }
-
-  .box {
-    flex: 0 0 60%;
-    min-width: 250px;
+  
+  .ad-suggest-box {
+    flex: 0 0 calc(50% - 7.5px);
+    min-width: 0;
     height: 220px;
   }
 }
 
-/* موبایل بزرگ (550px تا 767px) - اسکرول افقی بدون اسکرول بار */
+/* موبایل بزرگ (550px تا 767px) - 1 باکس 100% + دکمه روی عکس */
 @media (min-width: 550px) and (max-width: 767px) {
-  .suggest-section-header {
+  .ad-suggest-header {
     margin: 35px 0 18px 0;
   }
-
-  .suggest-section-header span {
+  
+  .ad-suggest-header span {
     font-size: 18px;
   }
-
-  .suggest-section-header a {
+  
+  .ad-suggest-header a {
     font-size: 13px;
     gap: 8px;
   }
-
-  .suggest_section {
+  
+  .ad-suggest-container {
     display: flex;
     flex-direction: row;
     gap: 12px;
     overflow-x: auto;
     overflow-y: hidden;
-    scroll-behavior: smooth;
-    -webkit-overflow-scrolling: touch;
-    margin-top: 35px;
-    /* مخفی کردن اسکرول بار */
-    scrollbar-width: none;
-    -ms-overflow-style: none;
   }
-
-  .suggest_section::-webkit-scrollbar {
-    display: none;
-  }
-
-  .box {
-    flex: 0 0 75%;
-    min-width: 280px;
+  
+  .ad-suggest-box {
+    flex: 0 0 100%;
+    min-width: 0;
     height: 200px;
   }
 }
 
-/* موبایل متوسط (400px تا 549px) */
+/* موبایل متوسط (400px تا 549px) - 1 باکس 100% + دکمه روی عکس */
 @media (min-width: 400px) and (max-width: 549px) {
-  .suggest-section-header {
+  .ad-suggest-header {
     margin: 30px 0 15px 0;
   }
-
-  .suggest-section-header span {
+  
+  .ad-suggest-header span {
     font-size: 17px;
   }
-
-  .suggest-section-header a {
+  
+  .ad-suggest-header a {
     font-size: 12px;
     gap: 6px;
   }
-
-  .suggest_section {
+  
+  .ad-suggest-container {
     display: flex;
     flex-direction: row;
     gap: 12px;
     overflow-x: auto;
     overflow-y: hidden;
-    scroll-behavior: smooth;
-    -webkit-overflow-scrolling: touch;
-    margin-top: 30px;
-    scrollbar-width: none;
-    -ms-overflow-style: none;
   }
-
-  .suggest_section::-webkit-scrollbar {
-    display: none;
-  }
-
-  .box {
-    flex: 0 0 85%;
-    min-width: 260px;
+  
+  .ad-suggest-box {
+    flex: 0 0 100%;
+    min-width: 0;
     height: 180px;
   }
 }
 
-/* موبایل کوچک (300px تا 399px) */
+/* موبایل کوچک (300px تا 399px) - 1 باکس 100% + دکمه روی عکس */
 @media (min-width: 300px) and (max-width: 399px) {
-  .suggest-section-header {
+  .ad-suggest-header {
     margin: 25px 0 12px 0;
   }
-
-  .suggest-section-header span {
+  
+  .ad-suggest-header span {
     font-size: 16px;
   }
-
-  .suggest-section-header a {
+  
+  .ad-suggest-header a {
     font-size: 11px;
     gap: 5px;
   }
-
-  .suggest_section {
+  
+  .ad-suggest-container {
     display: flex;
     flex-direction: row;
     gap: 10px;
     overflow-x: auto;
     overflow-y: hidden;
-    scroll-behavior: smooth;
-    -webkit-overflow-scrolling: touch;
-    margin-top: 25px;
-    scrollbar-width: none;
-    -ms-overflow-style: none;
   }
-
-  .suggest_section::-webkit-scrollbar {
-    display: none;
-  }
-
-  .box {
-    flex: 0 0 90%;
-    min-width: 240px;
+  
+  .ad-suggest-box {
+    flex: 0 0 100%;
+    min-width: 0;
     height: 160px;
   }
+  
+  .ad-scroll-btn {
+    width: 32px;
+    height: 32px;
+    font-size: 16px;
+  }
 }
-
 /* ========== منتخب تخفیف و حراج ========== */
 
 /* عنوان بخش */
@@ -2486,12 +2545,12 @@ body {
     max-height: 180px;
   }
   /* انواع میز */
-  .suggest_section {
+  /* .suggest_section {
     flex-direction: column;
     gap: 12px;
     height:700px;
     margin-top: 20px;
-  }
+  } */
   .box {
     height: 180px;
   }
@@ -2506,10 +2565,6 @@ body {
     height: 90px;
   }
 
-  /* دسته بندی */
-  .category-card {
-    width: 140px;
-  }
   .card-title {
     font-size: 0.8rem;
   }

@@ -482,3 +482,61 @@ document.addEventListener('DOMContentLoaded', function() {
     carouselCage.scrollLeft = currentIndex * step;
   });
 });
+
+
+
+
+
+document.addEventListener('DOMContentLoaded', function() {
+  const adWrapper = document.querySelector('.ad-suggest-wrapper');
+  if (!adWrapper) return;
+  
+  const adContainer = adWrapper.querySelector('.ad-suggest-container');
+  const adLeftBtn = adWrapper.querySelector('.ad-scroll-left');
+  const adRightBtn = adWrapper.querySelector('.ad-scroll-right');
+  
+  if (!adContainer || !adLeftBtn || !adRightBtn) return;
+  
+  // تابع برای محاسبه عرض یک باکس کامل + gap
+  function getScrollAmount() {
+      const boxes = adContainer.querySelectorAll('.ad-suggest-box');
+      if (boxes.length === 0) return 300; // مقدار پیش‌فرض
+      
+      const firstBox = boxes[0];
+      const boxWidth = firstBox.offsetWidth;
+      
+      // گرفتن gap از استایل محاسبه شده
+      const containerStyle = window.getComputedStyle(adContainer);
+      const gap = parseFloat(containerStyle.gap) || 0;
+      
+      // مقدار اسکرول = عرض باکس + gap
+      return boxWidth + gap;
+  }
+  
+  // اسکرول به چپ (به اندازه یک عکس)
+  adLeftBtn.addEventListener('click', function() {
+      const scrollAmount = getScrollAmount();
+      adContainer.scrollBy({
+          left: -scrollAmount,
+          behavior: 'smooth'
+      });
+  });
+  
+  // اسکرول به راست (به اندازه یک عکس)
+  adRightBtn.addEventListener('click', function() {
+      const scrollAmount = getScrollAmount();
+      adContainer.scrollBy({
+          left: scrollAmount,
+          behavior: 'smooth'
+      });
+  });
+  
+  // (اختیاری) وقتی صفحه resize بشه، دکمه‌ها به درستی کار می‌کنن
+  let resizeTimer;
+  window.addEventListener('resize', function() {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(function() {
+          // فقط برای رفرش کردن مقدار - کار خاصی نیاز نیست
+      }, 250);
+  });
+});

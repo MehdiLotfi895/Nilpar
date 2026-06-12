@@ -63,32 +63,25 @@
     <div class="Ad_section_full " style="background-image: url('{% static "images/new_ai/ComfyUI_00269_.png"%}');">
     </div>
     {% if ad_section_first %}
-        <div class="suggest-section-header">
+        <div class="ad-suggest-header">
             <span>{{ad_section_first.title}}</span>
             <a href="{% url 'products' ad_section_first.category_main %}">
-                <!-- <i class="fas fa-chevron-left"></i> -->
                 مشاهده همه 
             </a>
         </div>
-        <div class="suggest_section">
-          {% for item in ad_section_first.image.all %}
-               <a href="{% url 'detail' item.product.slug %}"  class="box" style="background-image: url('{{item.image.url}}');"></a>
-          {% endfor%}
+        
+        <div class="ad-suggest-wrapper">
+            <button class="ad-scroll-btn ad-scroll-left" aria-label="اسکرول به چپ">❯</button>
+            
+            <div class="ad-suggest-container" id="adSuggestContainer">
+                {% for item in ad_section_first.image.all %}
+                    <a href="{% url 'detail' item.product.slug %}" class="ad-suggest-box" style="background-image: url('{{item.image.url}}');"></a>
+                {% endfor %}
+            </div>
+            
+            <button class="ad-scroll-btn ad-scroll-right" aria-label="اسکرول به راست">❮</button>
         </div>
-    {% else %}
-        <div class="suggest-section-header">
-            <span>انواع میز برای هر کاربردی</span>
-            <a href="">
-                <!-- <i class="fas fa-chevron-left"></i> -->
-                مشاهده همه 
-            </a>
-        </div>
-        <div class="suggest_section">
-          <div class="box" style="background-image: url('{% static "images/new_ai/1779313383467.png"%}');"></div>
-          <div class="box" style="background-image: url('{% static "images/new_ai/ComfyUI_00204_.png"%}');"></div>
-          <div class="box" style="background-image: url('{% static "images/new_ai/1779312572220.png"%}');"></div>
-        </div>
-    {% endif%}
+    {% endif %}
     <div class="offer-section-title">منتخب تخفیف و حراج</div>
     <div class="offer_products_section">
         <div class="brand_offer_section">
