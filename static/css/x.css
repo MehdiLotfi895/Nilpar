@@ -1843,7 +1843,7 @@ body {
     justify-content: space-between;
     align-items: center;
     flex-wrap: wrap;
-    margin: 230px 0 32px 0;
+    margin: 50px 0 32px 0;
 }
 
 .blog-header span {
@@ -1888,7 +1888,7 @@ body {
     position: relative;
    
     border-radius: 12px;
-
+    background-color: #f5f5f5;
     height: 180px;
 
     padding: 20px;
@@ -2035,6 +2035,8 @@ body {
 .blog-item{
     display:block;
 
+    background-color: transparent;
+
     min-height:auto !important;
 
     height: auto !important;
@@ -2099,27 +2101,29 @@ body {
     margin-top:0;
 }
 }
-
-
-/* ========== نظرات مشتریان (اصلاح شده - بدون تداخل) ========== */
+/* ========== نظرات مشتریان ========== */
 .testimonial-master {
+    --cards-per-view: 1;
+    --card-gap: 12px;
+
     background-color: #A39370;
     box-shadow: rgba(0, 0, 0, 0.08) 0px 0px 1px, rgba(0, 0, 0, 0.05) 0px 0.5px 2px;
-    padding: 2rem 1.8rem 2.5rem 1.8rem;
+    padding: 2rem 72px 2.5rem 72px;
     width: 100%;
     margin-top: 50px;
     position: relative;
+    box-sizing: border-box;
 }
 
-/* هدر با space-between */
+/* هدر */
 .testimonial-master .header-row {
     display: flex;
     justify-content: space-between;
-    align-items: baseline;
-    flex-wrap: wrap;
+    align-items: center;
     gap: 1rem;
-    margin-bottom: 2.2rem;
-    padding-bottom: 0.5rem;
+    flex-wrap: wrap;
+    margin-bottom: 1.8rem;
+    padding-bottom: 0.25rem;
 }
 
 .testimonial-master .title {
@@ -2127,7 +2131,14 @@ body {
     font-weight: 600;
     color: white;
     letter-spacing: -0.5px;
-    position: relative;
+    margin: 0;
+}
+
+.testimonial-master .header-actions {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    flex-shrink: 0;
 }
 
 .testimonial-master .view-all-testimonial {
@@ -2135,91 +2146,158 @@ body {
     font-size: 16px;
     cursor: pointer;
     transition: 0.3s;
+    white-space: nowrap;
 }
 
 .testimonial-master .view-all-testimonial:hover {
     opacity: 0.8;
 }
 
-/* محفظه کاروسل */
-.testimonial-master .carousel-cage {
-    position: relative;
-    overflow-x: auto;
-    overflow-y: visible;
+/* دکمه‌های اسکرول: وسطِ چپ و راست */
+.testimonial-nav {
+    position: absolute;
+    left: 14px;
+    right: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    pointer-events: none;
+    z-index: 10;
+}
+
+.scroll-btn {
+    width: 40px;
+    height: 40px;
+    flex: 0 0 40px;
+    border: 1px solid rgba(255, 255, 255, 0.55);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    background: rgba(255, 255, 255, 0.96);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.10);
+    color: #222;
+    transition: all 0.25s ease;
+    padding: 0;
+    margin: 0;
+    pointer-events: auto;
+}
+
+
+
+.scroll-btn:disabled {
+    opacity: 0.35;
+    cursor: not-allowed;
+    pointer-events: none;
+    transform: none !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.10);
+}
+
+#testimonialPrev,
+#testimonialNext {
+    position: absolute;
+    top: 0;
+    pointer-events: auto;
+}
+
+#testimonialPrev {
+    left: 15px;
+}
+
+#testimonialNext {
+    right: 15px;
+}
+
+/* محفظه */
+.carousel-cage {
     width: 100%;
-    scroll-behavior: smooth;
-    scrollbar-width: none;
+    overflow: hidden;
     direction: ltr;
-    transform: translateY(200px);
-    margin-top: -200px;
-    padding-bottom: 20px;
+    box-sizing: border-box;
 }
 
-.testimonial-master .carousel-cage::-webkit-scrollbar {
-    display: none;
-}
-
-.testimonial-master .slider-track {
+/* ردیف اسلایدها */
+.slider-track {
     display: flex;
     flex-direction: row;
     flex-wrap: nowrap;
-    gap: 1.8rem;
-    transition: transform 0.55s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-    will-change: transform;
+    gap: var(--card-gap);
+
+    width: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-behavior: smooth;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    scroll-snap-type: x mandatory;
+    overscroll-behavior-x: contain;
+    padding-bottom: 12px;
+    box-sizing: border-box;
 }
 
-/* هر کارت شامل عکس و کامنت */
-.testimonial-master .card-item {
-    flex: 0 0 auto;
-    width: 300px;
+.slider-track::-webkit-scrollbar {
+    display: none;
+}
+
+/* کارت */
+.card-item {
+    flex: 0 0 calc((100% - (var(--card-gap) * (var(--cards-per-view) - 1))) / var(--cards-per-view));
+    max-width: calc((100% - (var(--card-gap) * (var(--cards-per-view) - 1))) / var(--cards-per-view));
     background: #fff;
-    border-radius: 8px;
+    border-radius: 10px;
     overflow: hidden;
     transition: all 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
     text-decoration: none;
     display: flex;
     flex-direction: column;
-    height: 100%;
+    height: auto;
+    min-width: 0;
+    scroll-snap-align: start;
+    box-sizing: border-box;
 }
 
-.testimonial-master .card-item:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
-}
-
-/* تصویر محصول */
-.testimonial-master .product-img {
+/* فقط عکس مربع */
+.product-img {
     width: 100%;
-    height: 260px;
-    display: block;
+    aspect-ratio: 1 / 1;
     background: #f8f8f8;
     padding: 20px;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
 }
 
-.testimonial-master .product-img img {
+.product-img img {
     width: 100%;
     height: 100%;
     object-fit: contain;
     transition: transform 0.4s ease;
+    display: block;
 }
 
-.testimonial-master .card-item:hover .product-img img {
+.card-item:hover .product-img img {
     transform: scale(1.05);
 }
 
-/* بخش کامنت زیر عکس */
-.testimonial-master .comment-section {
-    padding: 1.2rem 1.2rem 1.5rem 1.2rem;
+/* بخش کامنت */
+.comment-section {
+    padding: 1.1rem 1.1rem 1.35rem 1.1rem;
     flex: 1;
     display: flex;
     flex-direction: column;
     direction: rtl;
+    background: transparent;
 }
 
-.testimonial-master .comment-text {
+.comment-text {
     font-size: 14px;
-    line-height: 1.65;
+    line-height: 1.7;
     color: #2c3e2f;
     font-weight: 500;
     text-align: right;
@@ -2227,10 +2305,10 @@ body {
     display: flex;
     align-items: flex-start;
     gap: 6px;
-    min-height: 70px;
+    min-height: 74px;
 }
 
-.testimonial-master .comment-text::before {
+.comment-text::before {
     content: "“";
     font-size: 2rem;
     color: #747667;
@@ -2238,20 +2316,19 @@ body {
     font-weight: bold;
 }
 
-.testimonial-master .customer-name {
+.customer-name {
     font-size: 0.85rem;
     color: #747667;
     font-weight: 600;
     display: flex;
     align-items: center;
     justify-content: flex-end;
-    gap: 8px;
     margin-top: 10px;
     border-top: 1px dashed #eedbbc;
     padding-top: 12px;
 }
 
-.testimonial-master .customer-name span {
+.customer-name span {
     background: #faf8f3;
     padding: 5px 14px;
     border-radius: 60px;
@@ -2259,175 +2336,212 @@ body {
     color: #747667;
 }
 
-/* ======================
-ریسپانسیو نظرات مشتریان
-====================== */
-
-/* دسکتاپ (992px تا 1200px) */
-@media (min-width: 992px) and (max-width: 1200px) {
+/* ========== تعداد کارت‌ها ========== */
+/* از 300px به بالا هنوز 1 کارت */
+@media (min-width: 300px) {
     .testimonial-master {
-        padding: 1.8rem 1.5rem 2rem 1.5rem;
-    }
-    .testimonial-master .title {
-        font-size: 21px;
-    }
-    .testimonial-master .view-all-testimonial {
-        font-size: 15px;
-    }
-    .testimonial-master .card-item {
-        width: 280px;
-    }
-    .testimonial-master .product-img {
-        height: 240px;
-        padding: 18px;
-    }
-    .testimonial-master .comment-text {
-        font-size: 13px;
-    }
-    .testimonial-master .slider-track {
-        gap: 1.5rem;
+        --cards-per-view: 1;
+        --card-gap: 10px;
     }
 }
 
-/* تبلت (768px تا 991px) */
-@media (min-width: 768px) and (max-width: 991px) {
+/* از 500px به بالا 2 کارت */
+@media (min-width: 500px) {
     .testimonial-master {
-        padding: 1.5rem;
+        --cards-per-view: 2;
+        --card-gap: 10px;
     }
+
     .testimonial-master .title {
         font-size: 20px;
     }
+}
+
+/* از 700px به بالا 3 کارت */
+@media (min-width: 700px) {
+    .testimonial-master {
+        --cards-per-view: 3;
+        --card-gap: 12px;
+    }
+
+    .testimonial-master .title {
+        font-size: 21px;
+    }
+
+    .testimonial-master .view-all-testimonial {
+        font-size: 15px;
+    }
+}
+
+/* از 1000px به بالا 4 کارت */
+@media (min-width: 1000px) {
+    .testimonial-master {
+        --cards-per-view: 4;
+        --card-gap: 14px;
+    }
+}
+
+/* از 1300px به بالا 5 کارت */
+@media (min-width: 1300px) {
+    .testimonial-master {
+        --cards-per-view: 5;
+        --card-gap: 16px;
+    }
+}
+
+/* ریزتنظیم‌ها */
+@media (min-width: 992px) and (max-width: 1200px) {
+    .testimonial-master {
+        padding: 1.8rem 68px 2rem 68px;
+    }
+
+    .testimonial-master .title {
+        font-size: 21px;
+    }
+
+    .testimonial-master .view-all-testimonial {
+        font-size: 15px;
+    }
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+    .testimonial-master {
+        padding: 1.5rem 64px 1.8rem 64px;
+    }
+
+    .testimonial-master .title {
+        font-size: 20px;
+    }
+
     .testimonial-master .view-all-testimonial {
         font-size: 14px;
     }
-    .testimonial-master .carousel-cage {
-        transform: translateY(180px);
-        margin-top: -180px;
+
+    .product-img {
+        padding: 16px;
     }
-    .testimonial-master .card-item {
-        width: 260px;
-    }
-    .testimonial-master .product-img {
-        height: 220px;
-        padding: 15px;
-    }
-    .testimonial-master .comment-text {
+
+    .comment-text {
         font-size: 13px;
+        min-height: 68px;
     }
-    .testimonial-master .customer-name {
+
+    .customer-name {
         font-size: 0.8rem;
-    }
-    .testimonial-master .slider-track {
-        gap: 1.3rem;
     }
 }
 
-/* موبایل بزرگ (550px تا 767px) */
 @media (min-width: 550px) and (max-width: 767px) {
     .testimonial-master {
-        padding: 1.2rem;
+        padding: 1.2rem 58px 1.4rem 58px;
     }
+
     .testimonial-master .title {
         font-size: 18px;
     }
+
     .testimonial-master .view-all-testimonial {
         font-size: 13px;
     }
-    .testimonial-master .card-item {
-        width: 250px;
-    }
-    .testimonial-master .product-img {
-        height: 200px;
+
+    .product-img {
         padding: 12px;
     }
-    .testimonial-master .comment-section {
+
+    .comment-section {
         padding: 1rem;
     }
-    .testimonial-master .comment-text {
+
+    .comment-text {
         font-size: 12px;
+        min-height: 64px;
     }
-    .testimonial-master .customer-name {
+
+    .customer-name {
         font-size: 0.75rem;
     }
-    .testimonial-master .customer-name span {
+
+    .customer-name span {
         padding: 4px 10px;
         font-size: 0.7rem;
     }
-    .testimonial-master .slider-track {
-        gap: 1rem;
-    }
 }
 
-/* موبایل متوسط (400px تا 549px) */
 @media (min-width: 400px) and (max-width: 549px) {
     .testimonial-master {
-        padding: 1rem;
+        padding: 1rem 52px 1.2rem 52px;
     }
+
     .testimonial-master .title {
         font-size: 17px;
     }
+
     .testimonial-master .view-all-testimonial {
         font-size: 12px;
     }
-    .testimonial-master .card-item {
-        width: 230px;
-    }
-    .testimonial-master .product-img {
-        height: 180px;
+
+    .product-img {
         padding: 10px;
     }
-    .testimonial-master .comment-section {
-        padding: 0.8rem;
+
+    .comment-section {
+        padding: 0.85rem;
     }
-    .testimonial-master .comment-text {
+
+    .comment-text {
         font-size: 11px;
+        min-height: 60px;
     }
-    .testimonial-master .customer-name {
+
+    .customer-name {
         font-size: 0.7rem;
     }
-    .testimonial-master .customer-name span {
+
+    .customer-name span {
         padding: 3px 8px;
         font-size: 0.65rem;
     }
-    .testimonial-master .slider-track {
-        gap: 0.8rem;
-    }
 }
 
-/* موبایل کوچک (300px تا 399px) */
 @media (min-width: 300px) and (max-width: 399px) {
     .testimonial-master {
-        padding: 0.8rem;
+        padding: 0.8rem 46px 1rem 46px;
     }
+
     .testimonial-master .title {
         font-size: 16px;
     }
+
     .testimonial-master .view-all-testimonial {
         font-size: 11px;
     }
-    .testimonial-master .card-item {
-        width: 210px;
-    }
-    .testimonial-master .product-img {
-        height: 160px;
+
+    .product-img {
         padding: 8px;
     }
-    .testimonial-master .comment-section {
-        padding: 0.6rem;
+
+    .comment-section {
+        padding: 0.7rem;
     }
-    .testimonial-master .comment-text {
+
+    .comment-text {
         font-size: 10px;
-        min-height: 60px;
+        min-height: 56px;
     }
-    .testimonial-master .customer-name {
+
+    .customer-name {
         font-size: 0.65rem;
     }
-    .testimonial-master .customer-name span {
+
+    .customer-name span {
         padding: 2px 6px;
         font-size: 0.6rem;
     }
-    .testimonial-master .slider-track {
-        gap: 0.6rem;
+
+    .scroll-btn {
+        width: 34px;
+        height: 34px;
+        flex-basis: 34px;
     }
 }
 
