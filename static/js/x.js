@@ -386,142 +386,57 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 
-document.addEventListener('DOMContentLoaded', function() {
-  const carouselCage = document.getElementById('carouselCage');
-  if (!carouselCage) return;
+document.addEventListener('DOMContentLoaded', function () {
+  const track = document.getElementById('sliderTrack');
+  const prevBtn = document.getElementById('testimonialPrev');
+  const nextBtn = document.getElementById('testimonialNext');
 
-  let currentIndex = 0;
-  let autoScrollInterval;
-  let isHovering = false;
-  let isRTL = false;
+  if (!track || !prevBtn || !nextBtn) return;
 
-  // تشخیص جهت صفحه (RTL یا LTR)
-  function detectRTL() {
-    const direction = window.getComputedStyle(carouselCage).direction;
-    return direction === 'rtl';
+  function getGap() {
+      const style = window.getComputedStyle(track);
+      const gap = parseFloat(style.gap || style.columnGap || '0');
+      return Number.isFinite(gap) ? gap : 0;
   }
 
-  // محاسبه عرض گام (عرض کارت + فاصله)
-  function getStepWidth() {
-    const card = document.querySelector('.card-item');
-    if (!card) return 274; // 250px عرض + 24px gap تقریبی
-    const cardWidth = card.getBoundingClientRect().width;
-    if (cardWidth === 0) return 274;
-    const track = carouselCage.querySelector('.slider-track');
-    if (!track) return cardWidth + 24;
-    const style = window.getComputedStyle(track);
-    const gap = parseFloat(style.gap) || 0;
-    return cardWidth + gap;
+  function getStep() {
+      const card = track.querySelector('.card-item');
+      if (!card) return 0;
+      const cardWidth = card.getBoundingClientRect().width;
+      return cardWidth + getGap();
   }
 
-  // حرکت به کارت بعدی
-  function scrollToNext() {
-    const cards = document.querySelectorAll('.card-item');
-    if (cards.length === 0) return;
+  function updateButtons() {
+      const maxScrollLeft = track.scrollWidth - track.clientWidth;
 
-    const step = getStepWidth();
-    const maxIndex = cards.length - 1;
-
-    if (currentIndex >= maxIndex) {
-      // رسیدیم به آخر: بدون انیمیشن به اول برگرد
-      currentIndex = 0;
-      carouselCage.style.scrollBehavior = 'auto';
-      carouselCage.scrollLeft = 0;
-      // force reflow
-      void carouselCage.offsetHeight;
-      carouselCage.style.scrollBehavior = 'smooth';
-    } else {
-      currentIndex++;
-      // محاسبه مقدار اسکرول بر اساس جهت صفحه
-      let scrollAmount = currentIndex * step;
-      if (isRTL) {
-        // در RTL، scrollLeft به سمت چپ بیشتر می‌شود، پس خود scrollAmount همان مقدار مورد نیاز است
-        carouselCage.scrollLeft = scrollAmount;
-      } else {
-        carouselCage.scrollLeft = scrollAmount;
-      }
-    }
+      prevBtn.disabled = track.scrollLeft <= 1;
+      nextBtn.disabled = track.scrollLeft >= maxScrollLeft - 1;
   }
 
-  // شروع اسکرول خودکار
-  function startAutoScroll() {
-    if (autoScrollInterval) clearInterval(autoScrollInterval);
-    autoScrollInterval = setInterval(() => {
-      if (!document.hidden && !isHovering) {
-        scrollToNext();
-      }
-    }, 2800);
+  function scrollNext() {
+      const step = getStep();
+      if (!step) return;
+      track.scrollBy({ left: step, behavior: 'smooth' });
   }
 
-  // توقف با هاور
-  carouselCage.addEventListener('mouseenter', () => {
-    isHovering = true;
-    if (autoScrollInterval) clearInterval(autoScrollInterval);
-  });
-  carouselCage.addEventListener('mouseleave', () => {
-    isHovering = false;
-    startAutoScroll();
+  function scrollPrev() {
+      const step = getStep();
+      if (!step) return;
+      track.scrollBy({ left: -step, behavior: 'smooth' });
+  }
+
+  nextBtn.addEventListener('click', scrollNext);
+  prevBtn.addEventListener('click', scrollPrev);
+
+  track.addEventListener('scroll', updateButtons, { passive: true });
+  window.addEventListener('resize', updateButtons);
+
+  document.querySelectorAll('.product-img img, .card-item').forEach(el => {
+      el.addEventListener('dragstart', e => e.preventDefault());
   });
 
-  // جلوگیری از اسکرول افقی دستی
-  carouselCage.addEventListener('wheel', (e) => {
-    if (Math.abs(e.deltaX) > Math.abs(e.deltaY) || e.deltaX !== 0) {
-      e.preventDefault();
-    }
-  }, { passive: false });
-
-  // غیرفعال کردن لمس افقی
-  let touchStartX = 0;
-  carouselCage.addEventListener('touchstart', (e) => {
-    touchStartX = e.touches[0].clientX;
-  });
-  carouselCage.addEventListener('touchmove', (e) => {
-    const deltaX = e.touches[0].clientX - touchStartX;
-    if (Math.abs(deltaX) > 5) {
-      e.preventDefault();
-    }
-  }, { passive: false });
-
-  // جلوگیری از درگ تصاویر
-  document.querySelectorAll('.product-img, .card-item').forEach(el => {
-    el.addEventListener('dragstart', (e) => e.preventDefault());
-  });
-
-  // مقداردهی اولیه
-  function init() {
-    isRTL = detectRTL();
-    // اطمینان از smooth scroll در CSS
-    carouselCage.style.scrollBehavior = 'smooth';
-    // ریست موقعیت به اول
-    carouselCage.scrollLeft = 0;
-    currentIndex = 0;
-    startAutoScroll();
-  }
-
-  // صبر برای بارگذاری کامل تصاویر (اختیاری)
-  const imgs = document.querySelectorAll('.product-img');
-  if (imgs.length === 0) {
-    init();
-  } else {
-    let loaded = 0;
-    imgs.forEach(img => {
-      if (img.complete) loaded++;
-      else {
-        img.addEventListener('load', () => { loaded++; if (loaded === imgs.length) init(); });
-        img.addEventListener('error', () => { loaded++; if (loaded === imgs.length) init(); });
-      }
-    });
-    if (loaded === imgs.length) init();
-  }
-
-  // در صورت تغییر سایز پنجره، موقعیت را تنظیم مجدد کن
-  window.addEventListener('resize', () => {
-    const step = getStepWidth();
-    carouselCage.scrollLeft = currentIndex * step;
-  });
+  updateButtons();
 });
-
-
 
 
 
