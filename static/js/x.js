@@ -277,75 +277,113 @@ updateButtonsOffer();
 
 
 
-document.addEventListener('DOMContentLoaded', function() {
-  const wrapper = document.querySelector('.offer_products_grid_wrapper');
-  
-  if (!wrapper) return;
-  
-  let currentIndex = 0;
-  let autoScrollInterval;
-  let lastScrollTop = 0;
-  
-  // محاسبه عرض هر محصول + gap
-  function getStepWidth() {
-      const product = document.querySelector('.product_card_item');
-      if (!product) return 235;
-      const productWidth = product.offsetWidth;
-      const style = window.getComputedStyle(wrapper);
-      const gap = parseInt(style.gap) || 15;
-      return productWidth + gap;
-  }
-  
-  // اسکرول به محصول بعدی (در RTL به سمت چپ)
-  function scrollToNext() {
-      const products = document.querySelectorAll('.product_card_item');
-      if (products.length === 0) return;
-      
-      const stepWidth = getStepWidth();
-      const maxIndex = products.length - 1;
-      
-      if (currentIndex >= maxIndex) {
-          currentIndex = 0;
-          wrapper.scrollLeft = 0;
-      } else {
-          currentIndex++;
-          wrapper.scrollLeft = -(currentIndex * stepWidth);
-      }
-  }
-  
-  // غیرفعال کردن اسکرول افقی با حفظ اسکرول عمودی
-  wrapper.addEventListener('wheel', function(e) {
-      // ذخیره موقعیت اسکرول عمودی فعلی
-      const currentScrollTop = wrapper.scrollTop;
-      
-      // جلوگیری از اسکرول افقی
-      if (e.deltaX !== 0) {
-          e.preventDefault();
-      }
-      
-      // اجازه اسکرول عمودی
-      if (e.deltaY !== 0) {
-          wrapper.scrollTop = currentScrollTop + e.deltaY;
-      }
-  }, { passive: false });
-  
-  // شروع اسکرول خودکار
-  function startAutoScroll() {
-      if (autoScrollInterval) clearInterval(autoScrollInterval);
-      autoScrollInterval = setInterval(scrollToNext, 2000);
-  }
-  
-  // توقف با hover
-  wrapper.addEventListener('mouseenter', function() {
-      if (autoScrollInterval) clearInterval(autoScrollInterval);
-  });
-  
-  wrapper.addEventListener('mouseleave', startAutoScroll);
-  
-  // شروع حرکت
-  startAutoScroll();
-});
+document.addEventListener('DOMContentLoaded', function () {
+  const track = document.getElementById('offerTrack');
+  const prevBtn = document.getElementById('offerPrevBtn');
+  const nextBtn = document.getElementById('offerNextBtn');
 
+  if (!track || !prevBtn || !nextBtn) return;
+
+  let currentIndex = 0;
+  let cardsPerView = getCardsPerView();
+  let step = 0;
+  let isRTL = false;
+
+  // تشخیص راست‌چین بودن (RTL)
+  function detectRTL() {
+      const section = document.querySelector('.offer_products_section');
+      if (section) {
+          const direction = window.getComputedStyle(section).direction;
+          isRTL = direction === 'rtl';
+      } else {
+          // fallback: بررسی dir روی body یا html
+          isRTL = document.documentElement.getAttribute('dir') === 'rtl' ||
+                  document.body.getAttribute('dir') === 'rtl';
+      }
+      return isRTL;
+  }
+
+  // تعداد کارت قابل نمایش بر اساس عرض صفحه (مطابق با CSS)
+  function getCardsPerView() {
+      const width = window.innerWidth;
+      if (width >= 1500) return 4;
+      if (width >= 1200) return 3;   // 1200 تا 1499 => 3 کارت
+      if (width >= 900) return 3;    // 900 تا 1199 => 3 کارت
+      if (width >= 600) return 2;    // 600 تا 899 => 2 کارت
+      return 1;                      // 300 تا 599 => 1 کارت
+  }
+
+  // محاسبه عرض هر کارت + گپ (step)
+  function getStep() {
+      const firstCard = track.querySelector('.product_card_item');
+      if (!firstCard) return 0;
+      const cardWidth = firstCard.getBoundingClientRect().width;
+      const gap = parseFloat(getComputedStyle(track).gap) || 16;
+      return cardWidth + gap;
+  }
+
+  // حداکثر ایندکس ممکن
+  function getMaxIndex() {
+      const totalCards = track.querySelectorAll('.product_card_item').length;
+      return Math.max(0, totalCards - cardsPerView);
+  }
+
+  // محدود کردن currentIndex در بازه مجاز
+  function clampIndex() {
+      const maxIndex = getMaxIndex();
+      if (currentIndex > maxIndex) currentIndex = maxIndex;
+      if (currentIndex < 0) currentIndex = 0;
+  }
+
+  // به‌روزرسانی وضعیت دکمه‌ها
+  function updateButtons() {
+      const maxIndex = getMaxIndex();
+      prevBtn.disabled = currentIndex <= 0;
+      nextBtn.disabled = currentIndex >= maxIndex;
+  }
+
+  // رندر حرکت با در نظر گرفتن RTL
+  function render() {
+      step = getStep();
+      const translation = currentIndex * step;
+      // در حالت RTL، برای رفتن به کارت بعدی باید به سمت مثبت translate کنیم
+      const translateValue = isRTL ? translation : -translation;
+      track.style.transform = `translateX(${translateValue}px)`;
+      updateButtons();
+  }
+
+  // رویداد دکمه قبلی
+  prevBtn.addEventListener('click', function () {
+      currentIndex -= 1;
+      clampIndex();
+      render();
+  });
+
+  // رویداد دکمه بعدی
+  nextBtn.addEventListener('click', function () {
+      currentIndex += 1;
+      clampIndex();
+      render();
+  });
+
+  // هنگام تغییر اندازه صفحه
+  window.addEventListener('resize', function () {
+      const newCardsPerView = getCardsPerView();
+      if (newCardsPerView !== cardsPerView) {
+          cardsPerView = newCardsPerView;
+          // پس از تغییر تعداد کارت‌ها، ایندکس فعلی را مجدداً محدود کن
+          clampIndex();
+      }
+      // حتی اگر تعداد کارت تغییر نکرده، ممکن است عرض کارت‌ها تغییر کرده باشد
+      render();
+  });
+
+  // یک بار تشخیص RTL
+  detectRTL();
+  // مقداردهی اولیه
+  clampIndex();
+  render();
+});
 
 
 document.addEventListener('DOMContentLoaded', function() {

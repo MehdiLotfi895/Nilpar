@@ -726,101 +726,177 @@ body {
     font-size: 16px;
   }
 }
-/* ========== منتخب تخفیف و حراج ========== */
+/* =========================
+   OFFER / DISCOUNT SECTION
+========================= */
 
 /* عنوان بخش */
 .offer-section-title {
     font-size: 22px;
-    color: black;
-    margin: 50px 0;
+    color: #000;
+    margin: 50px 0 20px;
+    font-weight: 700;
 }
 
+/* کل سکشن */
 .offer_products_section {
     width: 100%;
-    padding: 40px;
+    padding: 32px;
     background: #A39370;
-    border-radius: 16px;
+    border-radius: 18px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.10);
     display: flex;
-    gap: 40px;
-    align-items: center;
+    flex-direction: column;
+    gap: 24px;
     position: relative;
-    margin: 30px 0;
-    box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+    overflow: hidden;
+    box-sizing: border-box;
+    direction: rtl;
 }
 
+/* برند */
 .brand_offer_section {
-    width: 22%;
-    flex-shrink: 0;
+    width: 100%;
     display: flex;
-    align-items: center;
     justify-content: center;
-    border-radius: 12px;
-    overflow: hidden;
+    align-items: center;
+    flex-shrink: 0;
+    box-sizing: border-box;
 }
 
 .brand_offer_section img {
     width: 100%;
+    max-width: 340px;
     object-fit: contain;
-    transition: transform 0.3s ease;
+    display: block;
 }
 
-.brand_offer_section img:hover {
-    transform: scale(1.02);
+/* کاروسل */
+.offer-carousel {
+    position: relative;
+    width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
 }
 
-/* اسکرول افقی - حفظ ساختار قبلی */
-.offer_products_grid_wrapper {
-    width: 78%;
+/* دکمه‌ها */
+.offer-carousel__btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 10;
+    width: 42px;
+    height: 42px;
+    border: none;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.95);
+    color: #333;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
     display: flex;
-    flex-direction: row;
-    gap: 20px;
-    overflow-x: auto;
-    overflow-y: hidden;
-    scroll-behavior: smooth;
-    padding: 15px 0;
-    scrollbar-width: none;
-    -ms-overflow-style: none;
-    transform: translateY(200px);
-    margin-top: -200px;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: 0.25s ease;
 }
 
-.offer_products_grid_wrapper::-webkit-scrollbar {
-    display: none;
+.offer-carousel__btn:hover {
+    background: #fff;
+    transform: translateY(-50%) scale(1.06);
+}
+
+.offer-carousel__btn:disabled {
+    opacity: 0.35;
+    cursor: not-allowed;
+}
+
+.offer-carousel__btn--prev {
+    left: -12px;
+}
+
+.offer-carousel__btn--next {
+    right: -12px;
+}
+
+/* ویوپورت */
+.offer-carousel__viewport {
+    width: 100%;
+    overflow: hidden;
+    border-radius: 14px;
+    min-width: 0;
+    box-sizing: border-box;
+}
+
+/* ترک */
+.offer-carousel__track {
+    display: flex;
+    gap: 16px;
+    transition: transform 0.35s ease;
+    will-change: transform;
+    padding: 6px 0;
+    min-width: 0;
+    box-sizing: border-box;
 }
 
 /* کارت محصول */
 .product_card_item {
-    width: 280px;
-    min-width: 280px;
+    flex: 0 0 100%;
     background: #fff;
-    border-radius: 8px;
-    padding: 15px;
+    border-radius: 12px;
+    padding: 14px;
     display: flex;
     flex-direction: column;
     gap: 12px;
-    transition: all 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1);
     box-shadow: 0 4px 12px rgba(0,0,0,0.08);
     position: relative;
+    direction: rtl;
+    min-width: 0;
+    box-sizing: border-box;
 }
 
-/* تصویر محصول */
+/* تصویر */
 .product_card_image {
     width: 100%;
     height: 220px;
-    border-radius: 8px;
+    border-radius: 10px;
     background: #f8f8f8;
-    padding: 16px;
+    padding: 14px;
+    box-sizing: border-box;
 }
 
 .product_card_image img {
     width: 100%;
     height: 100%;
     object-fit: contain;
-    transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    display: block;
 }
 
-.product_card_image:hover img {
-    transform: scale(1.05);
+/* رنگ‌ها */
+.offer-product-colors {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-wrap: wrap;
+}
+
+.offer-product-colors span {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    border: 1px solid #ddd;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+}
+
+.more-colors {
+    width: auto !important;
+    padding: 0 8px;
+    border-radius: 20px;
+    background: #f0f0f0;
+    color: #666;
+    font-size: 10px;
+    font-weight: 600;
 }
 
 /* قیمت‌ها */
@@ -843,18 +919,9 @@ body {
     text-decoration: line-through;
 }
 
-.product_discount_badge {
-    background: #d63031;
-    color: white;
-    font-size: 12px;
-    font-weight: 700;
-    padding: 2px 8px;
-    border-radius: 20px;
-}
-
-/* عنوان محصول */
+/* عنوان */
 .product_card_title {
-    font-size: 15px;
+    font-size: 16px;
     font-weight: 600;
     color: #2c3e2f;
     line-height: 1.5;
@@ -865,46 +932,11 @@ body {
     min-height: 46px;
 }
 
-/* رنگ‌های محصول */
-.offer-product-colors {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    flex-wrap: wrap;
-}
-
-.offer-product-colors span {
-    width: 20px;
-    height: 20px;
-    border-radius: 50%;
-    border: 1px solid #ddd;
-    cursor: pointer;
-    transition: transform 0.2s;
-}
-
-.offer-product-colors span:hover {
-    transform: scale(1.2);
-    border-color: #747667;
-}
-
-.more-colors {
-    width: auto !important;
-    background: #f0f0f0;
-    color: #666;
-    font-size: 10px;
-    font-weight: 600;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 0 8px;
-    border-radius: 20px;
-}
-
 /* دکمه‌های اکشن */
 .product_card_action_form {
     display: flex;
-    gap: 12px;
-    margin-top: 5px;
+    gap: 10px;
+    margin-top: 2px;
 }
 
 .product_favorite_button,
@@ -922,84 +954,111 @@ body {
     align-items: center;
     justify-content: center;
     text-decoration: none;
+    box-sizing: border-box;
 }
 
-.product_favorite_button:hover {
-    background: #747667;
-    color: #fff;
-}
-
+.product_favorite_button:hover,
 .product_detail_link:hover {
     background: #747667;
     color: #fff;
 }
 
-/* ======================
-ریسپانسیو بخش تخفیف و حراج
-====================== */
-
-/* دسکتاپ (1000px به بالا) - استایل اصلی */
-@media (min-width: 1000px) {
-    .offer_products_section {
-        display: flex;
-        flex-direction: row;
-        gap: 40px;
-        padding: 40px;
-    }
-
-    .brand_offer_section {
-        width: 22%;
-        display: flex;
-    }
-
-    .offer_products_grid_wrapper {
-        width: 78%;
-        display: flex;
-        flex-direction: row;
-        overflow-x: auto;
-        transform: translateY(200px);
-        margin-top: -200px;
-    }
-
-    .product_card_item {
-        width: 280px;
-        min-width: 280px;
-    }
-}
-
-/* تبلت و دسکتاپ کوچک (768px تا 999px) - برند بالا، محصولات اسکرول */
-@media (min-width: 768px) and (max-width: 999px) {
+/* =========================
+   300px تا 599px
+   1 کارت کامل + برند در بالا
+========================= */
+@media (min-width: 300px) and (max-width: 599px) {
     .offer-section-title {
-        font-size: 20px;
-        margin: 40px 0;
+        font-size: 16px;
+        margin: 28px 0 16px;
     }
 
     .offer_products_section {
+        padding: 16px;
+        gap: 18px;
+        border-radius: 12px;
         flex-direction: column;
-        padding: 30px;
-        gap: 20px;
     }
 
     .brand_offer_section {
         width: 100%;
-        max-width: 300px;
-        margin: 0 auto;
     }
 
-    .offer_products_grid_wrapper {
-        width: 100%;
-        gap: 15px;
+    .brand_offer_section img {
+        max-width: 220px;
     }
 
     .product_card_item {
-        width: 260px;
-        min-width: 260px;
+        flex: 0 0 100%;
         padding: 12px;
     }
 
     .product_card_image {
+        height: 250px;
+        padding: 10px;
+    }
+
+    .product_card_price {
+        font-size: 15px;
+    }
+
+    .product-offer-old-price {
+        font-size: 11px;
+    }
+
+    .product_card_title {
+        font-size: 14px;
+        min-height: 34px;
+    }
+
+    .product_favorite_button,
+    .product_detail_link {
+        width: 30px;
+        height: 30px;
+        font-size: 13px;
+    }
+
+    .offer-carousel__btn {
+        width: 34px;
+        height: 34px;
+    }
+
+    .offer-carousel__btn--prev {
+        left: -6px;
+    }
+
+    .offer-carousel__btn--next {
+        right: -6px;
+    }
+}
+
+/* =========================
+   600px تا 899px
+   2 کارت کامل + برند در بالا
+========================= */
+@media (min-width: 600px) and (max-width: 899px) {
+    .offer-section-title {
+        font-size: 18px;
+        margin: 36px 0 18px;
+    }
+
+    .offer_products_section {
+        padding: 22px;
+        gap: 20px;
+        flex-direction: column;
+    }
+
+    .brand_offer_section img {
+        max-width: 260px;
+    }
+
+    .product_card_item {
+        flex: 0 0 calc((100% - 16px) / 2);
+        padding: 13px;
+    }
+
+    .product_card_image {
         height: 200px;
-        padding: 12px;
     }
 
     .product_card_price {
@@ -1007,8 +1066,8 @@ body {
     }
 
     .product_card_title {
-        font-size: 14px;
-        min-height: 42px;
+        font-size: 15px;
+        min-height: 38px;
     }
 
     .product_favorite_button,
@@ -1019,254 +1078,195 @@ body {
     }
 }
 
-/* موبایل بزرگ (550px تا 767px) */
-@media (min-width: 550px) and (max-width: 767px) {
+/* =========================
+   900px تا 1199px
+   3 کارت کامل + برند در بالا (ستون)
+========================= */
+@media (min-width: 900px) and (max-width: 1199px) {
     .offer-section-title {
-        font-size: 18px;
-        margin: 35px 0;
+        font-size: 20px;
+        margin: 40px 0 18px;
     }
 
     .offer_products_section {
+        padding: 28px;
+        gap: 20px;
         flex-direction: column;
-        padding: 25px;
-        gap: 18px;
-        border-radius: 12px;
     }
 
     .brand_offer_section {
         width: 100%;
-        max-width: 250px;
-        margin: 0 auto;
     }
 
-    .offer_products_grid_wrapper {
+    .brand_offer_section img {
+        max-width: 280px;
+    }
+
+    .offer-carousel {
         width: 100%;
-        gap: 12px;
     }
 
     .product_card_item {
-        width: 240px;
-        min-width: 240px;
-        padding: 12px;
-        gap: 10px;
+        flex: 0 0 calc((100% - 32px) / 3);
+        padding: 14px;
     }
 
     .product_card_image {
-        height: 180px;
-        padding: 10px;
+        height: 210px;
     }
 
     .product_card_price {
-        font-size: 15px;
-    }
-
-    .product-offer-old-price {
-        font-size: 12px;
+        font-size: 17px;
     }
 
     .product_card_title {
-        font-size: 13px;
-        min-height: 38px;
+        font-size: 16px;
+        min-height: 42px;
     }
 
-    .offer-product-colors span {
-        width: 16px;
-        height: 16px;
+    .offer-carousel__btn--prev {
+        left: -14px;
     }
 
-    .product_favorite_button,
-    .product_detail_link {
+    .offer-carousel__btn--next {
+        right: -14px;
+    }
+}
+
+/* =========================
+   1200px تا 1499px
+   3 کارت کامل + برند در سمت راست (ردیف)
+========================= */
+@media (min-width: 1200px) and (max-width: 1499px) {
+    .offer-section-title {
+        font-size: 21px;
+        margin: 45px 0 20px;
+    }
+
+    .offer_products_section {
+        padding: 32px;
+        gap: 24px;
+        flex-direction: row;
+        align-items: stretch;
+    }
+
+    .brand_offer_section {
+        width: auto;
+        flex: 0 0 260px;
+        max-width: 260px;
+    }
+
+    .brand_offer_section img {
+        max-width: 100%;
+    }
+
+    .offer-carousel {
+        flex: 1;
+        min-width: 0;
+    }
+
+    .product_card_item {
+        flex: 0 0 calc((100% - 32px) / 3);
+        padding: 14px;
+    }
+
+    .product_card_image {
+        height: 210px;
+    }
+
+    .product_card_price {
+        font-size: 17px;
+    }
+
+    .product_card_title {
+        font-size: 16px;
+        min-height: 42px;
+    }
+
+    .offer-carousel__btn--prev {
+        left: -14px;
+    }
+
+    .offer-carousel__btn--next {
+        right: -14px;
+    }
+}
+
+/* =========================
+   1500px به بالا
+   4 کارت کامل + برند در سمت راست (ردیف)
+========================= */
+@media (min-width: 1500px) {
+    .offer-section-title {
+        font-size: 22px;
+        margin: 50px 0 20px;
+    }
+
+    .offer_products_section {
+        padding: 32px;
+        gap: 24px;
+        flex-direction: row;
+        align-items: stretch;
+    }
+
+    .brand_offer_section {
+        width: auto;
+        flex: 0 0 280px;
+        max-width: 280px;
+    }
+
+    .brand_offer_section img {
+        max-width: 100%;
+    }
+
+    .offer-carousel {
+        flex: 1;
+        min-width: 0;
+    }
+
+    .product_card_item {
+        flex: 0 0 calc((100% - 48px) / 4);
+        padding: 14px;
+    }
+
+    .product_card_image {
+        height: 220px;
+    }
+
+    .product_card_price {
+        font-size: 18px;
+    }
+
+    .product_card_title {
+        font-size: 16px;
+        min-height: 46px;
+    }
+
+    .offer-carousel__btn--prev {
+        left: -14px;
+    }
+
+    .offer-carousel__btn--next {
+        right: -14px;
+    }
+}
+
+/* =========================
+   خیلی کوچک (کمتر از 300px)
+========================= */
+@media (max-width: 299px) {
+    .offer_products_section {
+        padding: 14px;
+        flex-direction: column;
+    }
+
+    .product_card_item {
+        flex: 0 0 100%;
+    }
+
+    .offer-carousel__btn {
         width: 32px;
         height: 32px;
-        font-size: 13px;
-    }
-}
-
-/* موبایل متوسط (400px تا 549px) */
-@media (min-width: 400px) and (max-width: 549px) {
-    .offer-section-title {
-        font-size: 17px;
-        margin: 30px 0;
-    }
-
-    .offer_products_section {
-        flex-direction: column;
-        padding: 20px;
-        gap: 15px;
-        border-radius: 12px;
-    }
-
-    .brand_offer_section {
-        width: 100%;
-        max-width: 200px;
-        margin: 0 auto;
-    }
-
-    .offer_products_grid_wrapper {
-        width: 100%;
-        gap: 10px;
-    }
-
-    .product_card_item {
-        width: 220px;
-        min-width: 220px;
-        padding: 10px;
-        gap: 8px;
-    }
-
-    .product_card_image {
-        height: 160px;
-        padding: 8px;
-    }
-
-    .product_card_price {
-        font-size: 14px;
-    }
-
-    .product-offer-old-price {
-        font-size: 11px;
-    }
-
-    .product_card_title {
-        font-size: 12px;
-        min-height: 34px;
-    }
-
-    .offer-product-colors {
-        gap: 4px;
-    }
-
-    .offer-product-colors span {
-        width: 14px;
-        height: 14px;
-    }
-
-    .product_favorite_button,
-    .product_detail_link {
-        width: 28px;
-        height: 28px;
-        font-size: 12px;
-    }
-}
-
-/* موبایل کوچک (300px تا 399px) */
-@media (min-width: 300px) and (max-width: 399px) {
-    .offer-section-title {
-        font-size: 16px;
-        margin: 25px 0;
-    }
-
-    .offer_products_section {
-        flex-direction: column;
-        padding: 15px;
-        gap: 12px;
-        border-radius: 10px;
-    }
-
-    .brand_offer_section {
-        width: 100%;
-        max-width: 180px;
-        margin: 0 auto;
-    }
-
-
-    .offer_products_grid_wrapper {
-        width: 100%;
-        gap: 8px;
-    }
-
-    .product_card_item {
-        width: 200px;
-        min-width: 200px;
-        padding: 8px;
-        gap: 8px;
-    }
-
-    .product_card_image {
-        height: 140px;
-        padding: 6px;
-    }
-
-    .product_card_price {
-        font-size: 13px;
-    }
-
-    .product-offer-old-price {
-        font-size: 10px;
-    }
-
-    .product_card_title {
-        font-size: 11px;
-        min-height: 30px;
-    }
-
-    .offer-product-colors {
-        gap: 3px;
-    }
-
-    .offer-product-colors span {
-        width: 12px;
-        height: 12px;
-    }
-
-    .product_favorite_button,
-    .product_detail_link {
-        width: 26px;
-        height: 26px;
-        font-size: 11px;
-    }
-}
-
-/* ========== ریسپانسیو ========== */
-@media (max-width: 1200px) {
-    .brand_offer_section {
-        width: 25%;
-    }
-    .offer_products_grid_wrapper {
-        width: 75%;
-    }
-    .product_card_item {
-        width: 260px;
-        min-width: 260px;
-    }
-}
-
-@media (max-width: 992px) {
-    .offer_products_section {
-        flex-direction: column;
-        padding: 30px;
-    }
-    .brand_offer_section {
-        width: 100%;
-        max-width: 250px;
-        margin: 0 auto;
-    }
-    .offer_products_grid_wrapper {
-        width: 100%;
-    }
-    .product_card_item {
-        width: 250px;
-        min-width: 250px;
-    }
-}
-
-@media (max-width: 550px) {
-    .offer_products_section {
-        padding: 20px;
-    }
-    .product_card_item {
-        width: 230px;
-        min-width: 230px;
-        padding: 12px;
-    }
-    .product_card_image {
-        height: 180px;
-    }
-    .product_card_price {
-        font-size: 16px;
-    }
-    .product_card_title {
-        font-size: 13px;
     }
 }
 /* ========== جدید ترین محصولات و پر فروش ترینها ========== */
@@ -2707,7 +2707,7 @@ body {
 /* کلاس جدید برای جلوگیری از تداخل */
 .ad-banner-wrapper {
     width: 100%;
-    margin-top: 230px;
+    margin-top: 50px;
     margin-bottom: 30px;
 }
 

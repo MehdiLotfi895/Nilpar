@@ -83,47 +83,66 @@
         </div>
     {% endif %}
     <div class="offer-section-title">منتخب تخفیف و حراج</div>
-    <div class="offer_products_section">
-        <div class="brand_offer_section">
-            <img src="{% static 'images/new_ai/ComfyUI_00285_.png' %}" alt="brand offer image">
-        </div>
-        <div class="offer_products_grid_wrapper" id="offerScrollContainer">
-            {% for product in products %}
-            <div class="product_card_item">
-                <div class="offer-product-colors">
-                    {% for color in product.color.all|slice:":4" %}
-                    <span style="background:{{ color.color_code }}"></span>
-                    {% endfor %}
-                    {% if product.color.count > 4 %}
-                    <span class="more-colors">+{{ product.color.count|add:"-4" }}</span>
-                    {% endif %}
-                </div>
-                <div class="product_card_image">
-                    <img  src="{{ product.images.all.0.image.url }}" alt="{{ product.name }}">
-                </div>
-                {% if product.off != 0 %}
-                <div class="product_price_wrapper">
-                    <span class="product_card_price">{{ product.price|persian_intcomma }} تومان</span>
-                    <del class="product-offer-old-price">{{ product.old_price|persian_intcomma }} تومان</del>
-                </div>
-                {% else %}
-                <span class="product_card_price">{{ product.old_price|persian_intcomma }} تومان</span>
-                {% endif %}
-                <span class="product_card_title">{{ product.name|truncatechars:45 }}</span>
-                <form class="product_card_action_form" method="post" action="">
-                    {% csrf_token %}
-                    <input type="hidden" name="product" value="{{ product.id }}">
-                    <button class="product_favorite_button" type="submit" name="action" value="add_favorite_product">
-                        <i class="far fa-heart"></i>
-                    </button>
-                    <a class="product_detail_link" href="{% url 'detail' product.slug %}">
-                        <i class="fas fa-search"></i>
-                    </a>
-                </form>
-            </div>
+
+<section class="offer_products_section">
+
+  <div class="brand_offer_section">
+    <img src="{% static 'images/new_ai/ComfyUI_00285_.png' %}" alt="brand offer image">
+  </div>
+
+  <div class="offer-carousel">
+    <button class="offer-carousel__btn offer-carousel__btn--prev" id="offerPrevBtn" type="button" aria-label="قبلی">
+      <i class="fas fa-chevron-left"></i>
+    </button>
+
+    <div class="offer-carousel__viewport" id="offerViewport">
+      <div class="offer-carousel__track" id="offerTrack" >
+        {% for product in products %}
+        <article class="product_card_item">
+          <div class="offer-product-colors">
+            {% for color in product.color.all|slice:":4" %}
+              <span style="background:{{ color.color_code }}"></span>
             {% endfor %}
-        </div>
+            {% if product.color.count > 4 %}
+              <span class="more-colors">+{{ product.color.count|add:"-4" }}</span>
+            {% endif %}
+          </div>
+
+          <div class="product_card_image">
+            <img src="{{ product.images.all.0.image.url }}" alt="{{ product.name }}">
+          </div>
+
+          {% if product.off != 0 %}
+          <div class="product_price_wrapper">
+            <span class="product_card_price">{{ product.price|persian_intcomma }} تومان</span>
+            <del class="product-offer-old-price">{{ product.old_price|persian_intcomma }} تومان</del>
+          </div>
+          {% else %}
+          <span class="product_card_price">{{ product.old_price|persian_intcomma }} تومان</span>
+          {% endif %}
+
+          <span class="product_card_title">{{ product.name|truncatechars:45 }}</span>
+
+          <form class="product_card_action_form" method="post" action="">
+            {% csrf_token %}
+            <input type="hidden" name="product" value="{{ product.id }}">
+            <button class="product_favorite_button" type="submit" name="action" value="add_favorite_product">
+              <i class="far fa-heart"></i>
+            </button>
+            <a class="product_detail_link" href="{% url 'detail' product.slug %}">
+              <i class="fas fa-search"></i>
+            </a>
+          </form>
+        </article>
+        {% endfor %}
+      </div>
     </div>
+
+    <button class="offer-carousel__btn offer-carousel__btn--next" id="offerNextBtn" type="button" aria-label="بعدی">
+        <i class="fas fa-chevron-right"></i>
+    </button>
+  </div>
+</section>
     <!-- <div class="suggest-section-header">
         <span>انواع میز تلویزیون</span>
         <a href="">
