@@ -7,7 +7,7 @@ from django.contrib import messages
 from django.contrib.auth import login as django_login, logout as django_logout
 from django.utils import timezone
 from django.db.models import Q ,F ,Sum,DecimalField, Value,Prefetch
-from .models import Product, Order, HandOverOrder, AddressInfo, CustomUser, OTP ,Question ,Comment,Header_top,CategoryMain,SliderImage,Blog,OrderBasket,ColorProduct,OrderItem,AdItem,AdSection
+from .models import Product, Order, HandOverOrder, AddressInfo, CustomUser, OTP ,Question ,Comment,Header_top,CategoryMain,SliderImage,Blog,OrderBasket,ColorProduct,OrderItem,AdItem,AdSection,DeliverySettings
 from .forms import PhoneForm, OTPForm, RegisterForm,AddAddressForm,ProfileForm,AddressUpdateForm
 from django.db.models.functions import Coalesce
 from django.db.models.expressions import ExpressionWrapper, CombinedExpression
@@ -22,6 +22,8 @@ import requests
 from django.views import View
 from django.http import HttpResponse
 from django.conf import settings
+import jdatetime
+
 # ========== صفحه اصلی ==========
 class Home(ListView):
     model = Product
@@ -164,66 +166,101 @@ class Detail( DetailView):
 
         return redirect('detail', slug=product.slug)
         
-    
-# ========== سفارش ==========
-# جایگزین کلاس Ordering در فایل main/views.py کنید:
+from datetime import timedelta
+
+import jdatetime
+from django.contrib import messages
+from django.db import transaction
+from django.shortcuts import get_object_or_404, redirect
+from django.views.generic import CreateView
+
+from .models import (
+    Order,
+    OrderItem,
+    DiscountCode,
+    HandOverOrder,
+    DeliverySettings,
+    AddressInfo,
+)
+
+
+def parse_jalali_date(value):
+    """
+    value example: '1405-04-12'
+    """
+    year, month, day = map(int, value.split('-'))
+    return jdatetime.date(year, month, day)
+
+
+def get_available_delivery_dates():
+    settings = DeliverySettings.objects.first()
+
+    if not settings or not settings.is_active:
+        return []
+
+    today = jdatetime.date.today()
+    start_date = today + timedelta(days=settings.start_after_days)
+
+    available_dates = []
+    current = start_date
+
+    max_scan_days = 365
+    scanned_days = 0
+
+    while len(available_dates) < settings.visible_days and scanned_days < max_scan_days:
+        if current.isoweekday() != 5:  # جمعه
+            daily_count = HandOverOrder.objects.filter(date=current).count()
+
+            if daily_count < settings.max_orders_per_day:
+                available_dates.append({
+                    'value': current.strftime('%Y-%m-%d'),
+                    'label': current.strftime('%Y/%m/%d'),
+                })
+
+        current += timedelta(days=1)
+        scanned_days += 1
+
+    return available_dates
+
+
 class Ordering(LoginRequiredMixin, CreateView):
     template_name = 'order_page.html'
     model = Order
-
     fields = []
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
         from cart.services import UnifiedCartService
-
         cart_service = UnifiedCartService.get_cart(self.request)
 
         context['cart_items'] = cart_service.get_items()
         context['total_price'] = cart_service.get_total_price()
         context['total_items'] = cart_service.get_total_items()
-
-        context['user_addresses'] = AddressInfo.objects.filter(
-            user=self.request.user
-        )
-
-        context['available_times'] = HandOverOrder.objects.filter(
-            order__isnull=True
-        ).order_by('date')
+        context['user_addresses'] = AddressInfo.objects.filter(user=self.request.user)
+        context['available_dates'] = get_available_delivery_dates()
 
         return context
 
     def post(self, request, *args, **kwargs):
-
         from cart.services import UnifiedCartService
-
         cart_service = UnifiedCartService.get_cart(request)
-
         cart_items = cart_service.get_items()
 
         if not cart_items:
-            messages.error(
-                request,
-                'سبد خرید شما خالی است!'
-            )
+            messages.error(request, 'سبد خرید شما خالی است!')
             return redirect('cart:cart_detail')
 
         address_id = request.POST.get('address_id')
-        handover_id = request.POST.get('handover_id')
+        delivery_date_value = request.POST.get('delivery_date')
+        discount_code_value = request.POST.get('discount_code', '').strip()
 
         if not address_id:
-            messages.error(
-                request,
-                'لطفا آدرس تحویل را انتخاب کنید.'
-            )
+            messages.error(request, 'لطفا آدرس تحویل را انتخاب کنید.')
             return redirect('ordering')
 
-        if not handover_id:
-            messages.error(
-                request,
-                'لطفا زمان تحویل را انتخاب کنید.'
-            )
+        if not delivery_date_value:
+            messages.error(request, 'لطفا تاریخ تحویل را انتخاب کنید.')
             return redirect('ordering')
 
         address = get_object_or_404(
@@ -233,65 +270,124 @@ class Ordering(LoginRequiredMixin, CreateView):
         )
 
         try:
+            selected_date = parse_jalali_date(delivery_date_value)
+        except Exception:
+            messages.error(request, 'تاریخ انتخاب‌شده معتبر نیست.')
+            return redirect('ordering')
 
+        settings = DeliverySettings.objects.first()
+        if not settings or not settings.is_active:
+            messages.error(request, 'سیستم تحویل فعلاً غیرفعال است.')
+            return redirect('ordering')
+
+        today = jdatetime.date.today()
+        start_date = today + timedelta(days=settings.start_after_days)
+
+        if selected_date < start_date:
+            messages.error(request, 'این تاریخ هنوز برای ثبت سفارش باز نشده است.')
+            return redirect('ordering')
+
+        if selected_date.isoweekday() == 5:
+            messages.error(request, 'روز جمعه برای تحویل فعال نیست.')
+            return redirect('ordering')
+
+        total_price = cart_service.get_total_price()
+        discount_amount = 0
+        final_price = total_price
+        discount_obj = None
+
+        try:
             with transaction.atomic():
+                current_count = HandOverOrder.objects.select_for_update().filter(
+                    date=selected_date
+                ).count()
 
-                handover = HandOverOrder.objects.select_for_update().get(
-                    id=handover_id,
-                    order__isnull=True
-                )
+                if current_count >= settings.max_orders_per_day:
+                    messages.error(request, 'ظرفیت این روز تکمیل شده است.')
+                    return redirect('ordering')
 
+                # =========================
+                # تخفیف
+                # =========================
+                if discount_code_value:
+                    try:
+                        discount_obj = DiscountCode.objects.select_for_update().get(
+                            code__iexact=discount_code_value
+                        )
+
+                        # کد باید فعال و معتبر باشد
+                        if not discount_obj.is_valid:
+                            messages.error(request, 'این کد تخفیف معتبر نیست.')
+                            return redirect('ordering')
+
+                        # کاربر نباید قبلاً از این کد استفاده کرده باشد
+                        if discount_obj.users.filter(pk=request.user.pk).exists():
+                            messages.error(request, 'شما قبلاً از این کد تخفیف استفاده کرده‌اید.')
+                            return redirect('ordering')
+
+                        # حداقل مبلغ سفارش
+                        if total_price < discount_obj.min_order_amount:
+                            messages.error(request, 'مبلغ سفارش به حداقل مبلغ لازم برای این کد نرسیده است.')
+                            return redirect('ordering')
+
+                        # محاسبه تخفیف
+                        discount_amount = (total_price * discount_obj.percent_off) // 100
+                        if discount_amount > discount_obj.max_discount_amount:
+                            discount_amount = discount_obj.max_discount_amount
+
+                        final_price = total_price - discount_amount
+
+                    except DiscountCode.DoesNotExist:
+                        messages.error(request, 'کد تخفیف معتبر نیست.')
+                        return redirect('ordering')
+
+                # =========================
+                # ساخت سفارش
+                # =========================
                 order = Order.objects.create(
                     user=request.user,
-
                     receiver=address.receiver,
                     phonenumber=address.phonenumber,
-
                     province=address.province,
                     city=address.city,
-
                     address=address.address,
                     address_code=address.address_code,
-
-                    date=handover.date,
-                    clock=handover.clock,
-
-                    total_price=cart_service.get_total_price(),
-                    state='unpay'
+                    date=selected_date,
+                    total_price=total_price,
+                    discount_amount=discount_amount,
+                    final_price=final_price,
+                    discount_code=discount_obj,
+                    state='unpay',
                 )
 
                 for item in cart_items:
-
                     OrderItem.objects.create(
                         order=order,
                         user=request.user,
                         product=item['product'],
                         color=item['color'],
                         number=item['quantity'],
-                        price=item['final_price']
+                        price=item['final_price'],
+                        body_color=item.get('body_color'),
+                        door_color=item.get('door_color'),
                     )
 
-                handover.order = order
-                handover.save()
+                HandOverOrder.objects.create(
+                    order=order,
+                    date=selected_date,
+                    price=0
+                )
 
-        except HandOverOrder.DoesNotExist:
+                # ثبت اینکه این کاربر از این کد استفاده کرده
+                if discount_obj:
+                    discount_obj.users.add(request.user)
 
-            messages.error(
-                request,
-                'این بازه زمانی قبلا رزرو شده است.'
-            )
-
+        except Exception:
+            messages.error(request, 'خطا در ثبت سفارش رخ داد.')
             return redirect('ordering')
 
-        messages.success(
-            request,
-            f'سفارش شماره {order.id} ثبت شد.'
-        )
-
-        return redirect(
-          'payment_method',
-           order.id
-)
+        messages.success(request, f'سفارش شماره {order.id} ثبت شد.')
+        return redirect('payment_method', order.id)
 
 
 # ========== سبد خرید ==========
@@ -968,9 +1064,6 @@ def order_success(request, order_id):
     )
 
 
-
-
-
 class OrderListView(LoginRequiredMixin, ListView):
 
     model = Order
@@ -1197,7 +1290,7 @@ class StartPaymentView(LoginRequiredMixin,View):
     
             "amount":
             int(
-                order.total_price
+                order.final_price
             ),
     
             "callback_url":
@@ -1316,7 +1409,7 @@ class VerifyPaymentView(LoginRequiredMixin,View):
     
             "amount":
             int(
-                order.total_price
+                order.final_price
             ),
     
             "authority":

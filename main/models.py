@@ -101,6 +101,16 @@ class ColorProduct(models.Model):
         return f"{self.color_name} ,{self.color_code}"
     
 class Product(models.Model):
+    COLOR_TYPE_CHOICES = (
+    ('single', 'تک رنگ'),
+    ('double', 'دو رنگ'),
+)
+
+    color_type = models.CharField(
+        max_length=10,
+        choices=COLOR_TYPE_CHOICES,
+        default='single'
+    )
     name = models.CharField(
         max_length=300,
         verbose_name=_('name')
@@ -169,6 +179,18 @@ class Product(models.Model):
     color=models.ManyToManyField(ColorProduct,related_name='products',
         verbose_name=_('color') )
     
+    body_color=models.ManyToManyField(ColorProduct,related_name='products_body_color',verbose_name=_('رنگ بدنه'))
+
+    door_color=models.ManyToManyField(ColorProduct,related_name='products_door_color',verbose_name=_('رنگ در'))
+    
+    accessories = models.ManyToManyField(
+        'self',
+        blank=True,
+        symmetrical=False,
+        related_name='used_as_accessory_for',
+        verbose_name='لوازم جانبی'
+    )
+
     slug = models.SlugField(
         max_length=255,   # کمی بلندتر از name
         unique=True,
@@ -379,114 +401,107 @@ class Order(models.Model):
         ('payed', _('payed')),
         ('paying', _('paying')),
         ('unpay', _('unpaid')),
-        ('cash_on_delivery',_('cash_on_delivery')),
-    )
-    
-    user = models.ForeignKey(
-        settings.AUTH_USER_MODEL,
-        on_delete=models.CASCADE,
-        verbose_name=_('user')
-    )
-    
-    date = jmodels.jDateField(
-        verbose_name=_('delivery_date')
+        ('cash_on_delivery', _('cash_on_delivery')),
     )
 
-    clock = models.CharField(
-        max_length=300,
-        verbose_name=_('delivery_time')
-    )
-    created_at = jmodels.jDateTimeField(
-        auto_now_add=True,
-        verbose_name=_('created_at')
-    )
-    
-    updated_at = jmodels.jDateTimeField(
-        auto_now=True,
-        verbose_name=_('updated_at')
-    )
-    state = models.CharField(
-        max_length=16,
-        choices=order_state,
-        default='unpay',
-        verbose_name=_('state')
-    )
-    province = ProvinceField(verbose_name="استان",null=True,blank=True)
-    city = CityField(verbose_name="شهر",null=True,blank=True)
-    address = models.TextField(
-        blank=True,
-        null=True,
-        verbose_name=_('address')
-    )
-    address_code = models.CharField(
-        max_length=10,
-        null=True,
-        blank=True,
-        verbose_name=_('address_code')
-    )
-    phonenumber = models.CharField(
-        max_length=11,
-        verbose_name=_('phone_number'),
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+
+    date = jmodels.jDateField(verbose_name=_('delivery_date'))
+
+    created_at = jmodels.jDateTimeField(auto_now_add=True)
+    updated_at = jmodels.jDateTimeField(auto_now=True)
+
+    state = models.CharField(max_length=16, choices=order_state, default='unpay')
+
+    province = ProvinceField(null=True, blank=True)
+    city = CityField(null=True, blank=True)
+
+    address = models.TextField(null=True, blank=True)
+    address_code = models.CharField(max_length=10, null=True, blank=True)
+
+    phonenumber = models.CharField(max_length=11, null=True, blank=True)
+    receiver = models.CharField(max_length=300, null=True, blank=True)
+
+    authority = models.CharField(max_length=200, null=True, blank=True)
+    ref_id = models.CharField(max_length=200, null=True, blank=True)
+
+    # =========================
+    # 💰 قیمت‌ها (مهم‌ترین بخش)
+    # =========================
+
+    total_price = models.PositiveBigIntegerField(default=0)  # قیمت اصلی
+
+    discount_amount = models.PositiveBigIntegerField(default=0)  # مقدار تخفیف
+
+    final_price = models.PositiveBigIntegerField(default=0)  # مبلغ نهایی (برای درگاه)
+
+    discount_code = models.ForeignKey(
+        'DiscountCode',
         null=True,
         blank=True,
-    )
-    receiver = models.CharField(
-        max_length=300,
-        verbose_name=_('receiver'),
-        null=True,
-        blank=True,
-    )
-    authority = models.CharField(
-        max_length=200,
-        blank=True,
-        null=True,
-        verbose_name=_('authority')
+        on_delete=models.SET_NULL,
+        related_name='orders'
     )
 
-    ref_id = models.CharField(
-        max_length=200,
-        blank=True,
-        null=True,
-        verbose_name=_('ref_id')
-    )
-    total_price = models.PositiveBigIntegerField(
-    default=0,
-    verbose_name='مبلغ کل'
-)
-    
+    tracking_code = models.CharField(max_length=20, unique=True, blank=True, null=True)
 
-    tracking_code = models.CharField(
-    max_length=20,
-    unique=True,
-    blank=True,
-    null=True
-)
     def generate_tracking_code(self):
         if not self.tracking_code:
             self.tracking_code = f"RK-{self.id:06d}"
+
     def __str__(self):
         return f"Order #{self.id} - {self.user}"
-
-    class Meta:
-        verbose_name = _('order')
-        verbose_name_plural = _('orders')
     
     
   
 
 class OrderItem(models.Model):
-    product=models.ForeignKey(Product,on_delete=models.SET_NULL,null=True)
-    number=models.PositiveSmallIntegerField()
-    color=models.ForeignKey(ColorProduct,on_delete=models.SET_NULL,null=True)
-    user= user = models.ForeignKey(
+
+    product = models.ForeignKey(
+        Product,
+        on_delete=models.SET_NULL,
+        null=True
+    )
+
+    number = models.PositiveSmallIntegerField()
+
+    color = models.ForeignKey(
+        ColorProduct,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name='orderitems_single'
+    )
+
+    body_color = models.ForeignKey(
+        ColorProduct,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name='orderitems_body'
+    )
+
+    door_color = models.ForeignKey(
+        ColorProduct,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name='orderitems_door'
+    )
+
+    user = models.ForeignKey(
         settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE
+    )
+
+    order = models.ForeignKey(
+        Order,
         on_delete=models.CASCADE,
-        verbose_name=_('user')
+        related_name='order_items'
     )
-    order=models.ForeignKey(Order,on_delete=models.CASCADE,related_name='order_items')
-    price = models.PositiveBigIntegerField(
-        default=0
-    )
+
+    price = models.PositiveBigIntegerField(default=0)
+
     @property
     def total_price(self):
         return self.price * self.number
@@ -519,32 +534,65 @@ class OrderItem(models.Model):
 #         verbose_name_plural = _('order_baskets')
 
 
+class DeliverySettings(models.Model):
+    is_active = models.BooleanField(
+        default=True,
+        verbose_name='فعال'
+    )
+
+    start_after_days = models.PositiveSmallIntegerField(
+        default=10,
+        verbose_name='شروع از چند روز بعد'
+    )
+
+    visible_days = models.PositiveSmallIntegerField(
+        default=10,
+        verbose_name='تعداد روزهای قابل نمایش'
+    )
+
+    max_orders_per_day = models.PositiveSmallIntegerField(
+        default=10,
+        verbose_name='حداکثر سفارش روزانه'
+    )
+
+    class Meta:
+        verbose_name = 'تنظیمات تحویل'
+        verbose_name_plural = 'تنظیمات تحویل'
+
+    def __str__(self):
+        return 'تنظیمات تحویل'
+
+
 class HandOverOrder(models.Model):
     date = jmodels.jDateField(
         verbose_name=_('date')
     )
-    clock = models.CharField(
-        max_length=300,
-        verbose_name=_('time')
-    )
+
     order = models.OneToOneField(
-        Order,
+        'Order',
         on_delete=models.CASCADE,
         null=True,
         blank=True,
         verbose_name=_('order')
     )
+
     price = models.PositiveIntegerField(
         default=0,
         verbose_name=_('price')
     )
 
-    def __str__(self):
-        return f"{self.date}, {self.clock}, {self.order}"
+    created_at = models.DateTimeField(
+        auto_now_add=True,
+        verbose_name=_('created at')
+    )
 
     class Meta:
         verbose_name = _('handover_order')
         verbose_name_plural = _('handover_orders')
+        ordering = ['-date', '-created_at']
+
+    def __str__(self):
+        return f'{self.date} - {self.order}'
 
 
 
@@ -860,7 +908,9 @@ class Blog(models.Model):
 
 class OrderBasket(models.Model):
     product=models.ForeignKey(Product,on_delete=models.CASCADE,related_name='order_basket')
-    color=models.ForeignKey(ColorProduct,on_delete=models.CASCADE,related_name='order_basket')
+    color=models.ForeignKey(ColorProduct,on_delete=models.CASCADE,related_name='order_basket',null=True,blank=True)
+    body_color=models.ForeignKey(ColorProduct,on_delete=models.SET_NULL,null=True,related_name="orderbasket_body")
+    door_color=models.ForeignKey(ColorProduct,on_delete=models.SET_NULL,null=True,related_name="orderbasket_door")
     number=models.PositiveSmallIntegerField()
     user=models.ForeignKey(CustomUser,on_delete=models.CASCADE,related_name='order_basket')
     
@@ -886,5 +936,126 @@ class AdSection(models.Model):
     image=models.ManyToManyField(AdItem)
     category_main=models.ForeignKey(CategoryMain,on_delete=models.CASCADE)
     state=models.CharField(max_length=6,choices=ad_state,default='repose')
+
+import secrets
+from django.utils import timezone
+
+def generate_discount_code(length=10):
+    chars = string.ascii_uppercase + string.digits
+    return ''.join(secrets.choice(chars) for _ in range(length))
+
+
+class DiscountCode(models.Model):
+    code = models.CharField(
+        max_length=20,
+        unique=True,
+        blank=True,
+        verbose_name='کد تخفیف'
+    )
+
+    percent_off = models.PositiveSmallIntegerField(
+        validators=[
+            MinValueValidator(1),
+            MaxValueValidator(100)
+        ],
+        verbose_name='درصد تخفیف'
+    )
+
+    max_discount_amount = models.PositiveIntegerField(
+        verbose_name='حداکثر مبلغ تخفیف'
+    )
+
+    min_order_amount = models.PositiveIntegerField(
+        default=0,
+        verbose_name='حداقل مبلغ سفارش'
+    )
+
+    usage_limit = models.PositiveIntegerField(
+        default=1,
+        verbose_name='حداکثر تعداد استفاده'
+    )
+
+    users = models.ManyToManyField(
+        settings.AUTH_USER_MODEL,
+        blank=True,
+        related_name='used_discount_codes',
+        verbose_name='کاربران استفاده کننده'
+    )
+
+    is_active = models.BooleanField(
+        default=True,
+        verbose_name='فعال'
+    )
+
+    start_date = jmodels.jDateTimeField(
+        null=True,
+        blank=True,
+        verbose_name='تاریخ شروع'
+    )
+
+    expire_date = jmodels.jDateTimeField(
+        null=True,
+        blank=True,
+        verbose_name='تاریخ انقضا'
+    )
+
+    created_at = models.DateTimeField(
+        auto_now_add=True,
+        verbose_name='تاریخ ایجاد'
+    )
+
+    updated_at = models.DateTimeField(
+        auto_now=True,
+        verbose_name='تاریخ بروزرسانی'
+    )
+
+    class Meta:
+        verbose_name = 'کد تخفیف'
+        verbose_name_plural = 'کدهای تخفیف'
+        ordering = ['-created_at']
+
+    def save(self, *args, **kwargs):
+        if not self.code:
+            while True:
+                code = generate_discount_code()
+                if not DiscountCode.objects.filter(code=code).exists():
+                    self.code = code
+                    break
+
+        super().save(*args, **kwargs)
+
+    @property
+    def used_count(self):
+        return self.users.count()
+
+    @property
+    def is_valid(self):
+        now = timezone.now()
+
+        if not self.is_active:
+            return False
+
+        if self.start_date and now < self.start_date:
+            return False
+
+        if self.expire_date and now > self.expire_date:
+            return False
+
+        if self.used_count >= self.usage_limit:
+            return False
+
+        return True
+
+    def user_can_use(self, user):
+        if not self.is_valid:
+            return False
+
+        if self.users.filter(pk=user.pk).exists():
+            return False
+
+        return True
+
+    def __str__(self):
+        return f"{self.code} ({self.percent_off}%)"
 
 

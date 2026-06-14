@@ -39,7 +39,7 @@ def send_order_customer_sms(order):
 کد رهگیری: {order.tracking_code}
 
 مبلغ سفارش:
-{order.total_price:,} تومان
+{order.final_price:,} تومان
 
 صنایع چوبی نیلپر
 """
@@ -74,7 +74,7 @@ def send_order_admin_sms(order):
 {order.city}
 
 مبلغ:
-{order.total_price:,} تومان
+{order.final_price:,} تومان
 
 وضعیت:
 {order.state}

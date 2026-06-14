@@ -1333,3 +1333,151 @@ body:has(.main-nav.nav-hidden) .tabs-header {
         font-size: 11px; /* کوچک‌تر کردن متن دکمه‌ها در موبایل جهت جلوگیری از شکستن خط */
     }
 }
+
+
+
+
+/* ===============================
+   رنگ بدنه و درب (Select boxes)
+   =============================== */
+.color-select-box {
+    margin-bottom: 1.5rem;
+    width: 100%;
+}
+
+.color-title {
+    display: block;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 0.5rem;
+}
+
+.color-select-box select {
+    width: 100%;
+    padding: 0.8rem 1rem;
+    font-size: 0.95rem;
+    font-family: inherit;
+    background: #fff;  /* سفید ساده */
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    color: #333;
+    cursor: pointer;
+    transition: 0.2s;
+    appearance: none;
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23333' stroke-width='2'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: left 1rem center;
+    background-size: 1.2rem;
+}
+
+.color-select-box select:focus {
+    outline: none;
+    border-color: #169c5c;
+    box-shadow: 0 0 0 2px rgba(22,156,92,0.2);
+}
+
+/* گزینه پیش‌فرض */
+.color-select-box select option[disabled] {
+    color: #aaa;
+    font-style: italic;
+}
+
+/* ===============================
+   لوازم جانبی (بدون background اضافی)
+   =============================== */
+.accessories-box {
+    margin: 1.5rem 0;
+    padding: 0;  /* حذف هر گونه padding اضافی */
+    background: transparent; /* بدون هیچ background ای */
+    border: none;
+}
+
+.accessories-title {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #333;
+    padding-bottom: 0.5rem;
+    margin-bottom: 1rem;
+    border-bottom: 1px solid #eee;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.accessories-title::before {
+    font-size: 1rem;
+}
+
+.accessory-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: transparent;  /* بدون background */
+    padding: 0.8rem 0;
+    margin-bottom: 0.5rem;
+    border-bottom: 1px solid #f0f0f0;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.accessory-item:hover {
+    background: #fafafa;  /* خیلی ملایم، فقط هاور */
+    padding-right: 0.5rem;
+}
+
+.accessory-item input[type="checkbox"] {
+    width: 1.2rem;
+    height: 1.2rem;
+    accent-color: #169c5c;
+    margin-left: 1rem;
+    cursor: pointer;
+}
+
+.accessory-name {
+    flex: 1;
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: #444;
+}
+
+.accessory-price {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #169c5c;
+    background: #eef9f2;  /* تنها یک برچسب قیمت خیلی ملایم */
+    padding: 0.2rem 0.7rem;
+    border-radius: 20px;
+    white-space: nowrap;
+}
+
+/* ===============================
+   ریسپانسیو (موبایل و تبلت)
+   =============================== */
+@media (max-width: 768px) {
+    .color-select-box select {
+        padding: 0.7rem 1rem;
+        font-size: 0.9rem;
+    }
+    .accessory-item {
+        flex-wrap: wrap;
+        gap: 0.4rem;
+    }
+    .accessory-name {
+        flex-basis: 60%;
+        font-size: 0.85rem;
+    }
+    .accessory-price {
+        font-size: 0.75rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .color-title {
+        font-size: 0.85rem;
+    }
+    .accessory-name {
+        flex-basis: 50%;
+        font-size: 0.8rem;
+    }
+}

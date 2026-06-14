@@ -393,7 +393,7 @@
                     <i class="fas fa-truck" style="font-size: 24px; color: #747667;"></i>
                     <div>
                         <div style="font-size: 14px; font-weight: 500;">زمان تحویل انتخاب شده</div>
-                        <div style="font-size: 12px; color: #888;">{{ order.date|date:"l d F" }} - {{ order.clock }}</div>
+                        <div style="font-size: 12px; color: #888;"> {{ order.date }}</div>
                     </div>
                 </div>
 
@@ -443,9 +443,21 @@
                     <span>مجموع خرید کالاها</span>
                     <span>{{ order.total_price|intcomma }} تومان</span>
                 </div>
+                
+                {% if order.discount_amount %}
+                <div class="price-row">
+                    <span style="color:#2e7d32;">تخفیف</span>
+                    <span style="color:#2e7d32;">
+                        {{ order.discount_amount|intcomma }} تومان
+                    </span>
+                </div>
+                {% endif %}
+                
                 <div class="price-row total-row">
                     <span>مبلغ قابل پرداخت</span>
-                    <span class="final-price">{{ order.total_price|intcomma }} تومان</span>
+                    <span class="final-price">
+                        {{ order.final_price|intcomma }} تومان
+                    </span>
                 </div>
 
                 <form method="post" id="paymentForm">

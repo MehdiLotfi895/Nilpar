@@ -662,8 +662,22 @@ body {
 
                     <!-- دکمه حذف دسکتاپ -->
                     <div class="remove-desktop">
-                        <form method="POST" action="{% url 'cart:cart_remove' item.product.id item.color.id %}">
-                            {% csrf_token %}
+                        <form method="POST"
+                        action="{% url 'cart:cart_remove' product_id=item.product.id %}">
+                        {% csrf_token %}
+                    
+                        {% if item.color %}
+                            <input type="hidden" name="color_id" value="{{ item.color.id }}">
+                        {% endif %}
+                    
+                        {% if item.body_color %}
+                            <input type="hidden" name="body_color_id" value="{{ item.body_color.id }}">
+                        {% endif %}
+                    
+                        {% if item.door_color %}
+                            <input type="hidden" name="door_color_id" value="{{ item.door_color.id }}">
+                        {% endif %}
+                        {% csrf_token %}
                             <button type="submit" class="remove-btn" title="حذف">
                                 <i class="fas fa-times"></i>
                             </button>
@@ -671,7 +685,21 @@ body {
                     </div>
 
                     <!-- دکمه حذف موبایل -->
-                    <form method="POST" action="{% url 'cart:cart_remove' item.product.id item.color.id %}">
+                    <form method="POST"
+                    action="{% url 'cart:cart_remove' product_id=item.product.id %}">
+                    {% csrf_token %}
+                
+                    {% if item.color %}
+                        <input type="hidden" name="color_id" value="{{ item.color.id }}">
+                    {% endif %}
+                
+                    {% if item.body_color %}
+                        <input type="hidden" name="body_color_id" value="{{ item.body_color.id }}">
+                    {% endif %}
+                
+                    {% if item.door_color %}
+                        <input type="hidden" name="door_color_id" value="{{ item.door_color.id }}">
+                    {% endif %}
                         {% csrf_token %}
                         <button type="submit" class="remove-btn-mobile" title="حذف">
                             <i class="fas fa-times"></i>
@@ -694,10 +722,31 @@ body {
                         <div class="product-name">{{ item.product.name }}</div>
                         <div class="product-meta">سایز: {{ item.product.dimensions|default:"-" }}</div>
                         <div class="shipping-tag"> ارسال از ۱۰ روز کاری آینده</div>
-                        <div class="color-info">
-                            <span class="color-dot" style="background: {{ item.color.color_code }}"></span>
-                            {{ item.color.name }}
-                        </div>
+                        {% if item.color %}
+                            <div class="color-info">
+                                <span class="color-dot" style="background: {{ item.color.color_code }}"></span>
+                                {{ item.color.color_name }}
+                            </div>
+                        
+                        {% elif item.body_color or item.door_color %}
+                            <div class="color-info" style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;">
+                        
+                                {% if item.body_color %}
+                                    <span style="display:flex;align-items:center;gap:5px;">
+                                        <span class="color-dot" style="background: {{ item.body_color.color_code }}"></span>
+                                        بدنه: {{ item.body_color.color_name }}
+                                    </span>
+                                {% endif %}
+                        
+                                {% if item.door_color %}
+                                    <span style="display:flex;align-items:center;gap:5px;">
+                                        <span class="color-dot" style="background: {{ item.door_color.color_code }}"></span>
+                                        درب: {{ item.door_color.color_name }}
+                                    </span>
+                                {% endif %}
+                        
+                            </div>
+                        {% endif %}
 
                         <!-- ردیف قیمت و تعداد مخصوص موبایل -->
                         <div class="mobile-info-row">
@@ -713,8 +762,20 @@ body {
                             </div>
                             <div class="mobile-qty">
                                 <span class="qty-label">تعداد:</span>
-                                <form method="POST" action="{% url 'cart:cart_update' item.product.id item.color.id %}" style="display: inline;">
+                                <form method="POST" action="{% url 'cart:cart_update' product_id=item.product.id %}" style="display: inline;">
                                     {% csrf_token %}
+                                    {% if item.color %}
+                                        <input type="hidden" name="color_id" value="{{ item.color.id }}">
+                                    {% endif %}
+                                
+                                    {% if item.body_color %}
+                                        <input type="hidden" name="body_color_id" value="{{ item.body_color.id }}">
+                                    {% endif %}
+                                
+                                    {% if item.door_color %}
+                                        <input type="hidden" name="door_color_id" value="{{ item.door_color.id }}">
+                                    {% endif %}
+                                
                                     <div class="qty-control-mobile">
                                         <button type="submit" class="qty-btn" name="action" value="increase">
                                             <i class="fas fa-plus"></i>
@@ -744,8 +805,19 @@ body {
 
                     <!-- تعداد دسکتاپ -->
                     <div class="quantity-col">
-                        <form method="POST" action="{% url 'cart:cart_update' item.product.id item.color.id %}">
+                        <form method="POST"   action="{% url 'cart:cart_update' product_id=item.product.id %}">
                             {% csrf_token %}
+                            {% if item.color %}
+                                <input type="hidden" name="color_id" value="{{ item.color.id }}">
+                            {% endif %}
+                        
+                            {% if item.body_color %}
+                                <input type="hidden" name="body_color_id" value="{{ item.body_color.id }}">
+                            {% endif %}
+                        
+                            {% if item.door_color %}
+                                <input type="hidden" name="door_color_id" value="{{ item.door_color.id }}">
+                            {% endif %}
                             <div class="qty-control">
                                 <button type="submit" class="qty-btn" name="action" value="increase">
                                     <i class="fas fa-plus"></i>

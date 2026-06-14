@@ -31,7 +31,7 @@
     <div class="product-header-section">
         <div class="product-thumbnails">
              {% for item in product.images.all %}
-             <img src="{{ item.image.url }}" alt="{{ product.name }}" class="product-thumb active" onclick="changeImage(this)">
+             <img src="{{ item.image.url }}" alt="{{ product.name }}" class="product-thumb {% if forloop.first %}active{% endif %}" onclick="changeImage(this)">
              {% endfor %}
              <button id="openGalleryBtn" class="gallery-open-btn">
                 مشاهده تصاویر
@@ -50,69 +50,91 @@
         </div>
         
         <div class="product-info-section">
-            <h1 class="product-main-title">{{ product.name }}</h1>
-            
-            <div class="product-meta">
-                <div class="meta-item">
-                    <span>وزن: </span><span class="value_info"> {{ product.weight }} کیلوگرم</span>
-                </div>
-                <div class="meta-item">
-                    <span>ابعاد:</span><span class="value_info"> {{ product.dimensions }}</span>
-                </div>
-                <div class="meta-item">
-                    <span>دسته:</span><span class="value_info"> {% for cat in product.category_main.all %}{{ cat.title }}{% if not forloop.last %}، {% endif %}{% endfor %}</span>
-                </div>
-                <div class="meta-item">
-                    <span>جنس چوب:</span><span class="value_info"> {{ product.wood_kind }}</span>
-                </div>
-                <div class="meta-item">
-                    <span>  
-                        {% if product.off != 0 %}
-                           <span class="product-new-price">{{ price|persian_intcomma }} تومان</span><del class="product-detail-old-price">{{ product.old_price|persian_intcomma }} تومان</del>
-                        {% else %}
-                            <span class="product-price">{{ product.old_price }} تومان</span>
-                       {% endif %} 
-                    </span>
-                </div>
+            <div style="display:flex;justify-content: space-between;align-items:center;">
+                <h1 class="product-main-title">{{ product.name }}</h1>
+                <span class="product-new-price">{{ price|persian_intcomma }} تومان</span>
             </div>
-
-            <div class="color-selector-component">
-                <div class="selected-color-row">
-                    <span class="color-label">رنگ :</span>
-                    <span class="selected-color-value" id="selectedColorValue">
-                        {{ product.color.first.color_name }}
-                    </span>
-                </div>
-                <div class="circles-container" id="circlesContainer">
-                    {% for color in product.color.all %}
-                        <div class="color-circle{% if forloop.first %} active{% endif %}" 
-                             data-color-name="{{ color.color_name }}"
-                             data-color-code="{{ color.color_code }}">
-                            <span class="checkmark">✓</span>
-                        </div>
-                    {% endfor %}
-                </div>
-            </div>
-            
-            <div class="purchase-wrapper">
-                <div class="counter-container" data-max="5">
-                    <button class="plus-btn">
-                        <i class="fas fa-plus counter-icon plus-icon"></i>
+        
+            <form action="{% url 'cart:cart_add' product.id %}" method="post" class="add-to-cart-form" id="addToCartForm">
+                {% csrf_token %}
+        
+                {# تعداد #}
+                <input type="hidden" id="hidden-quantity" name="quantity" value="1">
+        
+                {# حالت تک‌رنگ #}
+                {% if product.color_type == 'single' %}
+                    <div class="color-select-box">
+                        <label class="color-title">رنگ محصول</label>
+                
+                        <select name="color" id="colorSelect" required>
+                            {% for color in product.color.all %}
+                                <option value="{{ color.id }}"
+                                        {% if forloop.first %}selected{% endif %}>
+                                    {{ color.color_name }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                {% endif %}
+        
+                {# حالت دو‌رنگ #}
+                {% if product.color_type == 'double' %}
+                    <div class="color-select-box">
+                        <label class="color-title">رنگ بدنه</label>
+                        <select name="body_color" id="bodyColorSelect" required>
+                            {% for color in product.body_color.all %}
+                                <option value="{{ color.id }}" {% if forloop.first %}selected{% endif %}>
+                                    {{ color.color_name }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+        
+                    <div class="color-select-box">
+                        <label class="color-title">رنگ درب</label>
+                        <select name="door_color" id="doorColorSelect" required>
+                            {% for color in product.door_color.all %}
+                                <option value="{{ color.id }}" {% if forloop.first %}selected{% endif %}>
+                                    {{ color.color_name }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                {% endif %}
+        
+                {# لوازم جانبی #}
+                {% if product.accessories.exists %}
+                    <div class="accessories-box">
+                        <div class="accessories-title">لوازم جانبی</div>
+        
+                        {% for accessory in product.accessories.all %}
+                            <label class="accessory-item">
+                                <input type="checkbox" name="accessories" value="{{ accessory.id }}">
+                                <span class="accessory-name">{{ accessory.name }}</span>
+                                <span class="accessory-price">{{ accessory.old_price|persian_intcomma }} تومان</span>
+                            </label>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+        
+                {# تعداد + دکمه اضافه کردن #}
+                <div class="purchase-wrapper">
+                    <div class="counter-container" data-max="5">
+                        <button type="button" class="plus-btn" id="plusBtn">
+                            <i class="fas fa-plus counter-icon plus-icon"></i>
+                        </button>
+                        <span class="counter-number" id="order-number_detail">1</span>
+                        <button type="button" class="minus-btn" id="minusBtn">
+                            <i class="fas fa-minus counter-icon minus-icon"></i>
+                        </button>
+                    </div>
+        
+                    <button class="add-to-cart" type="submit" name="action" value="add_product-order">
+                        افزودن به سبد خرید
                     </button>
-                    <span class="counter-number" id="order-number_detail">1</span>
-                    <button class="minus-btn">
-                        <i class="fas fa-minus counter-icon minus-icon"></i>
-                    </button>
                 </div>
-
-                <form action="{% url 'cart:cart_add' product.id %}" method="post" class="add-to-cart-form">
-                    {% csrf_token %}
-                    <button class="add-to-cart" type="submit" name="action" value="add_product-order">افزودن به سبد خرید</button>
-                    <input type="hidden" id="hidden-quantity" name="quantity" value="1">
-                    <input type="hidden" id="hiddenColorInput" name="color" value="{{ product.color.first.color_name }}">
-                </form>
-            </div>
-
+            </form>
+        
             <div class="social-actions-wrapper">
                 <form action="" method="post" class="favorite-form">
                     {% csrf_token %}
@@ -122,21 +144,21 @@
                         <span>افزودن به علاقه‌مندی</span>
                     </button>
                 </form>
-
+        
                 <div class="share-btn-wrapper">
                     <button class="text-action-btn share-trigger-btn" data-share-link="https://example.com/product-link">
-                        <i class="fas fa-share-alt"></i> 
+                        <i class="fas fa-share-alt"></i>
                         <span>اشتراک‌گذاری</span>
                     </button>
                     <div id="copyMessage" class="copy-message">لینک کپی شد!</div>
                 </div>
             </div>
-            
+        
             {% if product.features.all %}
             <div class="product-features-list">
                 {% for feature in product.features.all %}
-                <div class="product-feature-tag"> 
-                    <div style="color:var(--gray-400);font-size: 12px;">{{ feature.title }}</div> 
+                <div class="product-feature-tag">
+                    <div style="color:var(--gray-400);font-size: 12px;">{{ feature.title }}</div>
                     <div>{{ feature.description }}</div>
                 </div>
                 {% endfor %}
@@ -328,7 +350,19 @@
                             {% csrf_token %}
                             <button style="background-color: #169c5c; color:white; width:100%; height:40px; border-radius:5px; display:flex; align-items:center; justify-content:center; border:none; font-size:14px;" class="add-to-cart" type="submit" name="action" value="add_product-order">افزودن به سبد خرید</button>
                             <input type="hidden" id="hidden-quantity" name="quantity" value="1">
-                            <input type="hidden" id="hiddenColorInput" name="product_color" value="{{ product.color.first.color_name }}">
+                            {% if product.color_type == 'single' %}
+                                <input type="hidden"
+                                   name="color"
+                                   value="{% if product.color.first %}{{ product.color.first.id }}{% endif %}">
+                            {% else %}
+                            <input type="hidden"
+                                name="body_color"
+                                value="{% if product.body_color.first %}{{ product.body_color.first.id }}{% endif %}">
+
+                                <input type="hidden"
+                                       name="door_color"
+                                       value="{% if product.door_color.first %}{{ product.door_color.first.id }}{% endif %}">
+                            {% endif %}
                         </form>
                     </div>
                     {% else %}
@@ -372,7 +406,7 @@
                       </a>
                   </form>
                     {% if product.off != 0 %}
-                    <span class="offer-button">20%</span>
+                    <span class="offer-button">{{ product.off }}%</span>
                     {% endif %}
                     {% with product.images.all|first as first_image %}
                     {% if first_image %}
@@ -416,52 +450,212 @@
 </div>
 
 <script>
-    function changeImage(thumb) {
-        document.getElementById('mainImage').src = thumb.src;
-        document.querySelectorAll('.product-thumb').forEach(t => t.classList.remove('active'));
-        thumb.classList.add('active');
-    }
+    document.addEventListener('DOMContentLoaded', function () {
     
-    function scrollToSection(sectionId) {
-        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-        document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
-        
-        const buttons = document.querySelectorAll('.tab-btn');
-        if (sectionId === 'details') buttons[0].classList.add('active');
-        else if (sectionId === 'comments') buttons[1].classList.add('active');
-        else if (sectionId === 'questions') buttons[2].classList.add('active');
-        
-        document.getElementById(sectionId).classList.add('active');
-        document.getElementById(sectionId).scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
+        /* =========================
+           تعداد محصول
+        ========================= */
+        const qtyDisplay = document.getElementById('order-number_detail');
+        const qtyInput = document.getElementById('hidden-quantity');
+        const plusBtn = document.getElementById('plusBtn');
+        const minusBtn = document.getElementById('minusBtn');
     
-    document.querySelectorAll('.tabs-header .tab-btn').forEach((btn, index) => {
-        btn.addEventListener('click', function() {
-            const ids = ['details', 'comments', 'questions'];
-            scrollToSection(ids[index]);
+        if (qtyDisplay && qtyInput && plusBtn && minusBtn) {
+    
+            let qty = parseInt(qtyInput.value) || 1;
+    
+            function syncQuantity() {
+                qtyDisplay.textContent = qty;
+                qtyInput.value = qty;
+            }
+    
+            plusBtn.addEventListener('click', function () {
+                qty++;
+                syncQuantity();
+            });
+    
+            minusBtn.addEventListener('click', function () {
+                if (qty > 1) {
+                    qty--;
+                    syncQuantity();
+                }
+            });
+    
+            syncQuantity();
+        }
+    
+    
+        /* =========================
+           تغییر تصویر اصلی
+        ========================= */
+        window.changeImage = function (thumb) {
+    
+            const mainImage = document.getElementById('mainImage');
+    
+            if (mainImage) {
+                mainImage.src = thumb.src;
+            }
+    
+            document.querySelectorAll('.product-thumb').forEach(img => {
+                img.classList.remove('active');
+            });
+    
+            thumb.classList.add('active');
+        };
+    
+    
+        /* =========================
+           تب ها
+        ========================= */
+        window.scrollToSection = function (sectionId) {
+    
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+    
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+    
+            const target = document.getElementById(sectionId);
+    
+            if (target) {
+                target.classList.add('active');
+    
+                target.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+            }
+        };
+    
+    
+        /* =========================
+           گالری تصاویر
+        ========================= */
+    
+        const galleryModal = document.getElementById('galleryModal');
+        const openGalleryBtn = document.getElementById('openGalleryBtn');
+        const closeGalleryBtn = document.getElementById('closeGalleryBtn');
+    
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+    
+        const galleryImages = document.querySelectorAll('.gallery-main-image');
+        const galleryThumbs = document.querySelectorAll('.gallery-thumb');
+    
+        let currentIndex = 0;
+    
+        function showImage(index) {
+    
+            if (!galleryImages.length) return;
+    
+            galleryImages.forEach(img => {
+                img.classList.remove('active');
+            });
+    
+            galleryThumbs.forEach(img => {
+                img.classList.remove('active');
+            });
+    
+            galleryImages[index].classList.add('active');
+    
+            if (galleryThumbs[index]) {
+                galleryThumbs[index].classList.add('active');
+            }
+    
+            currentIndex = index;
+        }
+    
+        if (openGalleryBtn) {
+            openGalleryBtn.addEventListener('click', function () {
+    
+                galleryModal.classList.add('show');
+                document.body.style.overflow = 'hidden';
+    
+                showImage(currentIndex);
+            });
+        }
+    
+        if (closeGalleryBtn) {
+            closeGalleryBtn.addEventListener('click', function () {
+    
+                galleryModal.classList.remove('show');
+                document.body.style.overflow = 'auto';
+            });
+        }
+    
+        if (nextBtn) {
+            nextBtn.addEventListener('click', function () {
+    
+                currentIndex++;
+    
+                if (currentIndex >= galleryImages.length) {
+                    currentIndex = 0;
+                }
+    
+                showImage(currentIndex);
+            });
+        }
+    
+        if (prevBtn) {
+            prevBtn.addEventListener('click', function () {
+    
+                currentIndex--;
+    
+                if (currentIndex < 0) {
+                    currentIndex = galleryImages.length - 1;
+                }
+    
+                showImage(currentIndex);
+            });
+        }
+    
+        galleryThumbs.forEach((thumb, index) => {
+    
+            thumb.addEventListener('click', function () {
+                showImage(index);
+            });
+    
         });
+    
+        if (galleryModal) {
+            galleryModal.addEventListener('click', function (e) {
+    
+                if (e.target === galleryModal) {
+                    galleryModal.classList.remove('show');
+                    document.body.style.overflow = 'auto';
+                }
+    
+            });
+        }
+    
+    
+        /* =========================
+           کیبورد
+        ========================= */
+    
+        document.addEventListener('keydown', function (e) {
+    
+            if (!galleryModal || !galleryModal.classList.contains('show')) {
+                return;
+            }
+    
+            if (e.key === 'Escape') {
+                galleryModal.classList.remove('show');
+                document.body.style.overflow = 'auto';
+            }
+    
+            if (e.key === 'ArrowRight') {
+                nextBtn?.click();
+            }
+    
+            if (e.key === 'ArrowLeft') {
+                prevBtn?.click();
+            }
+    
+        });
+    
     });
-
-    const galleryModal = document.getElementById("galleryModal");
-    const openGalleryBtn = document.getElementById("openGalleryBtn");
-    const closeGalleryBtn = document.getElementById("closeGalleryBtn");
-    const prevBtn = document.getElementById("prevBtn");
-    const nextBtn = document.getElementById("nextBtn");
-    const images = document.querySelectorAll(".gallery-main-image");
-    const thumbs = document.querySelectorAll(".gallery-thumb");
-    let currentIndex = 0;
-    
-    if(openGalleryBtn) {
-        openGalleryBtn.addEventListener("click", () => {
-            galleryModal.classList.add("show");
-            document.body.style.overflow = "hidden";
-        });
-    }
-    if(closeGalleryBtn) {
-        closeGalleryBtn.addEventListener("click", () => {
-            galleryModal.classList.remove("show");
-            document.body.style.overflow = "auto";
-        });
-    }
-</script>
+    </script>
 {% endblock %}

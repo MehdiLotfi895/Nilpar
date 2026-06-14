@@ -7,13 +7,7 @@
 {% block content %}
 
 <style>
-/* =============================================
-   تسویه حساب - نسخه نهایی با طراحی مدرن
-   ============================================= */
-
-*, *::before, *::after {
-    box-sizing: border-box;
-}
+*, *::before, *::after { box-sizing: border-box; }
 
 :root {
     --clr-primary:        #747667;
@@ -25,10 +19,6 @@
     --clr-border-md:      #d0d0ca;
     --clr-text:           #1a1a18;
     --clr-text-muted:     #72726c;
-    --clr-success-bg:     #e8f5e9;
-    --clr-success-text:   #2e7d32;
-    --clr-danger-bg:      #ffebee;
-    --clr-danger-text:    #c62828;
     --radius-sm:  6px;
     --radius-md:  10px;
     --radius-lg:  14px;
@@ -38,9 +28,6 @@
     --transition: 0.2s ease;
 }
 
-/* =============================================
-   کانتینر اصلی
-   ============================================= */
 .checkout-page {
     width: 95%;
     max-width: 1280px;
@@ -54,9 +41,6 @@
     align-items: flex-start;
 }
 
-/* =============================================
-   بخش اصلی (سمت راست در RTL)
-   ============================================= */
 .checkout-main {
     flex: 1;
     background: var(--clr-surface);
@@ -65,11 +49,12 @@
     overflow: hidden;
 }
 
-/* ==================== بخش آدرس ==================== */
-.address-section {
+.address-section, .products-section, .time-section {
     padding: 20px;
+}
+
+.address-section, .products-section {
     border-bottom: 1px solid var(--clr-border);
-    background: var(--clr-surface);
 }
 
 .section-header {
@@ -84,9 +69,6 @@
 .section-title {
     font-size: 16px;
     font-weight: 600;
-    display: flex;
-    align-items: center;
-    gap: 10px;
     color: var(--clr-text);
 }
 
@@ -136,12 +118,6 @@
     margin-top: 5px;
 }
 
-/* ==================== بخش محصولات (مثل سبد خرید) ==================== */
-.products-section {
-    padding: 20px;
-    border-bottom: 1px solid var(--clr-border);
-}
-
 .products-header {
     display: flex;
     justify-content: space-between;
@@ -166,7 +142,6 @@
     border: 1px solid var(--clr-border);
 }
 
-/* کارت محصول دسکتاپ */
 .product-row {
     display: flex;
     align-items: center;
@@ -243,7 +218,6 @@
     border: 1px solid #ddd;
 }
 
-/* قیمت دسکتاپ */
 .product-price-col {
     text-align: center;
     min-width: 110px;
@@ -267,11 +241,6 @@
     font-weight: 600;
     font-size: 14px;
     color: var(--clr-text);
-}
-
-/* ==================== بخش زمان تحویل ==================== */
-.time-section {
-    padding: 20px;
 }
 
 .time-slots {
@@ -313,27 +282,12 @@
     cursor: pointer;
 }
 
-.time-slot-day {
-    font-size: 13px;
-    font-weight: 600;
-    color: var(--clr-text);
-    margin-bottom: 5px;
-}
-
 .time-slot-date {
     font-size: 11px;
     color: var(--clr-text-muted);
     margin-bottom: 6px;
 }
 
-.time-slot-range {
-    font-size: 13px;
-    font-weight: 700;
-    color: var(--clr-primary);
-    margin-top: 6px;
-}
-
-/* ==================== ستون خلاصه سفارش (سمت چپ در RTL) ==================== */
 .checkout-sidebar {
     width: 320px;
     flex-shrink: 0;
@@ -411,7 +365,6 @@
     cursor: not-allowed;
 }
 
-/* ==================== مودال آدرس ==================== */
 .address-modal {
     display: none;
     position: fixed;
@@ -428,10 +381,7 @@
 
 .modal-overlay {
     position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
+    inset: 0;
     background: rgba(0, 0, 0, 0.5);
     backdrop-filter: blur(2px);
 }
@@ -457,11 +407,6 @@
     justify-content: space-between;
 }
 
-.modal-header h3 {
-    font-size: 18px;
-    font-weight: 600;
-}
-
 .modal-close {
     width: 32px;
     height: 32px;
@@ -470,11 +415,6 @@
     border-radius: 50%;
     cursor: pointer;
     font-size: 18px;
-    transition: all var(--transition);
-}
-
-.modal-close:hover {
-    background: var(--clr-border);
 }
 
 .modal-body {
@@ -492,11 +432,7 @@
     transition: all var(--transition);
 }
 
-.address-option:hover {
-    border-color: var(--clr-primary);
-    background: var(--clr-primary-light);
-}
-
+.address-option:hover,
 .address-option.selected {
     border-color: var(--clr-primary);
     background: var(--clr-primary-light);
@@ -528,11 +464,6 @@
     text-decoration: none;
     border-radius: var(--radius-sm);
     font-size: 13px;
-    transition: all var(--transition);
-}
-
-.add-new-address:hover {
-    background: var(--clr-primary-dark);
 }
 
 .empty-address {
@@ -541,20 +472,12 @@
     color: var(--clr-text-muted);
 }
 
-/* ==================== نمایش موبایل ==================== */
+.mobile-info-row { display: none; }
+
 @media (max-width: 1000px) {
-    .checkout-layout {
-        flex-direction: column;
-    }
-    
-    .checkout-sidebar {
-        width: 100%;
-        position: static;
-    }
-    
-    .checkout-main {
-        width: 100%;
-    }
+    .checkout-layout { flex-direction: column; }
+    .checkout-sidebar { width: 100%; position: static; }
+    .checkout-main { width: 100%; }
 }
 
 @media (max-width: 768px) {
@@ -563,27 +486,23 @@
         padding: 0 12px;
         margin: 10px auto 50px;
     }
-    
+
     .product-row {
         flex-direction: column;
         align-items: stretch;
         gap: 12px;
     }
-    
+
     .product-thumb {
         width: 100%;
         height: 180px;
     }
-    
-    .product-info {
-        width: 100%;
-    }
-    
+
     .product-price-col,
     .product-quantity {
         display: none;
     }
-    
+
     .mobile-info-row {
         display: flex !important;
         align-items: center;
@@ -593,262 +512,223 @@
         border-top: 1px solid var(--clr-border);
         flex-wrap: wrap;
     }
-    
-    .mobile-price {
-        display: flex;
-        align-items: baseline;
-        gap: 8px;
-        flex-wrap: wrap;
-    }
-    
-    .current-price-mobile {
-        font-size: 16px;
-        font-weight: 700;
-        color: var(--clr-text);
-    }
-    
-    .price-unit-mobile {
-        font-size: 11px;
-        font-weight: 400;
-        color: var(--clr-text-muted);
-    }
-    
+
+    .mobile-price,
     .mobile-qty {
         display: flex;
         align-items: center;
         gap: 8px;
     }
-    
-    .qty-label {
-        font-size: 12px;
-        color: var(--clr-text-muted);
-    }
-    
-    .qty-value-display {
-        font-weight: 600;
-        font-size: 14px;
-        background: var(--clr-bg);
-        padding: 4px 12px;
-        border-radius: var(--radius-xl);
-        border: 1px solid var(--clr-border);
-    }
-    
-    .time-slots {
-        grid-template-columns: repeat(2, 1fr);
-    }
-}
-
-.mobile-info-row {
-    display: none;
 }
 </style>
 
 {% include 'checkout_steps.html' with current_step=2 %}
 
-<div class="checkout-page">
-    <div class="checkout-layout">
-        
-        <!-- بخش اصلی (سمت راست - آدرس + محصولات + زمان) -->
-        <div class="checkout-main">
-            
-            <!-- بخش آدرس -->
-            <div class="address-section">
-                <div class="section-header">
-                    <div class="section-title">
-                         آدرس تحویل سفارش
+<form method="post" id="orderForm">
+    {% csrf_token %}
+
+    <div class="checkout-page">
+        <div class="checkout-layout">
+
+            <div class="checkout-main">
+
+                <div class="address-section">
+                    <div class="section-header">
+                        <div class="section-title">آدرس تحویل سفارش</div>
+                        <button type="button" class="change-address-btn" onclick="openAddressModal()">
+                            تغییر آدرس
+                        </button>
                     </div>
-                    <button class="change-address-btn" onclick="openAddressModal()">
-                         تغییر آدرس
-                    </button>
-                </div>
-                <div class="current-address" id="currentAddressDisplay">
-                    {% if user_addresses.first %}
-                        <div class="address-label">آدرس انتخاب شده:</div>
-                        <div class="address-text" id="displayAddress">{{ user_addresses.first.address }}</div>
-                        <div class="address-detail" id="displayReceiver"> گیرنده: {{ user_addresses.first.receiver }}</div>
-                        <div class="address-detail" id="displayPhone"> تلفن: {{ user_addresses.first.phonenumber }}</div>
-                        <div class="address-detail" id="displayPostalCode"> کدپستی: {{ user_addresses.first.address_code|default:"-" }}</div>
-                        <div class="address-detail" id="displayLocation"> استان: {{ user_addresses.first.province|default:"-" }} | شهر: {{ user_addresses.first.city|default:"-" }}</div>
-                    {% else %}
-                        <div class="address-text" style="text-align: center; padding: 20px;">
-                             هیچ آدرسی انتخاب نشده است. لطفاً آدرس خود را ثبت کنید.
-                        </div>
-                    {% endif %}
-                </div>
-            </div>
 
-            <!-- بخش محصولات (با طراحی مثل سبد خرید) -->
-            <div class="products-section">
-                <div class="products-header">
-                    <span class="products-title"> محصولات سبد خرید</span>
-                    <span class="products-count">{{ cart_items|length }} محصول</span>
-                </div>
-
-                {% for item in cart_items %}
-                <div class="product-row">
-                    <!-- تصویر محصول -->
-                    <div class="product-thumb">
-                        {% if item.product.images.first %}
-                            <img src="{{ item.product.images.first.image.url }}" alt="{{ item.product.name }}" loading="lazy">
+                    <div class="current-address" id="currentAddressDisplay">
+                        {% if user_addresses.first %}
+                            <div class="address-label">آدرس انتخاب شده:</div>
+                            <div class="address-text" id="displayAddress">{{ user_addresses.first.address }}</div>
+                            <div class="address-detail" id="displayReceiver"> گیرنده: {{ user_addresses.first.receiver }}</div>
+                            <div class="address-detail" id="displayPhone"> تلفن: {{ user_addresses.first.phonenumber }}</div>
+                            <div class="address-detail" id="displayPostalCode"> کدپستی: {{ user_addresses.first.address_code|default:"-" }}</div>
+                            <div class="address-detail" id="displayLocation"> استان: {{ user_addresses.first.province|default:"-" }} | شهر: {{ user_addresses.first.city|default:"-" }}</div>
                         {% else %}
-                            <img src="{% static 'images/no-image.png' %}" alt="بدون تصویر">
+                            <div class="address-text" style="text-align:center;padding:20px;">
+                                هیچ آدرسی انتخاب نشده است. لطفاً آدرس خود را ثبت کنید.
+                            </div>
                         {% endif %}
                     </div>
+                </div>
 
-                    <!-- اطلاعات محصول -->
-                    <div class="product-info">
-                        <div class="product-name">{{ item.product.name }}</div>
-                        <div class="product-meta"> سایز: {{ item.product.dimensions|default:"-" }}</div>
-                        <div class="shipping-tag"> ارسال از ۱۰ روز کاری آینده</div>
-                        <div class="color-info">
-                            <span class="color-dot" style="background: {{ item.color.color_code|default:'#cccccc' }}"></span>
-                             {{ item.color.name|default:"بدون رنگ" }}
-                        </div>
-
-                        <!-- ردیف قیمت و تعداد مخصوص موبایل -->
-                        <div class="mobile-info-row">
-                            <div class="mobile-price">
-                                <span class="current-price-mobile">
-                                    {{ item.final_price|intcomma }}
-                                    <span class="price-unit-mobile">تومان</span>
-                                </span>
-                            </div>
-                            <div class="mobile-qty">
-                                <span class="qty-label">تعداد:</span>
-                                <span class="qty-value-display">{{ item.quantity }}</span>
-                            </div>
-                        </div>
+                <div class="products-section">
+                    <div class="products-header">
+                        <span class="products-title">محصولات سبد خرید</span>
+                        <span class="products-count">{{ cart_items|length }} محصول</span>
                     </div>
 
-                    <!-- قیمت دسکتاپ -->
-                    <div class="product-price-col">
-                        <div class="product-price">
-                            {{ item.final_price|intcomma }}
-                            <span class="price-unit">تومان</span>
+                    {% for item in cart_items %}
+                    <div class="product-row">
+                        <div class="product-thumb">
+                            {% if item.product.images.first %}
+                                <img src="{{ item.product.images.first.image.url }}" alt="{{ item.product.name }}" loading="lazy">
+                            {% else %}
+                                <img src="{% static 'images/no-image.png' %}" alt="بدون تصویر">
+                            {% endif %}
+                        </div>
+
+                        <div class="product-info">
+                            <div class="product-name">{{ item.product.name }}</div>
+                            <div class="product-meta">سایز: {{ item.product.dimensions|default:"-" }}</div>
+                            <div class="shipping-tag">ارسال از ۱۰ روز کاری آینده</div>
+                            {% if item.color %}
+                                <div class="color-info">
+                                    <span class="color-dot" style="background: {{ item.color.color_code|default:'#cccccc' }}"></span>
+                                    {{ item.color.color_name|default:"بدون رنگ" }}
+                                </div>
+                            
+                            {% elif item.body_color or item.door_color %}
+                                <div class="color-info">
+                            
+                                    {% if item.body_color %}
+                                        <span class="color-dot" style="background: {{ item.body_color.color_code|default:'#cccccc' }}"></span>
+                                        بدنه: {{ item.body_color.color_name }}
+                                    {% endif %}
+                            
+                                    {% if item.door_color %}
+                                        <span class="color-dot" style="background: {{ item.door_color.color_code|default:'#cccccc' }}; margin-right:10px;"></span>
+                                        درب: {{ item.door_color.color_name }}
+                                    {% endif %}
+                            
+                                </div>
+                            
+                            {% else %}
+                                <div class="color-info">
+                                    <span class="color-dot" style="background:#cccccc"></span>
+                                    بدون رنگ
+                                </div>
+                            {% endif %}
+
+                            <div class="mobile-info-row">
+                                <div class="mobile-price">
+                                    <span>{{ item.final_price|intcomma }} <span>تومان</span></span>
+                                </div>
+                                <div class="mobile-qty">
+                                    <span>تعداد:</span>
+                                    <span class="qty-value-display">{{ item.quantity }}</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="product-price-col">
+                            <div class="product-price">
+                                {{ item.final_price|intcomma }}
+                                <span class="price-unit">تومان</span>
+                            </div>
+                        </div>
+
+                        <div class="product-quantity">
+                            {{ item.quantity }} عدد
                         </div>
                     </div>
+                    {% empty %}
+                    <div style="text-align:center;padding:60px 20px;">
+                        <h3 style="margin-bottom:8px;">سبد خرید شما خالی است</h3>
+                        <p style="color: var(--clr-text-muted);">محصولات مورد نظر خود را به سبد اضافه کنید</p>
+                    </div>
+                    {% endfor %}
+                </div>
 
-                    <!-- تعداد دسکتاپ -->
-                    <div class="product-quantity">
-                        {{ item.quantity }} عدد
+                <div class="time-section">
+                    <div class="section-title" style="margin-bottom:15px;">
+                        انتخاب تاریخ تحویل
+                    </div>
+
+                    <div class="time-slots" id="timeSlotsContainer">
+                        {% if available_dates %}
+                            {% for item in available_dates %}
+                                <label class="time-slot">
+                                    <input
+                                        type="radio"
+                                        name="delivery_date"
+                                        value="{{ item.value }}"
+                                        required
+                                    >
+                                    <div class="time-slot-date">{{ item.label }}</div>
+                                </label>
+                            {% endfor %}
+                        {% else %}
+                            <div style="grid-column:1/-1;text-align:center;padding:40px;">
+                                در حال حاضر تاریخی برای تحویل موجود نیست.
+                            </div>
+                        {% endif %}
                     </div>
                 </div>
-                {% empty %}
-                <div style="text-align: center; padding: 60px 20px;">
-                    <div style="font-size: 48px; margin-bottom: 15px;"></div>
-                    <h3 style="margin-bottom: 8px;">سبد خرید شما خالی است</h3>
-                    <p style="color: var(--clr-text-muted);">محصولات مورد نظر خود را به سبد اضافه کنید</p>
-                </div>
-                {% endfor %}
+
             </div>
 
-            <!-- بخش انتخاب زمان تحویل -->
-            <div class="time-section">
-                <div class="section-title" style="margin-bottom: 15px;">
-                     انتخاب زمان تحویل
-                </div>
-                <div class="time-slots" id="timeSlotsContainer">
-                    {% if available_times %}
-                        {% for time in available_times %}
-                            <label class="time-slot" data-time-id="{{ time.id }}">
-                                <input type="radio" name="handover_id" value="{{ time.id }}" data-clock="{{ time.clock }}">
-                                <div class="time-slot-day">
-                                    {% with time.date|jformat:"%A" as english_day %}
-                                        {% if english_day == "Monday" %}دوشنبه
-                                        {% elif english_day == "Tuesday" %}سه‌شنبه
-                                        {% elif english_day == "Wednesday" %}چهارشنبه
-                                        {% elif english_day == "Thursday" %}پنجشنبه
-                                        {% elif english_day == "Friday" %}جمعه
-                                        {% elif english_day == "Saturday" %}شنبه
-                                        {% elif english_day == "Sunday" %}یکشنبه
-                                        {% else %}{{ english_day }}{% endif %}
-                                    {% endwith %}
-                                </div>
-                                <div class="time-slot-date">
-                                    {% with time.date|jformat:"%d" as day %}
-                                    {% with time.date|jformat:"%B" as month %}
-                                        {{ day }}
-                                        {% if month == "Farvardin" %}فروردین
-                                        {% elif month == "Ordibehesht" %}اردیبهشت
-                                        {% elif month == "Khordad" %}خرداد
-                                        {% elif month == "Tir" %}تیر
-                                        {% elif month == "Mordad" %}مرداد
-                                        {% elif month == "Shahrivar" %}شهریور
-                                        {% elif month == "Mehr" %}مهر
-                                        {% elif month == "Aban" %}آبان
-                                        {% elif month == "Azar" %}آذر
-                                        {% elif month == "Dey" %}دی
-                                        {% elif month == "Bahman" %}بهمن
-                                        {% elif month == "Esfand" %}اسفند
-                                        {% else %}{{ month }}{% endif %}
-                                    {% endwith %}
-                                    {% endwith %}
-                                </div>
-                                <div class="time-slot-range">{{ time.clock }}</div>
-                            </label>
-                        {% endfor %}
-                    {% else %}
-                        <div style="grid-column: 1/-1; text-align: center; padding: 40px; color: var(--clr-text-muted);">
-                             زمان تحویلی برای نمایش وجود ندارد
+            <div class="checkout-sidebar">
+                <div class="summary-card">
+                    <div class="summary-header">
+                        <h3 class="summary-title">خلاصه سفارش</h3>
+                    </div>
+
+                    <div style="padding: 16px 20px; border-bottom: 1px solid var(--clr-border);">
+                        <div style="font-size: 13px; margin-bottom: 8px;">کد تخفیف</div>
+                        <input
+                            type="text"
+                            name="discount_code"
+                            id="discountCodeInput"
+                            placeholder="اگر کد دارید وارد کنید"
+                            style="width:100%; padding:10px; border:1px solid #ddd; border-radius:8px; font-size:13px;"
+                        >
+                        <div style="font-size:12px; color:var(--clr-text-muted); margin-top:8px;">
+                            کد تخفیف با همان ثبت سفارش ارسال می‌شود.
                         </div>
-                    {% endif %}
-                </div>
-            </div>
-        </div>
+                    </div>
 
-        <!-- ستون خلاصه سفارش (سمت چپ) -->
-        <div class="checkout-sidebar">
-            <div class="summary-card">
-                <div class="summary-header">
-                    <h3 class="summary-title"> خلاصه سفارش</h3>
-                </div>
-                <div class="summary-body">
-                    <div class="summary-row">
-                        <span>تعداد کالا</span>
-                        <span>{{ total_items|default:0 }} عدد</span>
+                    <div class="summary-body">
+                        <div class="summary-row">
+                            <span>تعداد کالا</span>
+                            <span>{{ total_items|default:0 }} عدد</span>
+                        </div>
+                        <div class="summary-row">
+                            <span>جمع مبلغ</span>
+                            <span>{{ total_price|default:0|intcomma }} تومان</span>
+                        </div>
+                        <div class="summary-row">
+                            <span>هزینه ارسال</span>
+                            <span>پس کرایه</span>
+                        </div>
                     </div>
-                    <div class="summary-row">
-                        <span>جمع مبلغ</span>
-                        <span>{{ total_price|default:0|intcomma }} تومان</span>
-                    </div>
-                    <div class="summary-row">
-                        <span>هزینه ارسال</span>
-                        <span>پس کرایه</span>
-                    </div>
-                </div>
-                <div class="summary-total">
-                    <span> مبلغ قابل پرداخت</span>
-                    <span id="totalPayableAmount">{{ total_price|default:0|intcomma }} تومان</span>
-                </div>
 
-                <form method="post" id="orderForm">
-                    {% csrf_token %}
-                    <input type="hidden" name="address_id" id="selectedAddressId" 
+                    <div class="summary-total">
+                        <span>مبلغ قابل پرداخت</span>
+                        <span id="totalPayableAmount">{{ total_price|default:0|intcomma }} تومان</span>
+                    </div>
+
+                    <input type="hidden" name="address_id" id="selectedAddressId"
                            value="{% if user_addresses.first %}{{ user_addresses.first.id }}{% endif %}">
                     <input type="hidden" name="handover_id" id="selectedHandoverId" value="">
-                    
-                    <button type="submit" class="submit-order-btn" 
+
+                    <button type="submit" class="submit-order-btn"
                             {% if not cart_items or not user_addresses.first %}disabled{% endif %}>
-                         ثبت نهایی سفارش
+                        ثبت نهایی سفارش
                     </button>
-                </form>
+                </div>
             </div>
+
         </div>
     </div>
-</div>
+</form>
 
-<!-- مودال آدرس -->
 <div class="address-modal" id="addressModal">
     <div class="modal-overlay" onclick="closeAddressModal()"></div>
     <div class="modal-content">
         <div class="modal-header">
-            <h3> آدرس‌های شما</h3>
-            <button class="modal-close" onclick="closeAddressModal()">✕</button>
+            <h3>آدرس‌های شما</h3>
+            <button type="button" class="modal-close" onclick="closeAddressModal()">✕</button>
         </div>
+
         <div class="modal-body" id="addressModalBody">
             {% if user_addresses %}
                 {% for address in user_addresses %}
-                    <div class="address-option {% if forloop.first %}selected{% endif %}" 
+                    <div class="address-option {% if forloop.first %}selected{% endif %}"
                          data-address-id="{{ address.id }}"
                          data-address-receiver="{{ address.receiver }}"
                          data-address-phone="{{ address.phonenumber }}"
@@ -858,62 +738,94 @@
                          data-address-city="{{ address.city }}">
                         <div class="address-option-title">{{ address.receiver }}</div>
                         <div class="address-option-text">{{ address.address }}</div>
-                        <div class="address-option-text"> کدپستی: {{ address.address_code|default:"-" }}</div>
-                        <div class="address-option-text"> تلفن: {{ address.phonenumber }}</div>
+                        <div class="address-option-text">کدپستی: {{ address.address_code|default:"-" }}</div>
+                        <div class="address-option-text">تلفن: {{ address.phonenumber }}</div>
                     </div>
                 {% endfor %}
             {% else %}
-                <div class="empty-address">
-                    <div> هنوز آدرسی ثبت نکرده اید</div>
-                </div>
+                <div class="empty-address">هنوز آدرسی ثبت نکرده اید</div>
             {% endif %}
         </div>
+
         <div class="modal-footer">
-            <a class="add-new-address" href="{% url 'add_address' %}">
-                 ثبت آدرس جدید
-            </a>
+            <a class="add-new-address" href="{% url 'add_address' %}">ثبت آدرس جدید</a>
         </div>
     </div>
 </div>
 
 <script>
-    let selectedAddressId = document.getElementById('selectedAddressId').value;
-    let selectedHandoverId = null;
-    
-    // باز و بستن مودال
+    let selectedAddressId = document.getElementById('selectedAddressId')?.value || '';
+
     function openAddressModal() {
         document.getElementById('addressModal').classList.add('active');
         document.body.style.overflow = 'hidden';
     }
-    
+
     function closeAddressModal() {
         document.getElementById('addressModal').classList.remove('active');
         document.body.style.overflow = 'auto';
     }
-    
-    // به‌روزرسانی نمایش آدرس
+
     function updateAddressDisplay(addressId, addressData) {
-        document.getElementById('displayAddress').textContent = addressData.address;
-        document.getElementById('displayReceiver').textContent = '👤 گیرنده: ' + addressData.receiver;
-        document.getElementById('displayPhone').textContent = '📞 تلفن: ' + addressData.phonenumber;
-        document.getElementById('displayPostalCode').textContent = '📍 کدپستی: ' + (addressData.address_code || '-');
-        document.getElementById('displayLocation').textContent = '🏙️ استان: ' + (addressData.province || '-') + ' | شهر: ' + (addressData.city || '-');
-        
-        document.getElementById('selectedAddressId').value = addressId;
-        selectedAddressId = addressId;
-        
+        const displayAddress = document.getElementById('displayAddress');
+        const displayReceiver = document.getElementById('displayReceiver');
+        const displayPhone = document.getElementById('displayPhone');
+        const displayPostalCode = document.getElementById('displayPostalCode');
+        const displayLocation = document.getElementById('displayLocation');
+
+        if (displayAddress) displayAddress.textContent = addressData.address || '-';
+        if (displayReceiver) displayReceiver.textContent = ' گیرنده: ' + (addressData.receiver || '-');
+        if (displayPhone) displayPhone.textContent = ' تلفن: ' + (addressData.phonenumber || '-');
+        if (displayPostalCode) displayPostalCode.textContent = ' کدپستی: ' + (addressData.address_code || '-');
+        if (displayLocation) {
+            displayLocation.textContent =
+                ' استان: ' + (addressData.province || '-') + ' | شهر: ' + (addressData.city || '-');
+        }
+
+        const selectedAddressInput = document.getElementById('selectedAddressId');
+        if (selectedAddressInput) selectedAddressInput.value = addressId || '';
+
+        selectedAddressId = addressId || '';
+        checkSubmitButtonState();
+    }
+
+    function updateSelectedDeliveryDate(radio) {
+        const selectedHandoverInput = document.getElementById('selectedHandoverId');
+        const allSlots = document.querySelectorAll('.time-slot');
+
+        allSlots.forEach(slot => slot.classList.remove('selected'));
+
+        if (radio) {
+            const parentSlot = radio.closest('.time-slot');
+            if (parentSlot) parentSlot.classList.add('selected');
+
+            if (selectedHandoverInput) {
+                selectedHandoverInput.value = radio.value || '';
+            }
+        } else {
+            if (selectedHandoverInput) {
+                selectedHandoverInput.value = '';
+            }
+        }
+
+        checkSubmitButtonState();
+    }
+
+    function checkSubmitButtonState() {
         const submitBtn = document.querySelector('.submit-order-btn');
-        if (submitBtn && selectedHandoverId && selectedAddressId) {
-            submitBtn.disabled = false;
+        const selectedRadio = document.querySelector('input[name="delivery_date"]:checked');
+        const addressSelected = selectedAddressId && selectedAddressId !== '';
+
+        if (submitBtn) {
+            submitBtn.disabled = !(addressSelected && selectedRadio);
         }
     }
-    
-    // انتخاب آدرس از مودال
+
     document.querySelectorAll('.address-option').forEach(option => {
         option.addEventListener('click', function() {
             document.querySelectorAll('.address-option').forEach(o => o.classList.remove('selected'));
             this.classList.add('selected');
-            
+
             const addressId = this.getAttribute('data-address-id');
             const addressData = {
                 receiver: this.getAttribute('data-address-receiver'),
@@ -923,65 +835,55 @@
                 address: this.getAttribute('data-address-text'),
                 address_code: this.getAttribute('data-address-code')
             };
-            
+
             updateAddressDisplay(addressId, addressData);
             closeAddressModal();
         });
     });
-    
-    // انتخاب زمان تحویل
-    const timeSlots = document.querySelectorAll('.time-slot');
-    
-    timeSlots.forEach(slot => {
-        const radio = slot.querySelector('input[type="radio"]');
-        
-        if (radio) {
-            slot.addEventListener('click', function() {
-                radio.checked = true;
-                
-                timeSlots.forEach(s => s.classList.remove('selected'));
-                this.classList.add('selected');
-                
-                selectedHandoverId = radio.value;
-                document.getElementById('selectedHandoverId').value = selectedHandoverId;
-                
-                const submitBtn = document.querySelector('.submit-order-btn');
-                if (submitBtn && selectedAddressId && selectedAddressId !== '') {
-                    submitBtn.disabled = false;
-                }
-            });
-        }
+
+    document.querySelectorAll('input[name="delivery_date"]').forEach(radio => {
+        radio.addEventListener('change', function() {
+            updateSelectedDeliveryDate(this);
+        });
     });
-    
-    // اعتبارسنجی قبل از ارسال
-    document.getElementById('orderForm').addEventListener('submit', function(e) {
-        if (!selectedHandoverId) {
+
+    document.getElementById('orderForm').addEventListener('submit', function (e) {
+        const selectedRadio = document.querySelector('input[name="delivery_date"]:checked');
+        const selectedHandoverInput = document.getElementById('selectedHandoverId');
+        const selectedAddressInput = document.getElementById('selectedAddressId');
+
+        if (!selectedRadio) {
             e.preventDefault();
-            alert('⏰ لطفاً زمان تحویل را انتخاب کنید');
+            alert('📅 لطفاً تاریخ تحویل را انتخاب کنید');
             return false;
         }
-        
-        if (!selectedAddressId || selectedAddressId === '') {
+
+        if (selectedHandoverInput) {
+            selectedHandoverInput.value = selectedRadio.value;
+        }
+
+        if (!selectedAddressInput || !selectedAddressInput.value) {
             e.preventDefault();
             alert('📍 لطفاً آدرس تحویل را انتخاب کنید');
             return false;
         }
-        
+
         return true;
     });
-    
-    // بستن مودال با ESC
+
     document.addEventListener('keydown', function(e) {
         if (e.key === 'Escape') {
             closeAddressModal();
         }
     });
-    
-    // بستن مودال با کلیک روی overlay
-    const modalOverlay = document.querySelector('.modal-overlay');
-    if (modalOverlay) {
-        modalOverlay.addEventListener('click', closeAddressModal);
-    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        const precheckedRadio = document.querySelector('input[name="delivery_date"]:checked');
+        if (precheckedRadio) {
+            updateSelectedDeliveryDate(precheckedRadio);
+        }
+        checkSubmitButtonState();
+    });
 </script>
 
 {% endblock %}

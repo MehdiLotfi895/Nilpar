@@ -440,7 +440,7 @@
                     </div>
                     <div class="info-item">
                         <div class="info-label">ساعت تحویل</div>
-                        <div class="info-value">{{ order.clock|default:"-" }}</div>
+                        <div class="info-value">{{ order.clock|default:"هماهنگ میشود" }}</div>
                     </div>
                     <div class="info-item" style="grid-column: 1/-1;">
                         <div class="info-label">آدرس تحویل</div>
@@ -495,8 +495,29 @@
                             <td>
                                 <div class="color-box">
                                     {% if item.color %}
-                                        <span class="color-dot" style="background: {{ item.color.color_code|default:'#cccccc' }}"></span>
-                                        {{ item.color.name }}
+                                        <div class="color-info">
+                                            <span class="color-dot" style="background: {{ item.color.color_code|default:'#cccccc' }}"></span>
+                                        </div>
+                                    
+                                    {% elif item.body_color or item.door_color %}
+                                        <div class="color-info" style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+                                    
+                                            {% if item.body_color %}
+                                                <div style="display:flex;align-items:center;gap:5px;">
+                                                    <span class="color-dot" style="background: {{ item.body_color.color_code|default:'#cccccc' }}"></span>
+                                                    بدنه
+                                                </div>
+                                            {% endif %}
+                                    
+                                            {% if item.door_color %}
+                                                <div style="display:flex;align-items:center;gap:5px;">
+                                                    <span class="color-dot" style="background: {{ item.door_color.color_code|default:'#cccccc' }}"></span>
+                                                    درب
+                                                </div>
+                                            {% endif %}
+                                    
+                                        </div>
+                                    
                                     {% else %}
                                         -
                                     {% endif %}

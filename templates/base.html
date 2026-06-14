@@ -213,35 +213,91 @@
                                                 <div style="display: flex;flex-direction: column;gap:10px;align-items: center;justify-content: center;width: 130px;">
                                                     <img src="{{ item.product.images.all.0.image.url }}" alt="{{ item.product.name }}" class="product-image-basket">
                                                     <div class="counter-container">
-                                                    <form method="POST" action="{% url 'cart:cart_update'  product_id=item.product.id color_id=item.color.id %}"> 
+                                                    <form method="POST"
+                                                         action="{% url 'cart:cart_update' product_id=item.product.id %}">
                                                         {% csrf_token %}
+                                                    
+                                                        {% if item.color %}
+                                                            <input type="hidden" name="color_id" value="{{ item.color.id }}">
+                                                        {% endif %}
+                                                    
+                                                        {% if item.body_color %}
+                                                            <input type="hidden" name="body_color_id" value="{{ item.body_color.id }}">
+                                                        {% endif %}
+                                                    
+                                                        {% if item.door_color %}
+                                                            <input type="hidden" name="door_color_id" value="{{ item.door_color.id }}">
+                                                        {% endif %}
+                                                    
                                                         <button type="submit" name="action" value="increase">
                                                             <i class="fas fa-plus counter-icon plus-icon"></i>
                                                         </button>
                                                     </form>
                                                         <span class="counter-number">{{ item.number }}</span>
                                                         {% if item.number == 1 %}
-                                                        <form action="{% url 'cart:cart_remove' product_id=item.product.id color_id=item.color.id %}" method="POST">
+                                                        <form method="POST"
+                                                            action="{% url 'cart:cart_remove' product_id=item.product.id %}">
                                                             {% csrf_token %}
+                                                        
+                                                            {% if item.color %}
+                                                                <input type="hidden" name="color_id" value="{{ item.color.id }}">
+                                                            {% endif %}
+                                                        
+                                                            {% if item.body_color %}
+                                                                <input type="hidden" name="body_color_id" value="{{ item.body_color.id }}">
+                                                            {% endif %}
+                                                        
+                                                            {% if item.door_color %}
+                                                                <input type="hidden" name="door_color_id" value="{{ item.door_color.id }}">
+                                                            {% endif %}
+                                                        
                                                             <button type="submit" name="action" value="delete_order_basket">
                                                                 <i class="fas fa-trash-alt counter-icon trash-icon"></i>
                                                             </button>
                                                         </form>
                                                         {% else %}
-                                                        <form action="{% url 'cart:cart_update'  product_id=item.product.id color_id=item.color.id %}" method="POST">
+                                                        <form method="POST"
+                                                              action="{% url 'cart:cart_update' product_id=item.product.id %}">
                                                             {% csrf_token %}
+                                                        
+                                                            {% if item.color %}
+                                                                <input type="hidden" name="color_id" value="{{ item.color.id }}">
+                                                            {% endif %}
+                                                        
+                                                            {% if item.body_color %}
+                                                                <input type="hidden" name="body_color_id" value="{{ item.body_color.id }}">
+                                                            {% endif %}
+                                                        
+                                                            {% if item.door_color %}
+                                                                <input type="hidden" name="door_color_id" value="{{ item.door_color.id }}">
+                                                            {% endif %}
+                                                        
                                                             <button type="submit" name="action" value="decrease">
                                                                 <i class="fas fa-minus counter-icon minus-icon"></i>
                                                             </button>
                                                         </form>
                                                         {% endif %}
-                                                    </form>
                                                     </div>
                                                 </div>
                                                 <div class="product-info">
                                                     <div>
                                                         <span class="product-name">{{ item.product.name }}</span>
-                                                        <span style="font-size: 13px;"><i class="fa-solid fa-fill-drip"></i> رنگ {{ item.color.color_name }}</span>
+                                                        {% if item.color %}
+                                                            <span style="font-size: 13px;">
+                                                                <i class="fa-solid fa-fill-drip"></i>
+                                                                رنگ {{ item.color.color_name }}
+                                                            </span>
+                                                        {% else %}
+                                                            <span style="font-size: 13px;">
+                                                                <i class="fa-solid fa-fill-drip"></i>
+                                                                بدنه: {{ item.body_color.color_name }}
+                                                            </span>
+                                                            <span style="font-size: 13px;">
+                                                                <i class="fa-solid fa-fill-drip"></i>
+                                                                درب: {{ item.door_color.color_name }}
+                                                            </span>
+
+                                                        {% endif %}
                                                         <span style="font-size: 13px;"><img src="{% static 'images/new_ai/16060530.png' %}" alt="" style="width:20px"> ارسال از صنایع چوبی نیلپر</span>
                                                     </div>
                                                     <div>
@@ -269,34 +325,91 @@
                                                 <div style="display: flex;flex-direction: column;gap:10px;align-items: center;justify-content: center;width: 130px;">
                                                     <img src="{{ item.product.images.all.0.image.url }}" alt="{{ item.product.name }}" class="product-image-basket">
                                                     <div class="counter-container">
-                                                        <form  method="POST" action="{% url 'cart:cart_update'  product_id=item.product.id color_id=item.color.id %}">
-                                                            {% csrf_token %}
-                                                            <button type="submit" name="action" value="increase">
-                                                                <i class="fas fa-plus counter-icon plus-icon"></i>                            
-                                                            </button>
-                                                        </form>
+                                                        <form method="POST"
+                                                         action="{% url 'cart:cart_update' product_id=item.product.id %}">
+                                                        {% csrf_token %}
+                                                    
+                                                        {% if item.color %}
+                                                            <input type="hidden" name="color_id" value="{{ item.color.id }}">
+                                                        {% endif %}
+                                                    
+                                                        {% if item.body_color %}
+                                                            <input type="hidden" name="body_color_id" value="{{ item.body_color.id }}">
+                                                        {% endif %}
+                                                    
+                                                        {% if item.door_color %}
+                                                            <input type="hidden" name="door_color_id" value="{{ item.door_color.id }}">
+                                                        {% endif %}
+                                                    
+                                                        <button type="submit" name="action" value="increase">
+                                                            <i class="fas fa-plus counter-icon plus-icon"></i>
+                                                        </button>
+                                                    </form>
                                                         <span class="counter-number">{{ item.quantity }}</span>
                                                         {% if item.quantity == 1 %}
-                                                            <form action="{% url 'cart:cart_remove' product_id=item.product.id color_id=item.color.id %}" method="POST">
-                                                                {% csrf_token %}
-                                                                <button type="submit" name="action" value="delete_order_basket">
-                                                                    <i class="fas fa-trash-alt counter-icon trash-icon"></i>
-                                                                </button>
-                                                            </form>
+                                                        <form method="POST"
+                                                        action="{% url 'cart:cart_remove' product_id=item.product.id %}">
+                                                      {% csrf_token %}
+                                                  
+                                                      {% if item.color %}
+                                                          <input type="hidden" name="color_id" value="{{ item.color.id }}">
+                                                      {% endif %}
+                                                  
+                                                      {% if item.body_color %}
+                                                          <input type="hidden" name="body_color_id" value="{{ item.body_color.id }}">
+                                                      {% endif %}
+                                                  
+                                                      {% if item.door_color %}
+                                                          <input type="hidden" name="door_color_id" value="{{ item.door_color.id }}">
+                                                      {% endif %}
+                                                  
+                                                      <button type="submit" name="action" value="delete_order_basket">
+                                                          <i class="fas fa-trash-alt counter-icon trash-icon"></i>
+                                                      </button>
+                                                  </form>
                                                         {% else %}
-                                                            <form  method="POST" action="{% url 'cart:cart_update'  product_id=item.product.id color_id=item.color.id %}">
-                                                                {% csrf_token %}
-                                                                    <button type="submit" name="action" value="decrease">
-                                                                        <i class="fas fa-minus counter-icon minus-icon"></i>
-                                                                    </button>
-                                                            </form>
+                                                        <form method="POST"
+                                                        action="{% url 'cart:cart_update' product_id=item.product.id %}">
+                                                      {% csrf_token %}
+                                                  
+                                                      {% if item.color %}
+                                                          <input type="hidden" name="color_id" value="{{ item.color.id }}">
+                                                      {% endif %}
+                                                  
+                                                      {% if item.body_color %}
+                                                          <input type="hidden" name="body_color_id" value="{{ item.body_color.id }}">
+                                                      {% endif %}
+                                                  
+                                                      {% if item.door_color %}
+                                                          <input type="hidden" name="door_color_id" value="{{ item.door_color.id }}">
+                                                      {% endif %}
+                                                  
+                                                      <button type="submit" name="action" value="decrease">
+                                                          <i class="fas fa-minus counter-icon minus-icon"></i>
+                                                      </button>
+                                                  </form>
                                                         {% endif %}
                                                     </div>
                                                 </div>
                                                 <div class="product-info">
                                                     <div>
                                                         <span class="product-name">{{ item.product.name }}</span>
-                                                        <span style="font-size: 13px;"><i class="fa-solid fa-fill-drip"></i> رنگ {{ item.color.color_name }}</span>
+                                                        {% if item.color %}
+                                                            <span style="font-size: 13px;">
+                                                                <i class="fa-solid fa-fill-drip"></i>
+                                                                رنگ {{ item.color.color_name }}
+                                                            </span>
+                                                        {% else %}
+                                                            <span style="font-size: 13px;">
+                                                                <i class="fa-solid fa-fill-drip"></i>
+                                                                بدنه: {{ item.body_color.color_name }}
+                                                            </span>
+                                                            <span style="font-size: 13px;">
+                                                                <i class="fa-solid fa-fill-drip"></i>
+                                                                درب: {{ item.door_color.color_name }}
+                                                            </span>
+
+                                                        {% endif %}
                                                         <span style="font-size: 13px;"><img src="{% static 'images/new_ai/16060530.png' %}" alt="" style="width:20px"> ارسال از صنایع چوبی نیلپر</span>
                                                     </div>
                                                     <div>
