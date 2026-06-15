@@ -6,293 +6,402 @@
 {% block content %}
 
 <style>
-    /* ======================
-    کانتینر اصلی
-    ====================== */
-    .orders-container {
-        width: 95%;
-        margin: 30px auto;
-        font-family: sans-serif;
-    }
+    /* =============================================
+   لیست سفارشات - نسخه نهایی ریسپانسیو (رفع فضای خالی در موبایل)
+   ============================================= */
 
+/* استایل پایه */
+.orders-container {
+    width: 100%;
+    max-width: 1280px;
+    margin: 30px auto;
+    font-family: sans-serif;
+    direction: rtl;
+    padding: 0 15px;
+    box-sizing: border-box;
+}
+
+.orders-content {
+    display: flex;
+    gap: 24px;
+    align-items: flex-start;
+}
+
+.orders-main {
+    flex: 1;
+    background: #fff;
+    border: 1px solid #ececec;
+    border-radius: 8px;
+    overflow: hidden;
+    width: 100%;
+}
+
+.page-header {
+    padding: 20px 24px;
+    border-bottom: 1px solid #f1f1f1;
+    background: #fff;
+}
+
+.page-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: #333;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* جدول دسکتاپ */
+.orders-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+}
+
+.orders-table thead {
+    background: #fafafa;
+}
+
+.orders-table th,
+.orders-table td {
+    padding: 18px 16px;
+    text-align: center;
+    border-bottom: 1px solid #f1f1f1;
+    vertical-align: middle;
+}
+
+.order-id {
+    font-weight: 600;
+    color: #333;
+}
+
+.tracking-code {
+    font-family: monospace;
+    font-size: 13px;
+    color: #1fa855;
+    font-weight: 600;
+}
+
+.price {
+    color: #4a4a4a;
+    font-weight: 600;
+}
+
+/* وضعیت سفارش */
+.status-badge {
+    display: inline-block;
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    white-space: nowrap;
+}
+.status-payed { background: #eafaf0; color: #1fa855; }
+.status-cod   { background: #fff8e1; color: #ff8f00; }
+.status-paying{ background: #e3f2fd; color: #1976d2; }
+.status-unpay { background: #ffebee; color: #d63031; }
+
+/* دکمه جزئیات */
+.detail-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 7px 14px;
+    background: #747667;
+    color: #fff;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: 0.2s;
+}
+.detail-btn:hover { opacity: 0.85; }
+
+/* پیام خالی بودن */
+.empty-state {
+    text-align: center;
+    padding: 60px 20px;
+}
+.empty-icon {
+    font-size: 48px;
+    color: #ccc;
+    margin-bottom: 16px;
+}
+.empty-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: #666;
+}
+.empty-text {
+    font-size: 14px;
+    color: #888;
+    margin: 8px 0 20px;
+}
+.shop-link {
+    display: inline-block;
+    padding: 10px 25px;
+    background: #747667;
+    color: #fff;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: 600;
+}
+.shop-link:hover { opacity: 0.85; }
+
+/* ستون کناری راهنما */
+.orders-sidebar {
+    width: 280px;
+    flex-shrink: 0;
+    position: sticky;
+    top: 170px;
+}
+.info-card {
+    background: #fff;
+    border: 1px solid #ececec;
+    border-radius: 8px;
+    padding: 20px;
+}
+.info-title {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 16px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #eee;
+    text-align: center;
+}
+.info-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+.info-list li {
+    padding: 10px 0;
+    font-size: 13px;
+    color: #666;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    border-bottom: 1px solid #f5f5f5;
+}
+.info-list li:last-child { border-bottom: none; }
+.info-list li i { color: #747667; width: 20px; }
+
+/* صفحه‌بندی */
+.pagination {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    padding: 20px;
+    border-top: 1px solid #f1f1f1;
+}
+.pagination a,
+.pagination span {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 36px;
+    height: 36px;
+    padding: 0 12px;
+    border: 1px solid #e0e0e0;
+    border-radius: 6px;
+    text-decoration: none;
+    font-size: 14px;
+    color: #666;
+    transition: 0.2s;
+}
+.pagination a:hover {
+    background: #747667;
+    color: #fff;
+    border-color: #747667;
+}
+.pagination .current {
+    background: #747667;
+    color: #fff;
+    border-color: #747667;
+}
+
+/* =============================================
+   ریسپانسیو (تبدیل جدول به کارت در موبایل)
+   ============================================= */
+
+/* تبلت (992px به پایین) - ستون راهنما به زیر می‌رود */
+@media (max-width: 992px) {
     .orders-content {
-        display: flex;
+        flex-direction: column;
         gap: 20px;
-        align-items: flex-start;
-        flex-wrap: nowrap;
+    }
+    .orders-sidebar {
+        width: 100%;
+        position: static;
+    }
+    
+}
+
+/* موبایل (زیر 768px) - جدول به کارت تبدیل می‌شود */
+@media (max-width: 767px) {
+    .orders-container {
+        padding: 0 12px;
+        margin: 20px auto;
     }
 
-    /* ======================
-    بخش اصلی (لیست سفارش‌ها)
-    ====================== */
     .orders-main {
-        flex: 1 1 70%;
-        min-width: 600px;
-        background: #fff;
-        border: 1px solid #ececec;
-        border-radius: 5px;
-        overflow: hidden;
+        border-radius: 12px;
+        width: 100%;
     }
 
     .page-header {
-        padding: 20px 25px;
-        border-bottom: 1px solid #f1f1f1;
-        background: #fff;
+        padding: 14px 16px;
     }
-
     .page-title {
-        font-size: 18px;
-        font-weight: 600;
-        color: #333;
-        margin: 0;
-        display: flex;
-        align-items: center;
-        gap: 10px;
+        font-size: 16px;
     }
 
-    /* ======================
-    جدول سفارش‌ها
-    ====================== */
-    .orders-table {
-        width: 100%;
-        border-collapse: collapse;
+    /* تبدیل به بلوک - حذف overflow-x اضافی */
+    .orders-table,
+    .orders-table thead,
+    .orders-table tbody,
+    .orders-table tr,
+    .orders-table td {
+        display: block;
     }
 
     .orders-table thead {
-        background: #fafafa;
-        font-size: 14px;
+        display: none;
     }
 
-    .orders-table th,
-    .orders-table td {
-        padding: 20px 15px;
-        text-align: center;
-        border-bottom: 1px solid #f1f1f1;
-    }
-
-    .order-id {
-        font-weight: 600;
-        color: #333;
-        font-size: 15px;
-    }
-
-    .tracking-code {
-        font-family: monospace;
-        font-size: 13px;
-        color: #1fa855;
-        font-weight: 600;
-    }
-
-    .price {
-        color: #4a4a4a;
-        font-weight: 600;
-        font-size: 14px;
-    }
-
-    /* وضعیت سفارش */
-    .status-badge {
-        display: inline-block;
-        padding: 5px 12px;
-        border-radius: 20px;
-        font-size: 12px;
-        font-weight: 600;
-    }
-
-    .status-payed {
-        background: #eafaf0;
-        color: #1fa855;
-    }
-
-    .status-cod {
-        background: #fff8e1;
-        color: #ff8f00;
-    }
-
-    .status-paying {
-        background: #e3f2fd;
-        color: #1976d2;
-    }
-
-    .status-unpay {
-        background: #ffebee;
-        color: #d63031;
-    }
-
-    /* دکمه مشاهده جزئیات */
-    .detail-btn {
-        display: inline-flex;
-        align-items: center;
-        gap: 5px;
-        padding: 8px 16px;
-        background: #747667;
-        color: #fff;
-        border: none;
-        border-radius: 5px;
-        font-size: 12px;
-        font-weight: 600;
-        cursor: pointer;
-        transition: 0.3s;
-        text-decoration: none;
-    }
-
-    .detail-btn:hover {
-        opacity: 0.85;
-    }
-
-    /* پیام خالی بودن لیست */
-    .empty-state {
-        text-align: center;
-        padding: 60px 20px;
-        color: #999;
-    }
-
-    .empty-icon {
-        font-size: 48px;
-        margin-bottom: 15px;
-    }
-
-    .empty-title {
-        font-size: 18px;
-        font-weight: 600;
-        color: #666;
-        margin-bottom: 10px;
-    }
-
-    .empty-text {
-        font-size: 14px;
-        color: #888;
-    }
-
-    .shop-link {
-        display: inline-block;
-        margin-top: 20px;
-        padding: 10px 25px;
-        background: #747667;
-        color: #fff;
-        text-decoration: none;
-        border-radius: 5px;
-        font-weight: 600;
-        transition: 0.3s;
-    }
-
-    .shop-link:hover {
-        opacity: 0.85;
-    }
-
-    /* ======================
-    ستون کناری (سمت چپ)
-    ====================== */
-    .orders-sidebar {
-        flex: 0 0 25%;
-        min-width: 250px;
-        position: sticky;
-        top: 180px;
-        align-self: flex-start;
-    }
-
-    .info-card {
-        background: #fff;
+    .orders-table tr {
+        margin-bottom: 16px;
+        padding: 16px;
         border: 1px solid #ececec;
-        border-radius: 5px;
-        padding: 20px;
+        border-radius: 12px;
+        background: #fff;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.03);
+        width: 100%;
+        box-sizing: border-box;
     }
 
-    .info-title {
-        font-size: 17px;
-        font-weight: 600;
-        margin-bottom: 20px;
-        text-align: center;
-        padding-bottom: 12px;
-        border-bottom: 1px solid #eee;
-    }
-
-    .info-list {
-        list-style: none;
-        padding: 0;
-    }
-
-    .info-list li {
-        padding: 10px 0;
-        font-size: 13px;
-        color: #666;
+    .orders-table td {
         display: flex;
+        justify-content: space-between;
         align-items: center;
-        gap: 8px;
-        border-bottom: 1px solid #f5f5f5;
+        padding: 10px 8px;
+        border-bottom: 1px solid #f0f0f0;
+        font-size: 13px;
+        text-align: right;
+        width: 100%;
+        box-sizing: border-box;
     }
-
-    .info-list li:last-child {
+    .orders-table td:last-child {
         border-bottom: none;
     }
 
-    .info-list li i {
-        color: #747667;
-        width: 20px;
+    /* عنوان ستون‌ها با ::before */
+    .orders-table td::before {
+        content: attr(data-label);
+        font-weight: 600;
+        color: #555;
+        margin-left: 15px;
+        min-width: 100px;
+        text-align: right;
+        flex-shrink: 0;
     }
 
-    /* ======================
-    Pagination
-    ====================== */
+    /* اگر data-label در HTML وجود نداشته باشد، از این مقادیر ثابت استفاده می‌شود */
+    .orders-table td:nth-child(1)::before { content: "شماره سفارش"; }
+    .orders-table td:nth-child(2)::before { content: "کد رهگیری"; }
+    .orders-table td:nth-child(3)::before { content: "مبلغ"; }
+    .orders-table td:nth-child(4)::before { content: "گیرنده"; }
+    .orders-table td:nth-child(5)::before { content: "وضعیت"; }
+    .orders-table td:nth-child(6)::before { content: "عملیات"; }
+
+    /* تنظیمات اختصاصی کارت */
+    .order-id {
+        font-size: 14px;
+    }
+    .tracking-code {
+        font-size: 12px;
+    }
+    .price {
+        font-size: 14px;
+    }
+    .status-badge {
+        padding: 4px 10px;
+        font-size: 11px;
+        white-space: normal;
+    }
+    .detail-btn {
+        padding: 6px 12px;
+        font-size: 11px;
+    }
+
+    /* ستون راهنما */
+    .info-card {
+        padding: 16px;
+    }
+    .info-title {
+        font-size: 15px;
+    }
+    .info-list li {
+        padding: 8px 0;
+        font-size: 12px;
+    }
+
+    /* صفحه‌بندی */
     .pagination {
-        display: flex;
-        justify-content: center;
-        gap: 8px;
-        padding: 20px;
-        border-top: 1px solid #f1f1f1;
-        background: #fff;
+        gap: 6px;
+        padding: 16px;
     }
-
     .pagination a,
     .pagination span {
-        display: inline-flex;
-        align-items: center;
+        min-width: 32px;
+        height: 32px;
+        font-size: 13px;
+    }
+
+    /* حالت خالی */
+    .empty-state {
+        padding: 40px 16px;
+    }
+    .empty-icon {
+        font-size: 40px;
+    }
+    .empty-title {
+        font-size: 16px;
+    }
+    .empty-text {
+        font-size: 13px;
+    }
+    .shop-link {
+        padding: 8px 20px;
+        font-size: 13px;
+    }
+}
+
+/* موبایل خیلی کوچک (زیر 400px) - بهبود چیدمان عمودی */
+@media (max-width: 400px) {
+    .orders-container {
+        padding: 0 8px;
+    }
+    .orders-table tr {
+        padding: 12px;
+    }
+    .orders-table td {
+        align-items: flex-start;
+        gap: 6px;
+        padding: 10px;
+    }
+    .orders-table td::before {
+        margin-left: 0;
+        margin-bottom: 4px;
+    }
+    .status-badge {
+        align-self: flex-start;
+    }
+    .detail-btn {
         justify-content: center;
-        min-width: 35px;
-        height: 35px;
-        padding: 0 10px;
-        border: 1px solid #e0e0e0;
-        border-radius: 5px;
-        text-decoration: none;
-        font-size: 14px;
-        color: #666;
-        transition: 0.3s;
     }
-
-    .pagination a:hover {
-        background: #747667;
-        color: #fff;
-        border-color: #747667;
-    }
-
-    .pagination .current {
-        background: #747667;
-        color: #fff;
-        border-color: #747667;
-    }
-
-    /* ======================
-    ریسپانسیو
-    ====================== */
-    @media (max-width: 992px) {
-        .orders-content {
-            flex-direction: column;
-        }
-        .orders-main,
-        .orders-sidebar {
-            width: 100%;
-            min-width: 0;
-            position: relative;
-            top: 0;
-        }
-        .orders-table {
-            display: block;
-            overflow-x: auto;
-        }
-        .orders-table th,
-        .orders-table td {
-            white-space: nowrap;
-        }
-    }
+}
 </style>
 
 <div class="orders-container">
@@ -357,17 +466,27 @@
             {% if is_paginated %}
             <div class="pagination">
                 {% if page_obj.has_previous %}
-                    <a href="?page=1">&laquo; اول</a>
-                    <a href="?page={{ page_obj.previous_page_number }}">قبلی</a>
+                    <a href="?page=1">
+                        <i class="fas fa-angles-right"></i>
+                    </a>
+            
+                    <a href="?page={{ page_obj.previous_page_number }}">
+                        <i class="fas fa-chevron-right"></i>
+                    </a>
                 {% endif %}
-
+            
                 <span class="current">
                     صفحه {{ page_obj.number }} از {{ page_obj.paginator.num_pages }}
                 </span>
-
+            
                 {% if page_obj.has_next %}
-                    <a href="?page={{ page_obj.next_page_number }}">بعدی</a>
-                    <a href="?page={{ page_obj.paginator.num_pages }}">آخر &raquo;</a>
+                    <a href="?page={{ page_obj.next_page_number }}">
+                        <i class="fas fa-chevron-left"></i>
+                    </a>
+            
+                    <a href="?page={{ page_obj.paginator.num_pages }}">
+                        <i class="fas fa-angles-left"></i>
+                    </a>
                 {% endif %}
             </div>
             {% endif %}

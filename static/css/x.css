@@ -1308,6 +1308,7 @@ body {
     flex-shrink: 0;
     min-width: 94px;
     justify-content: flex-end;
+    position: relative;
 }
 
 .scroll-btn {

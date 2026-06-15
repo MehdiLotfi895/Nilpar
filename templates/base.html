@@ -525,12 +525,20 @@
         <div class="drawer-content">
             <ul class="drawer-menu">
                 <li><a href="{% url "home" %}"><i class="fas fa-home"></i> صفحه اصلی</a></li>
-                <li><a href="{% url "products" %}"><i class="fas fa-store"></i> محصولات</a></li>
-                <li><a href="#"><i class="fas fa-info-circle"></i> درباره ما</a></li>
-                <li><a href="#"><i class="fas fa-phone-alt"></i> تماس با ما</a></li>
-                <li><a href="{% url 'order_list'%}"><img src="{% static 'images/shop.png'%}" alt="" style="width:18px"></i> لیست سفارش‌ها</a></li>
+                <li>
+                    <a href="{% url "products" %}">
+                        <i class="fas fa-couch"></i> محصولات
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <i class="fas fa-users"></i> درباره ما
+                   </a>
+                </li>
+                <li><a href="tel:09030821646"><i class="fas fa-phone-alt"></i> تماس با ما</a></li>
+                <li><a href="{% url 'order_list'%}"><i class="fas fa-shopping-bag"></i> لیست سفارش‌ها</a></li>
                 <li><a href="{% url 'user_activity'%}"><i class="fas fa-comments"></i> پرسش‌ها و دیدگاه‌ها</a></li>
-                <li><a href="{% url 'edit_profile'%}"><i class="fas fa-user-edit"></i> ویرایش پروفایل</a></li>
+                <li><a href="{% url 'edit_profile'%}"><i class="fas fa-user-cog"></i> ویرایش پروفایل</a></li>
                 <li><a href="{% url 'addresses'%}"><i class="fas fa-map-marker-alt"></i> لیست آدرس‌ها</a></li>
                 <li><a href="{% url 'favorite_products' %}"><i class="fas fa-heart"></i> لیست علاقه‌مندی‌ها</a></li>
                 {% if  user.is_authenticated%}
@@ -555,9 +563,9 @@
                 <button class="close-layer-btn" id="closeLayerBtn">
                     <i class="fas fa-arrow-right"></i>
                 </button>
-                <form class="layer-search-form" method="POST" action="">
+                <form class="layer-search-form" method="POST" action="" id="searchFormMobile">
                     {% csrf_token %}
-                    <input type="text" class="layer-search-input"  placeholder="جستجو..."  name="search_input" autofocus >
+                    <input type="text" class="layer-search-input"  placeholder="جستجو..."  name="search_input" autofocus id="searchInputMobile">
                     <button type="submit" class="layer-submit-btn" name="action" value="search_box">
                         <i class="fas fa-search"></i>
                     </button>
@@ -570,24 +578,11 @@
                     پیشنهادات
                 </div>
                 <div class="suggest-flex">
-                    <div class="suggest-chip" data-term="کابینت آشپزخانه">
-                        <i class="fas fa-search"></i> کابینت آشپزخانه
-                    </div>
-                    <div class="suggest-chip" data-term="کمد دیواری">
-                        <i class="fas fa-search"></i> کمد دیواری
-                    </div>
-                    <div class="suggest-chip" data-term="کتابخانه">
-                        <i class="fas fa-search"></i> کتابخانه
-                    </div>
-                    <div class="suggest-chip" data-term="کمد لباس">
-                        <i class="fas fa-search"></i> کمد لباس
-                    </div>
-                    <div class="suggest-chip" data-term="کابینت مدرن">
-                        <i class="fas fa-search"></i> کابینت مدرن
-                    </div>
-                    <div class="suggest-chip" data-term="کابینت کلاسیک">
-                        <i class="fas fa-search"></i> کابینت کلاسیک
-                    </div>
+                    {% for category in main_category %}
+                    <a class="suggest-chip" href="{% url "products"  category.title %}">
+                        <i class="fas fa-search"></i> {{category.title}}
+                    </a>
+                    {% endfor %}
                 </div>
             </div>
     
@@ -597,13 +592,63 @@
                     <i class="fas fa-clock"></i> جستجوهای اخیر
                 </div>
                 <div class="recent-tag-list" id="recentTagList">
-                    <span class="recent-tag-item" data-term="کابینت مدرن">کابینت مدرن</span>
-                    <span class="recent-tag-item" data-term="هایگلاس">هایگلاس</span>
-                    <span class="recent-tag-item" data-term="کلاسیک">کلاسیک</span>
+                </div>
+                <div id="clearRecentSearches" class="clear-recent-btn">
+                    <i class="fas fa-trash-alt"></i>
+                    پاک کردن سابقه
                 </div>
             </div>
             <div class="layer-note">
                  روی هر گزینه کلیک کنید
+            </div>
+        </div>
+    </div>
+    <!-- ========== لایه تمام صفحه دسته‌بندی موبایل ========== -->
+    <div class="mobile-categories-layer" id="mobileCategoriesLayer">
+        <div class="mobile-categories-inner">
+            <!-- هدر با عنوان و دکمه بستن -->
+            <div class="mobile-categories-header">
+                <span class="mobile-categories-title">
+                    دسته‌بندی کالاها
+                </span>
+                <button class="mobile-categories-close" id="closeCategoriesLayer">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+    
+            <!-- محتوای اسکرول‌شونده -->
+            <div class="mobile-categories-content">
+                {% for category in main_category %}
+                <div class="mobile-category-item" data-category-id="{{ category.id }}">
+                    <div class="mobile-category-header">
+                        <div class="mobile-category-icon">
+                            <i class="fas {{ category.icone }}"></i>
+                        </div>
+                        <span class="mobile-category-name">{{ category.title }}</span>
+                        <i class="fas fa-chevron-down mobile-category-arrow"></i>
+                    </div>
+                    <div class="mobile-subcategory-panel" id="mobile-panel-{{ category.id }}">
+                        <div class="mobile-subcategory-grid">
+                            {% for sub in category.secondary_category.all %}
+                            <a href="{% url 'products' %}?subcategory={{ sub.id }}" class="mobile-subcategory-card">
+                                {% if sub.image %}
+                                <img src="{{ sub.image.url }}" alt="{{ sub.title }}" loading="lazy">
+                                {% else %}
+                                <i class="fas fa-tag"></i>
+                                {% endif %}
+                                <span>{{ sub.title }}</span>
+                            </a>
+                            {% empty %}
+                            <div class="mobile-empty-sub">زیرمجموعه‌ای موجود نیست</div>
+                            {% endfor %}
+                        </div>
+                        <a href="{% url 'products' %}?category={{ category.id }}" class="mobile-view-all-link">
+                            مشاهده همه {{ category.title }}
+                            <i class="fas fa-arrow-left"></i>
+                        </a>
+                    </div>
+                </div>
+                {% endfor %}
             </div>
         </div>
     </div>
@@ -703,7 +748,7 @@
                 {% endif %}
             </a>
             <!-- دسته‌بندی -->
-            <a href="#" class="nav-item" id="nav-category">
+            <div href="#" class="nav-item" id="nav-category">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
                     <rect x="3" y="3" width="7" height="7" rx="1.5" stroke="currentColor" stroke-width="2"/>
                     <rect x="14" y="3" width="7" height="7" rx="1.5" stroke="currentColor" stroke-width="2"/>
@@ -711,9 +756,9 @@
                     <rect x="14" y="14" width="7" height="7" rx="1.5" stroke="currentColor" stroke-width="2"/>
                 </svg>
                 <span class="nav-label">دسته‌بندی</span>
-            </a>
+            </div>
             <!-- پروفایل شخص -->
-            <a href="#" class="nav-item" id="nav-profile">
+            <a href="{% url "edit_profile" %}" class="nav-item" id="nav-profile">
                 <i class="fas fa-user-circle"></i>
                 <span class="nav-label">پروفایل</span>
             </a>

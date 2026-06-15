@@ -98,6 +98,7 @@ class CartAddView(View):
                     cart_service.add(
                         product=accessory,
                         quantity=quantity,
+                        color=accessory.color.first(),
                     )
 
             messages.success(

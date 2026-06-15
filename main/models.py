@@ -177,11 +177,11 @@ class Product(models.Model):
            MaxValueValidator(50)
         ])
     color=models.ManyToManyField(ColorProduct,related_name='products',
-        verbose_name=_('color') )
+        verbose_name=_('color'),blank=True,)
     
-    body_color=models.ManyToManyField(ColorProduct,related_name='products_body_color',verbose_name=_('رنگ بدنه'))
+    body_color=models.ManyToManyField(ColorProduct,related_name='products_body_color',verbose_name=_('رنگ بدنه'), blank=True,  )
 
-    door_color=models.ManyToManyField(ColorProduct,related_name='products_door_color',verbose_name=_('رنگ در'))
+    door_color=models.ManyToManyField(ColorProduct,related_name='products_door_color',verbose_name=_('رنگ در'), blank=True,  )
     
     accessories = models.ManyToManyField(
         'self',
@@ -1059,3 +1059,11 @@ class DiscountCode(models.Model):
         return f"{self.code} ({self.percent_off}%)"
 
 
+
+
+class LatestProducts(models.Model):
+    products=models.ManyToManyField(Product,verbose_name='جدید ترین محصولات',related_name='lastest')
+
+
+class BestSellersProuducts(models.Model):
+    products=models.ManyToManyField(Product,related_name='best_sellers',verbose_name='پر فروش ترین محصولات')

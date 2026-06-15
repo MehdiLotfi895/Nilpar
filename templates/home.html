@@ -98,6 +98,7 @@
     <div class="offer-carousel__viewport" id="offerViewport">
       <div class="offer-carousel__track" id="offerTrack" >
         {% for product in products %}
+        {% if product.off != 0 %}
         <article class="product_card_item">
           <div class="offer-product-colors">
             {% for color in product.color.all|slice:":4" %}
@@ -108,9 +109,9 @@
             {% endif %}
           </div>
 
-          <div class="product_card_image">
+          <a class="product_card_image" href="{% url "detail" product.slug%}">
             <img src="{{ product.images.all.0.image.url }}" alt="{{ product.name }}">
-          </div>
+          </a>
 
           {% if product.off != 0 %}
           <div class="product_price_wrapper">
@@ -134,6 +135,7 @@
             </a>
           </form>
         </article>
+        {% endif %}
         {% endfor %}
       </div>
     </div>
@@ -192,7 +194,7 @@
               <!-- سعی شده تصاویر معتبر و متنوع باشند (از picsum و placeholder با id‌های مختلف) -->
               
               <!-- product 1 -->
-               {% for product in products%}
+               {% for product in lastest_products%}
 
              <div class="last-product-card">
                   <div class="last-product-image">
@@ -208,13 +210,14 @@
                         
                     </form>
                        {% if product.off != 0 %}
-                      <span class="offer-button">20%</span>
+                      <span class="offer-button">{{product.off}}%</span>
                       {% endif %}
                       {% with product.images.all|first as first_image %}
                       {% if first_image %}
                           <img src="{{ first_image.image.url }}" alt="{{ product.name }}" loading="lazy">
                       {% endif %}
-                      {% endwith %}                  </div>
+                      {% endwith %}                  
+                  </div>
                   <div class="last-product-info">
                       <div class="last-product-name">{{product.name}}</div>
                       {% if product.off != 0 %}
@@ -283,7 +286,7 @@
                 <!-- سعی شده تصاویر معتبر و متنوع باشند (از picsum و placeholder با id‌های مختلف) -->
                 
                 <!-- product 1 -->
-                 {% for product in products%}
+                 {% for product in best_sellers_products%}
                    {% if  1  %}
                         <div class="last-product-card">
                             <div class="last-product-image">

@@ -7,7 +7,7 @@ from django.contrib import messages
 from django.contrib.auth import login as django_login, logout as django_logout
 from django.utils import timezone
 from django.db.models import Q ,F ,Sum,DecimalField, Value,Prefetch
-from .models import Product, Order, HandOverOrder, AddressInfo, CustomUser, OTP ,Question ,Comment,Header_top,CategoryMain,SliderImage,Blog,OrderBasket,ColorProduct,OrderItem,AdItem,AdSection,DeliverySettings
+from .models import Product, Order, HandOverOrder, AddressInfo, CustomUser, OTP ,Question ,Comment,Header_top,CategoryMain,SliderImage,Blog,OrderBasket,ColorProduct,OrderItem,AdItem,AdSection,DeliverySettings,LatestProducts, BestSellersProuducts
 from .forms import PhoneForm, OTPForm, RegisterForm,AddAddressForm,ProfileForm,AddressUpdateForm
 from django.db.models.functions import Coalesce
 from django.db.models.expressions import ExpressionWrapper, CombinedExpression
@@ -45,6 +45,8 @@ class Home(ListView):
         context['ad_section_first']=AdSection.objects.exclude(state="repose",title="").prefetch_related('image').select_related('category_main').first()
         context['ad_section_second']=AdSection.objects.filter(state='active',title__isnull=True).prefetch_related('image').select_related('category_main').first()
         context['current_page']="home"
+        context['lastest_products']=LatestProducts.objects.first().products.all().order_by('-id')
+        context['best_sellers_products']=BestSellersProuducts.objects.first().products.all().order_by('-id')
         
         # ========== سبد خرید حذف شد - به جای آن از cart app استفاده کن ==========
         # if self.request.user.is_authenticated:
@@ -804,7 +806,7 @@ def add_address(request):
         }
     )
 
-
+@login_required
 def edit_profile(request):
     if request.method == "POST":
         form = ProfileForm(request.POST, instance=request.user)

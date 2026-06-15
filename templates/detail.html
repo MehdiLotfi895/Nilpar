@@ -30,12 +30,18 @@
     
     <div class="product-header-section">
         <div class="product-thumbnails">
-             {% for item in product.images.all %}
-             <img src="{{ item.image.url }}" alt="{{ product.name }}" class="product-thumb {% if forloop.first %}active{% endif %}" onclick="changeImage(this)">
-             {% endfor %}
-             <button id="openGalleryBtn" class="gallery-open-btn">
-                مشاهده تصاویر
-            </button>
+            {% for item in product.images.all %}
+             {% if forloop.last %}
+                 <div class="product-thumb gallery-last-thumb" id="openGalleryBtn">
+                     <img src="{{ item.image.url }}" alt="{{ product.name }}" class="product-thumb">
+                 </div>
+             {% else %}
+                 <img src="{{ item.image.url }}"
+                      alt="{{ product.name }}"
+                      class="product-thumb {% if forloop.first %}active{% endif %}"
+                      onclick="changeImage(this)">
+             {% endif %}
+            {% endfor %}
         </div>
         <div class="product-image-section">
             <div class="product-main-image">
@@ -50,7 +56,7 @@
         </div>
         
         <div class="product-info-section">
-            <div style="display:flex;justify-content: space-between;align-items:center;">
+            <div style="display:flex;justify-content: space-between;align-items:center;margin-bottom:15px;">
                 <h1 class="product-main-title">{{ product.name }}</h1>
                 <span class="product-new-price">{{ price|persian_intcomma }} تومان</span>
             </div>
@@ -377,7 +383,7 @@
     </div>
 </div>
 
-<div class="last-product-container container">
+<div class="last-product-container container" style="margin-top:50px;">
     <div class="last-product-header">
         <span>کالاهای مشابه</span>
         <div class="last-product-btn">

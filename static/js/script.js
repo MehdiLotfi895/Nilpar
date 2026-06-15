@@ -461,18 +461,19 @@ document.addEventListener('DOMContentLoaded', function() {
 const preventKeys = {32:1, 33:1, 34:1, 35:1, 36:1, 37:1, 38:1, 39:1, 40:1};
 
 function freezeEvent(e) {
-    // هوشمندی پکیج: بررسی اینکه آیا ماوس روی لایه‌های مجاز مگامنو یا گرید محصولات است یا خیر
-    const isInsideMegaMenu = e.target.closest('#categoriesDropdown') || 
-                             e.target.closest('.products-panel.active') || 
-                             e.target.closest('.products-grid-mega') || 
-                             e.target.closest('.mega-menu-category');
+    // بررسی اینکه آیا هدف در بخش‌های مجاز (منوی دسکتاپ یا منوی موبایل) قرار دارد
+    const isInsideAllowedArea = e.target.closest('#categoriesDropdown') || 
+                                e.target.closest('.products-panel.active') || 
+                                e.target.closest('.products-grid-mega') || 
+                                e.target.closest('.mega-menu-category') ||
+                                e.target.closest('#mobileCategoriesLayer') ||          // خود لایه موبایل
+                                e.target.closest('.mobile-categories-content') ||     // محتوای اسکرول‌شونده
+                                e.target.closest('.mobile-subcategory-panel') ||      // پنل زیرمجموعه‌ها
+                                e.target.closest('.mobile-categories-inner');          // کل محفظه لایه
     
-    if (isInsideMegaMenu) {
-        // اگر ماوس روی گرید محصولات یا اجزای منو بود، اسکرول داخلی را کاملاً آزاد بگذار
-        return; 
+    if (isInsideAllowedArea) {
+        return;  // اسکرول آزاد باشد
     }
-    
-    // اگر ماوس بیرون از مگامنو بود، اسکرول صفحه اصلی را قفل کن
     e.preventDefault();
 }
 
@@ -725,3 +726,159 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 })();
+
+
+
+document.addEventListener('DOMContentLoaded', function() {
+
+    const form = document.getElementById('searchFormMobile');
+    const input = document.getElementById('searchInputMobile');
+    const recentList = document.getElementById('recentTagList');
+
+    // نمایش جستجوهای ذخیره شده
+    renderRecentSearches();
+
+    form.addEventListener('submit', function() {
+
+        const searchTerm = input.value.trim();
+
+        if (!searchTerm) return;
+
+        let searches = JSON.parse(localStorage.getItem('recentSearches')) || [];
+
+        // حذف تکراری
+        searches = searches.filter(item => item !== searchTerm);
+
+        // اضافه کردن به اول لیست
+        searches.unshift(searchTerm);
+
+        // فقط 10 مورد آخر
+        searches = searches.slice(0, 10);
+
+        localStorage.setItem('recentSearches', JSON.stringify(searches));
+    });
+
+    function renderRecentSearches() {
+
+        const searches = JSON.parse(localStorage.getItem('recentSearches')) || [];
+
+        recentList.innerHTML = '';
+
+        searches.forEach(term => {
+
+            const span = document.createElement('span');
+
+            span.className = 'recent-tag-item';
+            span.textContent = term;
+
+            span.addEventListener('click', function() {
+                input.value = term;
+                input.focus();
+            });
+
+            recentList.appendChild(span);
+        });
+    }
+
+});
+
+document.getElementById('clearRecentSearches').addEventListener('click', function() {
+    localStorage.removeItem('recentSearches');
+    document.getElementById('recentTagList').innerHTML = '';
+});
+
+
+
+
+
+
+// ========== منوی دسته‌بندی موبایل (تمام صفحه) ==========
+(function() {
+    const categoriesLayer = document.getElementById('mobileCategoriesLayer');
+    const openBtn = document.getElementById('nav-category');  // دکمه دسته‌بندی در منوی پایین
+    const closeBtn = document.getElementById('closeCategoriesLayer');
+
+    // توابع باز و بسته کردن
+    function openMobileCategories() {
+        if (!categoriesLayer) return;
+        categoriesLayer.classList.add('active');
+        document.body.classList.add('no-scroll-categories');
+        // جلوگیری از اسکرول پشت لایه (اختیاری)
+        if (typeof lockScroll === 'function') {
+            lockScroll();
+        } else {
+            document.body.style.overflow = 'hidden';
+        }
+    }
+
+    function closeMobileCategories() {
+        if (!categoriesLayer) return;
+        categoriesLayer.classList.remove('active');
+        document.body.classList.remove('no-scroll-categories');
+        if (typeof unlockScroll === 'function') {
+            unlockScroll();
+        } else {
+            document.body.style.overflow = '';
+        }
+        // بستن تمام پنل‌های باز (اختیاری)
+        document.querySelectorAll('.mobile-category-item.expanded').forEach(item => {
+            item.classList.remove('expanded');
+        });
+    }
+
+    // باز کردن با کلیک روی دکمه دسته‌بندی در نوار پایین
+    if (openBtn) {
+        openBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            openMobileCategories();
+        });
+    }
+
+    // بستن با دکمه ضربدر
+    if (closeBtn) {
+        closeBtn.addEventListener('click', closeMobileCategories);
+    }
+
+    // بستن با کلیک روی پس‌زمینه (خود لایه) – فقط اگر روی header یا close کلیک نشده باشد
+    if (categoriesLayer) {
+        categoriesLayer.addEventListener('click', function(e) {
+            if (e.target === categoriesLayer) {
+                closeMobileCategories();
+            }
+        });
+    }
+
+    // بستن با دکمه Escape
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && categoriesLayer && categoriesLayer.classList.contains('active')) {
+            closeMobileCategories();
+        }
+    });
+
+    // منطق باز/بسته شدن هر دسته (اکاردئونی)
+    const categoryHeaders = document.querySelectorAll('.mobile-category-header');
+    categoryHeaders.forEach(header => {
+        header.addEventListener('click', function(e) {
+            e.stopPropagation();
+            const parentItem = this.closest('.mobile-category-item');
+            if (parentItem) {
+                // بستن سایر دسته‌ها (اختیاری: برای تجربه مشابه دیجی‌کالا می‌توانید فقط همین را تغییر دهید)
+                // اگر می‌خواهید همزمان فقط یکی باز باشد، خط زیر را فعال کنید:
+                // document.querySelectorAll('.mobile-category-item.expanded').forEach(item => {
+                //     if (item !== parentItem) item.classList.remove('expanded');
+                // });
+                parentItem.classList.toggle('expanded');
+            }
+        });
+    });
+})();
+
+
+
+
+
+
+
+
+
+

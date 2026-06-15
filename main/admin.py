@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Product , Question , Answer  , Comment ,Feature ,Image_profile_product , Order ,AddressInfo ,HandOverOrder ,CustomUser ,ColorProduct,Header_top,CategoryMain,CategorySecondary,SliderImage,Blog,OrderBasket,AdItem ,AdSection, DiscountCode
+from .models import Product , Question , Answer  , Comment ,Feature ,Image_profile_product , Order ,AddressInfo ,HandOverOrder ,CustomUser ,ColorProduct,Header_top,CategoryMain,CategorySecondary,SliderImage,Blog,OrderBasket,AdItem ,AdSection, DiscountCode,LatestProducts, BestSellersProuducts
 from django_jalali.admin.filters import JDateFieldListFilter
 from django.contrib.auth.admin import UserAdmin
 from django.utils.translation import gettext_lazy as _
@@ -418,3 +418,18 @@ class DiscountCodeAdmin(admin.ModelAdmin):
 
 
 
+
+@admin.register(LatestProducts)
+class LatestProductsAdmin(admin.ModelAdmin):
+    filter_horizontal = ('products',)
+
+    def has_add_permission(self, request):
+        return not LatestProducts.objects.exists()
+
+
+@admin.register(BestSellersProuducts)
+class BestSellersProuductsAdmin(admin.ModelAdmin):
+    filter_horizontal = ('products',)
+
+    def has_add_permission(self, request):
+        return not BestSellersProuducts.objects.exists()
