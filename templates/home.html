@@ -351,7 +351,7 @@
             {% for comment in comments %}
             <a class="card-item" href="{% url 'detail' comment.product.slug %}">
                 <div class="product-img">
-                    <img src="{{ comment.product.images.first.image.url }}" alt="عکس محصول">
+                    <img src="{{ comment.product.images.all.0.image.url }}" alt="عکس محصول">
                 </div>
                 <div class="comment-section">
                     <div class="comment-text">{{ comment.description }}</div>

@@ -37,16 +37,38 @@ class Home(ListView):
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['header_content']=Header_top.objects.filter(state='active').first()
-        context['main_category']=CategoryMain.objects.prefetch_related('secondary_category').all().order_by('-id')
-        context['slider_image']=SliderImage.objects.all().order_by('created')
-        context['comments']=Comment.objects.filter(state='c').order_by('-created_at')
+        context['slider_image']=SliderImage.objects.all().select_related('category_main').order_by('created')
+        context['comments']=Comment.objects.filter(state='c').select_related('product','user').prefetch_related('product__images').order_by('-created_at')
         context['blogs']=Blog.objects.all().order_by('-created')[:4]
-        context['ad_section_first']=AdSection.objects.exclude(state="repose",title="").prefetch_related('image').select_related('category_main').first()
-        context['ad_section_second']=AdSection.objects.filter(state='active',title__isnull=True).prefetch_related('image').select_related('category_main').first()
+        from django.db.models import Prefetch
+
+        aditem_prefetch = Prefetch(
+            'image',
+            queryset=AdItem.objects.select_related('product')
+        )
+        
+        context['ad_section_first'] = (
+            AdSection.objects
+            .exclude(state='repose', title='')
+            .select_related('category_main')
+            .prefetch_related(aditem_prefetch)
+            .first()
+        )
+        
+        context['ad_section_second'] = (
+            AdSection.objects
+            .filter(state='active', title__isnull=True)
+            .select_related('category_main')
+            .prefetch_related(aditem_prefetch)
+            .first()
+        )
         context['current_page']="home"
-        context['lastest_products']=LatestProducts.objects.first().products.all().order_by('-id')
-        context['best_sellers_products']=BestSellersProuducts.objects.first().products.all().order_by('-id')
+        context['lastest_products']=LatestProducts.objects.first().products.only('name','old_price','off','slug','id').annotate(
+            price= F('old_price')*(100-F('off'))/100
+        ).prefetch_related('images','color').order_by('-created_at').all()
+        context['best_sellers_products']=BestSellersProuducts.objects.first().products.only('name','old_price','off','slug','id').annotate(
+            price= F('old_price')*(100-F('off'))/100
+        ).prefetch_related('images','color').order_by('-created_at').all()
         
         # ========== سبد خرید حذف شد - به جای آن از cart app استفاده کن ==========
         # if self.request.user.is_authenticated:
@@ -82,8 +104,6 @@ class Home(ListView):
             'products':Product.objects.only('name','old_price','off','slug','id').annotate(
             price= F('old_price')*(100-F('off'))/100
         ).prefetch_related('images'),
-            'header_content':Header_top.objects.filter(state='active').first() ,
-            'main_category':CategoryMain.objects.prefetch_related('secondary_category').all().order_by('-id') ,
             'slider_image': SliderImage.objects.all(),
             'blogs':Blog.objects.all().order_by('-created')[:3] ,
             # user_order_basket حذف شد
@@ -816,8 +836,7 @@ def edit_profile(request):
     else:
         form = ProfileForm(instance=request.user)
 
-    context={'header_content':Header_top.objects.filter(state='active').first(),
-    'main_category':CategoryMain.objects.prefetch_related('secondary_category').all().order_by('-id'),
+    context={
     'form': form,
     'current_page':"profile"
     }
@@ -917,10 +936,6 @@ class Products(ListView):
         context['filter_params'] = query_params.urlencode()
 
         # هدر، دسته‌بندی‌ها و رنگ‌ها
-        context['header_content'] = Header_top.objects.filter(state='active').first()
-        context['main_category'] = CategoryMain.objects.prefetch_related(
-            'secondary_category'
-        ).all().order_by('-id')
         context['colors'] = ColorProduct.objects.all()[:9]
         
         # حفظ وضعیت المان‌های فرم فیلتر در ظاهر صفحه
