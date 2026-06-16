@@ -818,7 +818,8 @@ def edit_profile(request):
 
     context={'header_content':Header_top.objects.filter(state='active').first(),
     'main_category':CategoryMain.objects.prefetch_related('secondary_category').all().order_by('-id'),
-    'form': form
+    'form': form,
+    'current_page':"profile"
     }
     return render(request, 'edit_profile.html', context)
 

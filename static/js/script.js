@@ -882,3 +882,10 @@ document.getElementById('clearRecentSearches').addEventListener('click', functio
 
 
 
+function removeAlert(btn) {
+    const alert = btn.closest('.alert');
+    alert.classList.add('hide');
+    setTimeout(() => {
+        alert.remove();
+    }, 500); // این عدد باید با زمان انیمیشن hideToast هماهنگ باشه (0.5s)
+}
