@@ -1119,7 +1119,6 @@ ul { list-style: none; }
 .products-grid {
     display: grid;
     gap: 2px;
-    background-color: #e5e5e5;
     align-items: stretch;
 }
 
