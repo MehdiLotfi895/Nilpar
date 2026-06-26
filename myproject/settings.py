@@ -28,6 +28,7 @@ ALLOWED_HOSTS = [
     "localhost",
     ".ngrok-free.dev",
     "rumor-roving-goldfish.ngrok-free.dev",
+    "*"
 ]
 
 # =========================
@@ -72,7 +73,7 @@ if DEBUG:
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
 
     'django.middleware.common.CommonMiddleware',
@@ -339,3 +340,11 @@ KAVENEGAR_SENDER = os.getenv("KAVENEGAR_SENDER")
 CSRF_TRUSTED_ORIGINS = [
     "https://rumor-roving-goldfish.ngrok-free.dev",
 ]
+
+STATICFILES_STORAGE = (
+    "whitenoise.storage.CompressedManifestStaticFilesStorage"
+)
+
+STATIC_URL = 'static/'
+
+STATIC_ROOT = BASE_DIR / 'staticfiles'
