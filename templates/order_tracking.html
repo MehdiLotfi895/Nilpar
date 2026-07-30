@@ -1,0 +1,657 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load my_filters %}
+{% block content %}
+
+<style>
+.tracking-page {
+    max-width: 900px;
+    margin: 30px auto 60px;
+    padding: 0 15px;
+    direction: rtl;
+}
+
+.tracking-header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.tracking-header .icon {
+    font-size: 48px;
+    color: var(--clr-primary, #747667);
+    margin-bottom: 10px;
+    display: block;
+}
+
+.tracking-header h1 {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--clr-text, #1a1a18);
+    margin-bottom: 6px;
+}
+
+.tracking-header p {
+    font-size: 14px;
+    color: var(--clr-text-muted, #72726c);
+}
+
+/* جستجو */
+.search-box {
+    background: var(--clr-surface, #ffffff);
+    border: 1px solid var(--clr-border, #e5e5e1);
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 25px;
+}
+
+.search-box .form-row {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.search-box .form-row input {
+    flex: 1;
+    padding: 10px 14px;
+    border: 1px solid var(--clr-border, #e5e5e1);
+    border-radius: 8px;
+    font-size: 14px;
+    min-width: 200px;
+    font-family: inherit;
+}
+
+.search-box .form-row input:focus {
+    outline: none;
+    border-color: var(--clr-primary, #747667);
+}
+
+.search-box .form-row .btn {
+    padding: 10px 28px;
+    background: var(--clr-primary, #747667);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.2s ease;
+    font-family: inherit;
+}
+
+.search-box .form-row .btn:hover {
+    background: var(--clr-primary-dark, #5e5f54);
+}
+
+.search-box .note {
+    font-size: 13px;
+    color: var(--clr-text-muted, #72726c);
+    margin-top: 12px;
+}
+
+.search-box .note i {
+    color: var(--clr-primary, #747667);
+}
+
+/* کارت سفارش */
+.order-card {
+    background: var(--clr-surface, #ffffff);
+    border: 1px solid var(--clr-border, #e5e5e1);
+    border-radius: 12px;
+    overflow: hidden;
+    margin-bottom: 20px;
+}
+
+.order-card .card-header {
+    padding: 16px 20px;
+    background: #fafaf9;
+    border-bottom: 1px solid var(--clr-border, #e5e5e1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.order-card .card-header .order-id {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--clr-text, #1a1a18);
+}
+
+.order-card .card-header .order-id span {
+    color: var(--clr-primary, #747667);
+}
+
+.order-card .card-body {
+    padding: 16px 20px;
+}
+
+.order-card .info-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 0;
+    border-bottom: 1px dashed var(--clr-border, #e5e5e1);
+    font-size: 14px;
+    flex-wrap: wrap;
+    gap: 4px;
+}
+
+.order-card .info-row:last-child {
+    border-bottom: none;
+}
+
+.order-card .info-row .label {
+    color: var(--clr-text-muted, #72726c);
+}
+
+.order-card .info-row .value {
+    font-weight: 600;
+    color: var(--clr-text, #1a1a18);
+}
+
+.status-badge {
+    display: inline-block;
+    padding: 4px 14px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.status-payed {
+    background: #e8f5e9;
+    color: #2e7d32;
+}
+
+.status-paying {
+    background: #e3f2fd;
+    color: #0d47a1;
+}
+
+.status-unpay {
+    background: #ffebee;
+    color: #c62828;
+}
+
+.status-cash_on_delivery {
+    background: #fff3e0;
+    color: #e65100;
+}
+
+/* لیست محصولات */
+.products-list {
+    margin-top: 12px;
+}
+
+.product-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--clr-border, #e5e5e1);
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.product-item:last-child {
+    border-bottom: none;
+}
+
+.product-item .product-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.product-item .product-info .name {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--clr-text, #1a1a18);
+}
+
+.product-item .product-info .meta {
+    font-size: 12px;
+    color: var(--clr-text-muted, #72726c);
+}
+
+.product-item .product-info .color-dot {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    border: 1px solid #ddd;
+    display: inline-block;
+    flex-shrink: 0;
+}
+
+.product-item .product-price {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--clr-text, #1a1a18);
+}
+
+.product-item .product-price .qty {
+    font-weight: 400;
+    color: var(--clr-text-muted, #72726c);
+    font-size: 12px;
+}
+
+/* تایم‌لاین */
+.timeline {
+    margin-top: 16px;
+    position: relative;
+    padding-right: 20px;
+}
+
+.timeline::before {
+    content: '';
+    position: absolute;
+    right: 5px;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: var(--clr-border, #e5e5e1);
+}
+
+.timeline-item {
+    position: relative;
+    padding: 8px 0 8px 10px;
+}
+
+.timeline-item::before {
+    content: '';
+    position: absolute;
+    right: -16px;
+    top: 14px;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: var(--clr-border, #e5e5e1);
+    border: 2px solid #fff;
+}
+
+.timeline-item.active::before {
+    background: var(--clr-primary, #747667);
+}
+
+.timeline-item .time {
+    font-size: 12px;
+    color: var(--clr-text-muted, #72726c);
+}
+
+.timeline-item .desc {
+    font-size: 14px;
+    color: var(--clr-text, #1a1a18);
+}
+
+/* خلاصه */
+.summary-box {
+    background: var(--clr-bg, #f5f5f3);
+    border-radius: 10px;
+    padding: 16px 20px;
+    margin-top: 12px;
+}
+
+.summary-box .row {
+    display: flex;
+    justify-content: space-between;
+    padding: 4px 0;
+    font-size: 14px;
+}
+
+.summary-box .row .label {
+    color: var(--clr-text-muted, #72726c);
+}
+
+.summary-box .row .value {
+    font-weight: 600;
+    color: var(--clr-text, #1a1a18);
+}
+
+.summary-box .row.total {
+    border-top: 2px solid var(--clr-border, #e5e5e1);
+    margin-top: 6px;
+    padding-top: 10px;
+    font-size: 16px;
+}
+
+.summary-box .row.total .value {
+    color: var(--clr-primary, #747667);
+}
+
+/* سفارش پیدا نشد */
+.not-found {
+    text-align: center;
+    padding: 40px 20px;
+}
+
+.not-found .icon {
+    font-size: 56px;
+    color: var(--clr-border, #e5e5e1);
+    display: block;
+    margin-bottom: 12px;
+}
+
+.not-found h3 {
+    font-size: 18px;
+    color: var(--clr-text, #1a1a18);
+    margin-bottom: 4px;
+}
+
+.not-found p {
+    font-size: 14px;
+    color: var(--clr-text-muted, #72726c);
+}
+
+/* لیست سفارشات کاربر */
+.orders-list {
+    margin-top: 20px;
+}
+
+.order-mini-card {
+    background: var(--clr-surface, #ffffff);
+    border: 1px solid var(--clr-border, #e5e5e1);
+    border-radius: 10px;
+    padding: 14px 18px;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    transition: 0.2s ease;
+    cursor: pointer;
+}
+
+.order-mini-card:hover {
+    border-color: var(--clr-primary, #747667);
+}
+
+.order-mini-card .left {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+}
+
+.order-mini-card .left .code {
+    font-weight: 700;
+    color: var(--clr-text, #1a1a18);
+}
+
+.order-mini-card .left .date {
+    font-size: 13px;
+    color: var(--clr-text-muted, #72726c);
+}
+
+.order-mini-card .left .price {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--clr-text, #1a1a18);
+}
+
+.order-mini-card .right {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+@media (max-width: 480px) {
+    .tracking-header h1 {
+        font-size: 20px;
+    }
+    
+    .search-box .form-row input {
+        min-width: 100%;
+    }
+    
+    .search-box .form-row .btn {
+        width: 100%;
+    }
+    
+    .order-card .card-header {
+        padding: 12px 16px;
+    }
+    
+    .order-card .card-body {
+        padding: 12px 16px;
+    }
+    
+    .order-card .info-row {
+        font-size: 13px;
+    }
+    
+    .product-item {
+        padding: 8px 0;
+    }
+    
+    .product-item .product-info .name {
+        font-size: 13px;
+    }
+    
+    .order-mini-card {
+        padding: 12px 14px;
+    }
+    
+    .order-mini-card .left {
+        gap: 10px;
+    }
+    
+    .order-mini-card .left .code {
+        font-size: 14px;
+    }
+}
+</style>
+
+<div class="tracking-page">
+
+    <div class="tracking-header">
+        <i class="fas fa-search icon"></i>
+        <h1>پیگیری سفارش</h1>
+        <p>وضعیت سفارش خود را با کد پیگیری یا شماره سفارش مشاهده کنید</p>
+    </div>
+
+    <!-- جستجو -->
+    <div class="search-box">
+        <form method="GET" action="">
+            <div class="form-row">
+                <input type="text" name="tracking_code" placeholder="کد پیگیری یا شماره سفارش را وارد کنید..." value="{{ request.GET.tracking_code }}">
+                <button type="submit" class="btn"><i class="fas fa-search"></i> جستجو</button>
+            </div>
+            <div class="note">
+                <i class="fas fa-info-circle"></i>
+                کد پیگیری پس از ثبت سفارش به ایمیل شما ارسال می‌شود
+            </div>
+        </form>
+    </div>
+
+    {% if not order and not orders %}
+        <!-- پیغام خالی / راهنما -->
+        <div class="not-found">
+            <i class="fas fa-box-open icon"></i>
+            <h3>سفارشی یافت نشد</h3>
+            <p>کد پیگیری یا شماره سفارش خود را وارد کنید</p>
+        </div>
+    {% endif %}
+
+    {% if order %}
+        <!-- =============================================
+             نمایش یک سفارش خاص
+        ============================================= -->
+        <div class="order-card">
+            <div class="card-header">
+                <div class="order-id">
+                    <i class="fas fa-hashtag"></i>
+                    سفارش: <span>#{{ order.id }}</span>
+                </div>
+                <div>
+                    {% if order.state == 'payed' %}
+                        <span class="status-badge status-payed"><i class="fas fa-check-circle"></i> پرداخت شده</span>
+                    {% elif order.state == 'paying' %}
+                        <span class="status-badge status-paying"><i class="fas fa-spinner"></i> در حال پرداخت</span>
+                    {% elif order.state == 'unpay' %}
+                        <span class="status-badge status-unpay"><i class="fas fa-times-circle"></i> پرداخت نشده</span>
+                    {% elif order.state == 'cash_on_delivery' %}
+                        <span class="status-badge status-cash_on_delivery"><i class="fas fa-home"></i> پرداخت درب منزل</span>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="card-body">
+                <!-- اطلاعات اصلی -->
+                <div class="info-row">
+                    <span class="label">کد پیگیری</span>
+                    <span class="value">{{ order.tracking_code|default:"در انتظار" }}</span>
+                </div>
+                <div class="info-row">
+                    <span class="label">تاریخ ثبت</span>
+                    <span class="value">{{ order.created_at}}</span>
+                </div>
+                <div class="info-row">
+                    <span class="label">تاریخ تحویل</span>
+                    <span class="value">{{ order.date}}</span>
+                </div>
+                <div class="info-row">
+                    <span class="label">آدرس</span>
+                    <span class="value">{{ order.province|default:"" }} {{ order.city|default:"" }} - {{ order.address|default:"-" }}</span>
+                </div>
+                <div class="info-row">
+                    <span class="label">گیرنده</span>
+                    <span class="value">{{ order.receiver|default:order.user.get_full_name|default:order.user.username }}</span>
+                </div>
+                <div class="info-row">
+                    <span class="label">تلفن</span>
+                    <span class="value">{{ order.phonenumber|default:"-" }}</span>
+                </div>
+
+                <!-- محصولات -->
+                <div class="products-list">
+                    <div style="font-weight: 600; font-size: 14px; color: var(--clr-text, #1a1a18); padding: 8px 0 4px; border-bottom: 2px solid var(--clr-border, #e5e5e1);">
+                        <i class="fas fa-box"></i> محصولات
+                    </div>
+                    {% for item in order.order_items.all %}
+                    <div class="product-item">
+                        <div class="product-info">
+                            <span class="name">{{ item.product.name }}</span>
+                            {% if item.color %}
+                                <span class="color-dot" style="background: {{ item.color.color_code }}"></span>
+                                <span class="meta">{{ item.color.color_name }}</span>
+                            {% endif %}
+                            {% if item.body_color or item.door_color %}
+                                {% if item.body_color %}
+                                    <span class="color-dot" style="background: {{ item.body_color.color_code }}"></span>
+                                    <span class="meta">بدنه: {{ item.body_color.color_name }}</span>
+                                {% endif %}
+                                {% if item.door_color %}
+                                    <span class="color-dot" style="background: {{ item.door_color.color_code }}"></span>
+                                    <span class="meta">درب: {{ item.door_color.color_name }}</span>
+                                {% endif %}
+                            {% endif %}
+                        </div>
+                        <div class="product-price">
+                            {{ item.price|persian_intcomma }} تومان
+                            <span class="qty">× {{ item.number }}</span>
+                        </div>
+                    </div>
+                    {% empty %}
+                    <div style="padding: 10px 0; color: var(--clr-text-muted, #72726c); font-size: 13px;">
+                        محصولی در این سفارش وجود ندارد
+                    </div>
+                    {% endfor %}
+                </div>
+
+                <!-- خلاصه قیمت -->
+                <div class="summary-box">
+                    <div class="row">
+                        <span class="label">قیمت کل</span>
+                        <span class="value">{{ order.total_price|persian_intcomma }} تومان</span>
+                    </div>
+                    {% if order.discount_amount > 0 %}
+                    <div class="row">
+                        <span class="label">تخفیف</span>
+                        <span class="value" style="color: #c62828;">- {{ order.discount_amount|persian_intcomma }} تومان</span>
+                    </div>
+                    {% endif %}
+                    <div class="row total">
+                        <span class="label">مبلغ قابل پرداخت</span>
+                        <span class="value">{{ order.final_price|persian_intcomma }} تومان</span>
+                    </div>
+                </div>
+
+                <!-- تایم‌لاین وضعیت -->
+                <div class="timeline">
+                    <div class="timeline-item active">
+                        <div class="desc">ثبت سفارش</div>
+                        <div class="time">{{ order.created_at}}</div>
+                    </div>
+                    {% if order.state == 'payed' or order.state == 'cash_on_delivery' %}
+                    <div class="timeline-item active">
+                        <div class="desc">تأیید پرداخت</div>
+                        <div class="time">{{ order.updated_at}}</div>
+                    </div>
+                    <div class="timeline-item active">
+                        <div class="desc">در حال آماده‌سازی</div>
+                        <div class="time">در حال انجام...</div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="desc">ارسال شده</div>
+                        <div class="time">در انتظار...</div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="desc">تحویل داده شده</div>
+                        <div class="time">در انتظار...</div>
+                    </div>
+                    {% elif order.state == 'paying' %}
+                    <div class="timeline-item active">
+                        <div class="desc">در انتظار تأیید پرداخت</div>
+                        <div class="time">{{ order.updated_at}}</div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="desc">تأیید پرداخت</div>
+                        <div class="time">در انتظار...</div>
+                    </div>
+                    {% else %}
+                    <div class="timeline-item">
+                        <div class="desc">پرداخت ناموفق</div>
+                        <div class="time">لطفاً مجدداً اقدام کنید</div>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+    {% elif orders %}
+        <!-- =============================================
+             نمایش لیست سفارشات کاربر
+        ============================================= -->
+        <div class="orders-list">
+            <h3 style="font-size: 16px; font-weight: 700; margin-bottom: 12px;">
+                <i class="fas fa-list"></i> لیست سفارشات شما
+            </h3>
+            {% for o in orders %}
+            <a href="?tracking_code={{ o.tracking_code|default:o.id }}" style="text-decoration: none; display: block;">
+                <div class="order-mini-card">
+                    <div class="left">
+                        <span class="code">#{{ o.id }}</span>
+                        <span class="date">{{ o.created_at}}</span>
+                        <span class="price">{{ o.final_price|persian_intcomma }} تومان</span>
+                    </div>
+                    <div class="right">
+                        {% if o.state == 'payed' %}
+                            <span class="status-badge status-payed">پرداخت شده</span>
+                        {% elif o.state == 'paying' %}
+                            <span class="status-badge status-paying">در حال پرداخت</span>
+                        {% elif o.state == 'unpay' %}
+                            <span class="status-badge status-unpay">پرداخت نشده</span>
+                        {% elif o.state == 'cash_on_delivery' %}
+                            <span class="status-badge status-cash_on_delivery">درب منزل</span>
+                        {% endif %}
+                        <i class="fas fa-chevron-left" style="color: var(--clr-text-muted, #72726c);"></i>
+                    </div>
+                </div>
+            </a>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+</div>
+{% endblock %}

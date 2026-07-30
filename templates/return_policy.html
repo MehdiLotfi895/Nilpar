@@ -1,0 +1,235 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load my_filters %}
+{% block content %}
+
+<style>
+.return-page {
+    max-width: 850px;
+    margin: 30px auto 60px;
+    padding: 0 15px;
+    direction: rtl;
+}
+
+.return-header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.return-header .icon {
+    font-size: 52px;
+    color: var(--clr-primary, #747667);
+    margin-bottom: 10px;
+    display: block;
+}
+
+.return-header h1 {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--clr-text, #1a1a18);
+    margin-bottom: 6px;
+}
+
+.return-header p {
+    font-size: 14px;
+    color: var(--clr-text-muted, #72726c);
+}
+
+.guarantee-card {
+    background: var(--clr-surface, #ffffff);
+    border: 2px solid var(--clr-primary, #747667);
+    border-radius: 14px;
+    padding: 30px 25px;
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.guarantee-card .big-icon {
+    font-size: 56px;
+    color: var(--clr-primary, #747667);
+    display: block;
+    margin-bottom: 10px;
+}
+
+.guarantee-card .title {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--clr-text, #1a1a18);
+}
+
+.guarantee-card .sub {
+    font-size: 14px;
+    color: var(--clr-text-muted, #72726c);
+}
+
+.info-box {
+    background: var(--clr-bg, #f5f5f3);
+    border-radius: 12px;
+    padding: 20px 24px;
+    margin-bottom: 20px;
+    border-right: 4px solid var(--clr-primary, #747667);
+}
+
+.info-box .title {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--clr-text, #1a1a18);
+    margin-bottom: 6px;
+}
+
+.info-box .title i {
+    color: var(--clr-primary, #747667);
+    margin-left: 8px;
+}
+
+.info-box .desc {
+    font-size: 14px;
+    color: var(--clr-text-muted, #72726c);
+    line-height: 1.8;
+}
+
+.rules-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 25px;
+}
+
+.rule-item {
+    background: var(--clr-surface, #ffffff);
+    border: 1px solid var(--clr-border, #e5e5e1);
+    border-radius: 10px;
+    padding: 16px;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+}
+
+.rule-item .num {
+    width: 28px;
+    height: 28px;
+    background: var(--clr-primary, #747667);
+    color: #fff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    font-weight: 700;
+    flex-shrink: 0;
+    margin-top: 2px;
+}
+
+.rule-item .text {
+    font-size: 14px;
+    color: var(--clr-text, #1a1a18);
+    line-height: 1.6;
+}
+
+.rule-item .text .highlight {
+    color: var(--clr-primary, #747667);
+    font-weight: 600;
+}
+
+@media (max-width: 600px) {
+    .rules-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .return-header h1 {
+        font-size: 20px;
+    }
+    
+    .guarantee-card {
+        padding: 20px 16px;
+    }
+    
+    .guarantee-card .big-icon {
+        font-size: 44px;
+    }
+    
+    .guarantee-card .title {
+        font-size: 18px;
+    }
+    
+    .info-box {
+        padding: 16px;
+    }
+    
+    .rule-item {
+        padding: 12px 14px;
+    }
+}
+</style>
+
+<div class="return-page">
+
+    <div class="return-header">
+        <i class="fas fa-shield-alt icon"></i>
+        <h1>ضمانت بازگشت کالا</h1>
+        <p>اطمینان از خرید شما، اولویت ماست</p>
+    </div>
+
+    <div class="guarantee-card">
+        <i class="fas fa-check-circle big-icon" style="color: #2e7d32;"></i>
+        <div class="title">ضمانت ۷ روزه بازگشت کالا</div>
+        <div class="sub">در صورت عدم رضایت، کالا را بازگردانید</div>
+    </div>
+
+    <div class="info-box">
+        <div class="title"><i class="fas fa-info-circle"></i> شرایط بازگشت کالا</div>
+        <div class="desc">
+            شما می‌توانید <strong>تا ۷ روز</strong> پس از دریافت کالا، در صورت عدم رضایت، 
+            کالا را به ما بازگردانید. کالا باید <strong>در بسته‌بندی اصلی</strong> و 
+            <strong>به همراه فاکتور</strong> باشد.
+        </div>
+    </div>
+
+    <div class="rules-grid">
+        <div class="rule-item">
+            <div class="num">۱</div>
+            <div class="text">
+                <span class="highlight">۷ روز</span> فرصت بازگشت کالا
+            </div>
+        </div>
+        <div class="rule-item">
+            <div class="num">۲</div>
+            <div class="text">
+                کالا باید <span class="highlight">در بسته‌بندی اصلی</span> باشد
+            </div>
+        </div>
+        <div class="rule-item">
+            <div class="num">۳</div>
+            <div class="text">
+                <span class="highlight">همراه با فاکتور</span> خرید
+            </div>
+        </div>
+        <div class="rule-item">
+            <div class="num">۴</div>
+            <div class="text">
+                کالا <span class="highlight">استفاده نشده</span> باشد
+            </div>
+        </div>
+        <div class="rule-item">
+            <div class="num">۵</div>
+            <div class="text">
+                <span class="highlight">هزینه ارسال</span> به عهده مشتری
+            </div>
+        </div>
+        <div class="rule-item">
+            <div class="num">۶</div>
+            <div class="text">
+                پس از تأیید، <span class="highlight">وجه بازگشت</span> داده می‌شود
+            </div>
+        </div>
+    </div>
+
+    <div class="info-box" style="border-right-color: #2e7d32;">
+        <div class="title"><i class="fas fa-phone-alt"></i> تماس برای بازگشت کالا</div>
+        <div class="desc">
+            برای هماهنگی بازگشت کالا با شماره <strong>۰۲۱-۱۲۳۴۵۶۷۸</strong> تماس بگیرید.
+        </div>
+    </div>
+
+</div>
+{% endblock %}

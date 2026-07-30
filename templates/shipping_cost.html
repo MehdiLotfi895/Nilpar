@@ -1,0 +1,303 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load my_filters %}
+{% block content %}
+
+<style>
+/* =============================================
+   صفحه هزینه ارسال - ساده
+   ============================================= */
+
+.shipping-page {
+    max-width: 800px;
+    margin: 30px auto 60px;
+    padding: 0 15px;
+    direction: rtl;
+}
+
+/* هدر */
+.shipping-header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.shipping-header .icon {
+    font-size: 48px;
+    color: var(--clr-primary, #747667);
+    margin-bottom: 10px;
+    display: block;
+}
+
+.shipping-header h1 {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--clr-text, #1a1a18);
+    margin-bottom: 6px;
+}
+
+.shipping-header p {
+    font-size: 14px;
+    color: var(--clr-text-muted, #72726c);
+}
+
+/* کارت اصلی هزینه */
+.cost-card {
+    background: var(--clr-surface, #ffffff);
+    border: 2px solid var(--clr-primary, #747667);
+    border-radius: 14px;
+    padding: 30px 25px;
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.cost-card .cost-amount {
+    font-size: 42px;
+    font-weight: 800;
+    color: var(--clr-text, #1a1a18);
+}
+
+.cost-card .cost-amount span {
+    color: var(--clr-primary, #747667);
+}
+
+.cost-card .cost-label {
+    font-size: 16px;
+    color: var(--clr-text-muted, #72726c);
+    margin-top: 4px;
+}
+
+.cost-card .cost-note {
+    font-size: 13px;
+    color: var(--clr-text-muted, #72726c);
+    background: var(--clr-bg, #f5f5f3);
+    padding: 6px 18px;
+    border-radius: 20px;
+    display: inline-block;
+    margin-top: 10px;
+}
+
+/* جدول هزینه */
+.table-card {
+    background: var(--clr-surface, #ffffff);
+    border: 1px solid var(--clr-border, #e5e5e1);
+    border-radius: 12px;
+    overflow: hidden;
+    margin-bottom: 25px;
+}
+
+.table-card .card-header {
+    padding: 14px 20px;
+    background: #fafaf9;
+    border-bottom: 1px solid var(--clr-border, #e5e5e1);
+    font-weight: 600;
+    font-size: 15px;
+}
+
+.table-card .card-header i {
+    color: var(--clr-primary, #747667);
+    margin-left: 8px;
+}
+
+.shipping-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+}
+
+.shipping-table th {
+    padding: 12px 16px;
+    text-align: center;
+    background: var(--clr-bg, #f5f5f3);
+    font-weight: 600;
+    color: var(--clr-text, #1a1a18);
+    border-bottom: 2px solid var(--clr-border, #e5e5e1);
+}
+
+.shipping-table td {
+    padding: 12px 16px;
+    text-align: center;
+    border-bottom: 1px solid var(--clr-border, #e5e5e1);
+    color: var(--clr-text, #1a1a18);
+}
+
+.shipping-table td:first-child {
+    text-align: right;
+}
+
+.shipping-table .highlight-row {
+    background: #fafaf9;
+    font-weight: 600;
+}
+
+.shipping-table .highlight-row td {
+    border-bottom: 2px solid var(--clr-primary, #747667);
+}
+
+.shipping-table .badge {
+    display: inline-block;
+    padding: 3px 12px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 600;
+}
+
+.badge-tehran {
+    background: #e8f5e9;
+    color: #2e7d32;
+}
+
+.badge-other {
+    background: #fff3e0;
+    color: #e65100;
+}
+
+/* جعبه تماس */
+.contact-box {
+    background: var(--clr-bg, #f5f5f3);
+    border-radius: 12px;
+    padding: 20px 24px;
+    text-align: center;
+    border: 1px solid var(--clr-border, #e5e5e1);
+}
+
+.contact-box .title {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--clr-text, #1a1a18);
+    margin-bottom: 4px;
+}
+
+.contact-box .title i {
+    color: var(--clr-primary, #747667);
+    margin-left: 8px;
+}
+
+.contact-box .phone {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--clr-primary, #747667);
+    direction: ltr;
+    display: inline-block;
+    margin: 6px 0;
+}
+
+.contact-box .phone i {
+    font-size: 18px;
+    margin-left: 8px;
+}
+
+.contact-box .desc {
+    font-size: 13px;
+    color: var(--clr-text-muted, #72726c);
+}
+
+/* =============================================
+   ریسپانسیو
+   ============================================= */
+@media (max-width: 480px) {
+    .shipping-page {
+        padding: 0 10px;
+    }
+    
+    .shipping-header h1 {
+        font-size: 20px;
+    }
+    
+    .cost-card {
+        padding: 24px 16px;
+    }
+    
+    .cost-card .cost-amount {
+        font-size: 32px;
+    }
+    
+    .shipping-table {
+        font-size: 13px;
+    }
+    
+    .shipping-table th,
+    .shipping-table td {
+        padding: 10px 12px;
+    }
+    
+    .contact-box .phone {
+        font-size: 18px;
+    }
+}
+
+</style>
+
+<!-- =============================================
+   محتوای صفحه
+============================================= -->
+<div class="shipping-page">
+
+    <!-- هدر -->
+    <div class="shipping-header">
+        <i class="fas fa-truck icon"></i>
+        <h1>هزینه ارسال</h1>
+        <p>تعرفه ارسال سفارش‌ها بر اساس استان مقصد</p>
+    </div>
+
+    <!-- کارت اصلی -->
+    <div class="cost-card">
+        <div class="cost-amount">
+            <span>۵۰۰,۰۰۰</span> تومان
+        </div>
+        <div class="cost-label">هزینه ارسال برای استان تهران</div>
+        <div class="cost-note">
+            <i class="fas fa-info-circle"></i>
+            ارسال به سایر استان‌ها با هماهنگی تلفنی
+        </div>
+    </div>
+
+    <!-- جدول هزینه -->
+    <div class="table-card">
+        <div class="card-header">
+            <i class="fas fa-list"></i>
+            تعرفه ارسال بر اساس استان
+        </div>
+        <div class="table-wrap" style="overflow-x: auto;">
+            <table class="shipping-table">
+                <thead>
+                    <tr>
+                        <th>استان مقصد</th>
+                        <th>هزینه ارسال</th>
+                        <th>وضعیت</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="highlight-row">
+                        <td><strong>تهران</strong></td>
+                        <td><strong>۵۰۰,۰۰۰ تومان</strong></td>
+                        <td><span class="badge badge-tehran">ثابت</span></td>
+                    </tr>
+                    <tr>
+                        <td>سایر استان‌ها</td>
+                        <td>متغیر</td>
+                        <td><span class="badge badge-other">تماس بگیرید</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- جعبه تماس -->
+    <div class="contact-box">
+        <div class="title">
+            <i class="fas fa-phone-alt"></i>
+            برای استعلام هزینه ارسال به سایر استان‌ها تماس بگیرید
+        </div>
+        <div class="phone">
+            <i class="fas fa-phone"></i>
+            ۰۲۱-۱۲۳۴۵۶۷۸
+        </div>
+        <div class="desc">
+            <i class="fas fa-clock"></i>
+            پاسخگویی: شنبه تا پنجشنبه ۹ الی ۱۷
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}

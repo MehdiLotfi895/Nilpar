@@ -97,6 +97,27 @@ path(
 ),
     path('otp/resend/',views.resend_otp,name='resend_otp'),
 
+    path('payment_intro',views.payment_intro,name="payment_intro"),
+    path('delivery-info/', views.delivery_info, name='delivery_info'),
+     path('shipping-cost/', views.shipping_cost, name='shipping_cost'),
+      path('return-policy/', views.return_policy, name='return_policy'),
+       path('track/', views.order_tracking, name='order_tracking'),
+    
+    # شرایط بازگشت کالا
+    path('return-policy/', views.return_policy, name='return_policy'),
+    
+    # راهنمای خرید
+    path('shopping-guide/', views.shopping_guide, name='shopping_guide'),
+    
+    # پرسش‌های متداول
+    path('faq/', views.faq, name='faq'),
+    
+    # قوانین و مقررات
+    path('terms/', views.terms, name='terms'),
+    
+    # سوالات متداول
+    path('faq/', views.faq, name='faq'),
+
 
 ]
 

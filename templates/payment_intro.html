@@ -1,0 +1,767 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load my_filters %}
+{% block content %}
+
+<style>
+/* =============================================
+   صفحه معرفی روش‌های پرداخت - استاتیک
+   ============================================= */
+
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+
+body {
+    overflow-x: hidden;
+}
+
+/* =============================================
+   متغیرها
+   ============================================= */
+:root {
+    --clr-primary:        #747667;
+    --clr-primary-dark:   #5e5f54;
+    --clr-primary-light:  #a8aa9a;
+    --clr-surface:        #ffffff;
+    --clr-bg:             #f5f5f3;
+    --clr-border:         #e5e5e1;
+    --clr-border-md:      #d0d0ca;
+    --clr-text:           #1a1a18;
+    --clr-text-muted:     #72726c;
+    --clr-success-bg:     #e8f5e9;
+    --clr-success-text:   #2e7d32;
+    --clr-info-bg:        #e3f2fd;
+    --clr-info-text:      #0d47a1;
+    --clr-warning-bg:     #fff3e0;
+    --clr-warning-text:   #e65100;
+    --clr-danger-bg:      #ffebee;
+    --clr-danger-text:    #c62828;
+    --radius-sm:  6px;
+    --radius-md:  10px;
+    --radius-lg:  14px;
+    --radius-xl:  30px;
+    --shadow-sm:  0 1px 3px rgba(0,0,0,.06);
+    --shadow-md:  0 4px 12px rgba(0,0,0,.08);
+    --shadow-lg:  0 8px 24px rgba(0,0,0,.10);
+    --transition: 0.25s ease;
+}
+
+/* =============================================
+   کانتینر اصلی
+   ============================================= */
+.payment-intro-page {
+    width: 95%;
+    max-width: 1100px;
+    margin: 30px auto 60px;
+    direction: rtl;
+}
+
+/* =============================================
+   هدر صفحه
+   ============================================= */
+.page-header {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.page-header .icon {
+    font-size: 52px;
+    margin-bottom: 12px;
+    display: block;
+    color: var(--clr-primary);
+}
+
+.page-title {
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--clr-text);
+    margin-bottom: 8px;
+}
+
+.page-subtitle {
+    font-size: 15px;
+    color: var(--clr-text-muted);
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+/* =============================================
+   شبکه روش‌های پرداخت
+   ============================================= */
+.payment-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    margin-bottom: 36px;
+}
+
+@media (max-width: 768px) {
+    .payment-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* =============================================
+   کارت روش پرداخت
+   ============================================= */
+.payment-card {
+    background: var(--clr-surface);
+    border: 1px solid var(--clr-border);
+    border-radius: var(--radius-lg);
+    padding: 28px 24px;
+    transition: all var(--transition);
+    position: relative;
+    overflow: hidden;
+}
+
+.payment-card:hover {
+    border-color: var(--clr-primary);
+    box-shadow: var(--shadow-md);
+    transform: translateY(-3px);
+}
+
+.payment-card .badge {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    font-size: 10px;
+    font-weight: 700;
+    padding: 4px 12px;
+    border-radius: 20px;
+    background: var(--clr-bg);
+    color: var(--clr-text-muted);
+    border: 1px solid var(--clr-border);
+}
+
+.badge-online {
+    background: var(--clr-success-bg) !important;
+    color: var(--clr-success-text) !important;
+    border-color: #a5d6a7 !important;
+}
+
+.badge-door {
+    background: var(--clr-warning-bg) !important;
+    color: var(--clr-warning-text) !important;
+    border-color: #ffcc80 !important;
+}
+
+/* آیکون کارت */
+.card-icon {
+    font-size: 44px;
+    margin-bottom: 12px;
+    display: block;
+    color: var(--clr-primary);
+}
+
+.card-title {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--clr-text);
+    margin-bottom: 6px;
+}
+
+.card-desc {
+    font-size: 14px;
+    color: var(--clr-text-muted);
+    line-height: 1.7;
+    margin-bottom: 14px;
+}
+
+/* =============================================
+   ویژگی‌های هر روش
+   ============================================= */
+.card-features {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.card-features li {
+    font-size: 13px;
+    color: var(--clr-text);
+    padding: 6px 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    border-bottom: 1px dashed var(--clr-border);
+}
+
+.card-features li:last-child {
+    border-bottom: none;
+}
+
+.card-features li .check {
+    color: var(--clr-success-text);
+    font-weight: 700;
+    font-size: 14px;
+}
+
+.card-features li .cross {
+    color: var(--clr-danger-text);
+    font-weight: 700;
+    font-size: 14px;
+}
+
+/* =============================================
+   جدول مقایسه - طراحی کاملاً ریسپانسیو
+   ============================================= */
+.comparison-section {
+    background: var(--clr-surface);
+    border: 1px solid var(--clr-border);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    margin-top: 20px;
+}
+
+.comparison-header {
+    padding: 16px 24px;
+    background: #fafaf9;
+    border-bottom: 1px solid var(--clr-border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.comparison-header h3 {
+    font-size: 16px;
+    font-weight: 600;
+    margin: 0;
+}
+
+.comparison-header .note {
+    font-size: 12px;
+    color: var(--clr-text-muted);
+}
+
+/* =============================================
+   جدول ریسپانسیو - روش مدرن
+   ============================================= */
+.comparison-table-container {
+    padding: 0;
+    overflow: hidden;
+}
+
+/* جدول دسکتاپ */
+.comparison-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+    display: table;
+}
+
+.comparison-table th {
+    text-align: center;
+    padding: 14px 16px;
+    background: var(--clr-bg);
+    font-weight: 600;
+    color: var(--clr-text);
+    border-bottom: 2px solid var(--clr-border);
+}
+
+.comparison-table td {
+    padding: 12px 16px;
+    text-align: center;
+    border-bottom: 1px solid var(--clr-border);
+    color: var(--clr-text);
+}
+
+.comparison-table td:first-child {
+    text-align: right;
+    font-weight: 600;
+    color: var(--clr-text-muted);
+}
+
+.comparison-table .icon-yes {
+    color: var(--clr-success-text);
+    font-size: 18px;
+}
+
+.comparison-table .icon-no {
+    color: var(--clr-danger-text);
+    font-size: 18px;
+}
+
+/* =============================================
+   نمای موبایل جدول - تبدیل به کارت
+   ============================================= */
+@media (max-width: 768px) {
+    /* مخفی کردن جدول دسکتاپ */
+    .comparison-table {
+        display: none;
+    }
+    
+    /* نمایش کارت‌های موبایل */
+    .comparison-mobile-cards {
+        display: block !important;
+    }
+}
+
+.comparison-mobile-cards {
+    display: none;
+    padding: 12px;
+}
+
+.comparison-card {
+    background: var(--clr-surface);
+    border: 1px solid var(--clr-border);
+    border-radius: var(--radius-md);
+    margin-bottom: 12px;
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+}
+
+.comparison-card:last-child {
+    margin-bottom: 0;
+}
+
+.comparison-card .card-header {
+    padding: 12px 16px;
+    background: var(--clr-bg);
+    border-bottom: 1px solid var(--clr-border);
+    font-weight: 700;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.comparison-card .card-header i {
+    font-size: 18px;
+}
+
+.comparison-card .card-body {
+    padding: 8px 0;
+}
+
+.comparison-card .row {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 16px;
+    border-bottom: 1px dashed var(--clr-border);
+    font-size: 13px;
+}
+
+.comparison-card .row:last-child {
+    border-bottom: none;
+}
+
+.comparison-card .row .label {
+    color: var(--clr-text-muted);
+    font-weight: 400;
+}
+
+.comparison-card .row .value {
+    font-weight: 600;
+    color: var(--clr-text);
+}
+
+.comparison-card .row .value .icon-yes {
+    color: var(--clr-success-text);
+}
+
+.comparison-card .row .value .icon-no {
+    color: var(--clr-danger-text);
+}
+
+/* =============================================
+   سوالات متداول
+   ============================================= */
+.faq-section {
+    margin-top: 36px;
+}
+
+.faq-title {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--clr-text);
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.faq-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+}
+
+@media (max-width: 700px) {
+    .faq-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+.faq-item {
+    background: var(--clr-surface);
+    border: 1px solid var(--clr-border);
+    border-radius: var(--radius-md);
+    padding: 16px 18px;
+}
+
+.faq-item .q {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--clr-text);
+    margin-bottom: 4px;
+}
+
+.faq-item .q i {
+    color: var(--clr-primary);
+    margin-left: 6px;
+}
+
+.faq-item .a {
+    font-size: 13px;
+    color: var(--clr-text-muted);
+    line-height: 1.6;
+}
+
+.faq-item .a i {
+    color: var(--clr-success-text);
+    margin-left: 6px;
+}
+
+/* =============================================
+   دکمه اقدام
+   ============================================= */
+.action-section {
+    text-align: center;
+    margin-top: 36px;
+    padding: 28px;
+    background: var(--clr-bg);
+    border-radius: var(--radius-lg);
+}
+
+.action-section p {
+    font-size: 15px;
+    color: var(--clr-text-muted);
+    margin-bottom: 16px;
+}
+
+.action-section p i {
+    color: var(--clr-primary);
+    margin-left: 6px;
+}
+
+.action-btn {
+    display: inline-block;
+    padding: 14px 40px;
+    background: var(--clr-primary);
+    color: #fff;
+    border-radius: var(--radius-md);
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 16px;
+    transition: all var(--transition);
+}
+
+.action-btn:hover {
+    background: var(--clr-primary-dark);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+.action-btn i {
+    margin-right: 8px;
+}
+
+/* =============================================
+   موبایل خیلی کوچک
+   ============================================= */
+@media (max-width: 480px) {
+    .payment-intro-page {
+        width: 100%;
+        padding: 0 12px;
+    }
+
+    .page-title {
+        font-size: 22px;
+    }
+
+    .page-subtitle {
+        font-size: 13px;
+    }
+
+    .payment-card {
+        padding: 20px 16px;
+    }
+
+    .card-icon {
+        font-size: 34px;
+    }
+
+    .card-title {
+        font-size: 16px;
+    }
+
+    .comparison-card .row {
+        padding: 8px 14px;
+        font-size: 12px;
+        flex-wrap: wrap;
+        gap: 4px;
+    }
+
+    .comparison-card .card-header {
+        font-size: 13px;
+        padding: 10px 14px;
+    }
+
+    .faq-item {
+        padding: 12px 14px;
+    }
+
+    .faq-item .q {
+        font-size: 13px;
+    }
+
+    .faq-item .a {
+        font-size: 12px;
+    }
+
+    .action-section {
+        padding: 20px 16px;
+    }
+
+    .action-section p {
+        font-size: 13px;
+    }
+
+    .action-btn {
+        padding: 12px 28px;
+        font-size: 14px;
+        width: 100%;
+    }
+}
+
+/* =============================================
+   انیمیشن‌ها
+   ============================================= */
+@keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.payment-card {
+    animation: fadeUp 0.4s ease forwards;
+}
+
+.payment-card:nth-child(1) { animation-delay: 0.05s; }
+.payment-card:nth-child(2) { animation-delay: 0.15s; }
+
+.comparison-card {
+    animation: fadeUp 0.3s ease forwards;
+}
+
+.comparison-card:nth-child(1) { animation-delay: 0.05s; }
+.comparison-card:nth-child(2) { animation-delay: 0.1s; }
+
+</style>
+
+<!-- =============================================
+   محتوای اصلی
+============================================= -->
+<div class="payment-intro-page">
+
+    <!-- هدر -->
+    <div class="page-header">
+        <i class="fas fa-credit-card icon"></i>
+        <h1 class="page-title">روش‌های پرداخت</h1>
+        <p class="page-subtitle">
+            شما می‌توانید سفارش خود را به یکی از روش‌های زیر پرداخت کنید
+        </p>
+    </div>
+
+    <!-- =============================================
+         شبکه روش‌های پرداخت
+    ============================================= -->
+    <div class="payment-grid">
+
+        <!-- ۱. پرداخت آنلاین -->
+        <div class="payment-card">
+            <span class="badge badge-online"><i class="fas fa-check-circle"></i> رایج‌ترین</span>
+            <i class="fas fa-university card-icon"></i>
+            <h3 class="card-title">پرداخت آنلاین</h3>
+            <p class="card-desc">
+                پرداخت از طریق درگاه‌های بانکی معتبر با کارت‌های عضو شتاب
+            </p>
+            <ul class="card-features">
+                <li><i class="fas fa-check-circle check"></i> پرداخت سریع و آنی</li>
+                <li><i class="fas fa-check-circle check"></i> پشتیبانی از تمام کارت‌های شتاب</li>
+                <li><i class="fas fa-check-circle check"></i> مناسب برای خریدهای فوری</li>
+                <li><i class="fas fa-times-circle cross"></i> نیاز به اتصال به درگاه بانک</li>
+            </ul>
+        </div>
+
+        <!-- ۲. پرداخت درب منزل -->
+        <div class="payment-card">
+            <span class="badge badge-door"><i class="fas fa-percent"></i> ۱۰ پیش‌ پرداخت</span>
+            <i class="fas fa-home card-icon"></i>
+            <h3 class="card-title">پرداخت درب منزل</h3>
+            <p class="card-desc">
+                پرداخت وجه هنگام تحویل کالا در محل سکونت شما
+            </p>
+            <ul class="card-features">
+                <li><i class="fas fa-check-circle check"></i> پرداخت پس از مشاهده کالا</li>
+                <li><i class="fas fa-check-circle check"></i> تنها ۱۰% پیش‌پرداخت اولیه</li>
+                <li><i class="fas fa-check-circle check"></i> مناسب برای خریدهای مطمئن</li>
+                <li><i class="fas fa-times-circle cross"></i> نیاز به حضور در زمان تحویل</li>
+            </ul>
+        </div>
+
+    </div>
+
+    <!-- =============================================
+         جدول مقایسه - با طراحی ریسپانسیو
+    ============================================= -->
+    <div class="comparison-section">
+        <div class="comparison-header">
+            <h3><i class="fas fa-chart-bar" style="color: var(--clr-primary); margin-left: 8px;"></i> مقایسه روش‌های پرداخت</h3>
+            <span class="note"><i class="fas fa-lightbulb" style="color: var(--clr-warning-text);"></i> برای انتخاب آگاهانه</span>
+        </div>
+
+        <!-- جدول دسکتاپ -->
+        <div class="comparison-table-container">
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th><i class="fas fa-list-ul"></i> ویژگی</th>
+                        <th><i class="fas fa-credit-card"></i> پرداخت آنلاین</th>
+                        <th><i class="fas fa-home"></i> پرداخت درب منزل</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><i class="fas fa-money-bill-wave" style="color: var(--clr-text-muted); margin-left: 6px;"></i> پرداخت پیش‌پرداخت</td>
+                        <td><i class="fas fa-check-circle icon-yes"></i> کامل</td>
+                        <td><i class="fas fa-check-circle icon-yes"></i> ۱۰%</td>
+                    </tr>
+                    <tr>
+                        <td><i class="fas fa-bolt" style="color: var(--clr-text-muted); margin-left: 6px;"></i> سرعت پرداخت</td>
+                        <td><i class="fas fa-check-circle icon-yes"></i> آنی</td>
+                        <td><i class="fas fa-check-circle icon-yes"></i> در زمان تحویل</td>
+                    </tr>
+                    <tr>
+                        <td><i class="fas fa-user" style="color: var(--clr-text-muted); margin-left: 6px;"></i> نیاز به حضور</td>
+                        <td><i class="fas fa-times-circle icon-no"></i> ندارد</td>
+                        <td><i class="fas fa-check-circle icon-yes"></i> دارد</td>
+                    </tr>
+                    <tr>
+                        <td><i class="fas fa-undo-alt" style="color: var(--clr-text-muted); margin-left: 6px;"></i> امکان بازگشت وجه</td>
+                        <td><i class="fas fa-check-circle icon-yes"></i> دارد</td>
+                        <td><i class="fas fa-check-circle icon-yes"></i> دارد</td>
+                    </tr>
+                    <tr>
+                        <td><i class="fas fa-tag" style="color: var(--clr-text-muted); margin-left: 6px;"></i> مناسب برای</td>
+                        <td>خریدهای فوری</td>
+                        <td>خریدهای مطمئن</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <!-- کارت‌های موبایل -->
+            <div class="comparison-mobile-cards">
+                
+                <!-- کارت پرداخت آنلاین -->
+                <div class="comparison-card">
+                    <div class="card-header">
+                        <i class="fas fa-university" style="color: var(--clr-primary);"></i>
+                        پرداخت آنلاین
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <span class="label"><i class="fas fa-money-bill-wave" style="margin-left: 4px;"></i> پرداخت پیش‌پرداخت</span>
+                            <span class="value"><i class="fas fa-check-circle icon-yes"></i> کامل</span>
+                        </div>
+                        <div class="row">
+                            <span class="label"><i class="fas fa-bolt" style="margin-left: 4px;"></i> سرعت پرداخت</span>
+                            <span class="value"><i class="fas fa-check-circle icon-yes"></i> آنی</span>
+                        </div>
+                        <div class="row">
+                            <span class="label"><i class="fas fa-user" style="margin-left: 4px;"></i> نیاز به حضور</span>
+                            <span class="value"><i class="fas fa-times-circle icon-no"></i> ندارد</span>
+                        </div>
+                        <div class="row">
+                            <span class="label"><i class="fas fa-undo-alt" style="margin-left: 4px;"></i> بازگشت وجه</span>
+                            <span class="value"><i class="fas fa-check-circle icon-yes"></i> دارد</span>
+                        </div>
+                        <div class="row">
+                            <span class="label"><i class="fas fa-tag" style="margin-left: 4px;"></i> مناسب برای</span>
+                            <span class="value">خریدهای فوری</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- کارت پرداخت درب منزل -->
+                <div class="comparison-card">
+                    <div class="card-header">
+                        <i class="fas fa-home" style="color: var(--clr-primary);"></i>
+                        پرداخت درب منزل
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <span class="label"><i class="fas fa-money-bill-wave" style="margin-left: 4px;"></i> پرداخت پیش‌پرداخت</span>
+                            <span class="value"><i class="fas fa-check-circle icon-yes"></i> ۱۰%</span>
+                        </div>
+                        <div class="row">
+                            <span class="label"><i class="fas fa-bolt" style="margin-left: 4px;"></i> سرعت پرداخت</span>
+                            <span class="value"><i class="fas fa-check-circle icon-yes"></i> در زمان تحویل</span>
+                        </div>
+                        <div class="row">
+                            <span class="label"><i class="fas fa-user" style="margin-left: 4px;"></i> نیاز به حضور</span>
+                            <span class="value"><i class="fas fa-check-circle icon-yes"></i> دارد</span>
+                        </div>
+                        <div class="row">
+                            <span class="label"><i class="fas fa-undo-alt" style="margin-left: 4px;"></i> بازگشت وجه</span>
+                            <span class="value"><i class="fas fa-check-circle icon-yes"></i> دارد</span>
+                        </div>
+                        <div class="row">
+                            <span class="label"><i class="fas fa-tag" style="margin-left: 4px;"></i> مناسب برای</span>
+                            <span class="value">خریدهای مطمئن</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- =============================================
+         سوالات متداول
+    ============================================= -->
+    <div class="faq-section">
+        <h3 class="faq-title"><i class="fas fa-question-circle" style="color: var(--clr-primary); margin-left: 8px;"></i> سوالات متداول</h3>
+        <div class="faq-grid">
+            <div class="faq-item">
+                <div class="q"><i class="fas fa-shield-alt"></i> آیا پرداخت درب منزل امن است؟</div>
+                <div class="a"><i class="fas fa-check-circle"></i> بله، پرداخت درب منزل توسط پرسنل مجرب و با دستگاه کارتخوان انجام می‌شود.</div>
+            </div>
+            <div class="faq-item">
+                <div class="q"><i class="fas fa-clock"></i> چقدر زمان برای پرداخت آنلاین نیاز است؟</div>
+                <div class="a"><i class="fas fa-check-circle"></i> پرداخت آنلاین کمتر از ۲ دقیقه انجام می‌شود و بلافاصله تأیید می‌گردد.</div>
+            </div>
+            <div class="faq-item">
+                <div class="q"><i class="fas fa-exchange-alt"></i> آیا می‌توانم روش پرداخت را تغییر دهم؟</div>
+                <div class="a"><i class="fas fa-check-circle"></i> بله، تا قبل از نهایی‌سازی سفارش می‌توانید روش پرداخت را تغییر دهید.</div>
+            </div>
+            <div class="faq-item">
+                <div class="q"><i class="fas fa-coins"></i> آیا پرداخت درب منزل هزینه اضافی دارد؟</div>
+                <div class="a"><i class="fas fa-check-circle"></i> خیر، هزینه پرداخت درب منزل با پرداخت آنلاین تفاوتی ندارد.</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- =============================================
+         دکمه اقدام
+    ============================================= -->
+    <div class="action-section">
+        <p><i class="fas fa-info-circle"></i> روش پرداخت مورد نظر خود را انتخاب کنید و سفارش را نهایی کنید</p>
+        <a href="{% url 'home' %}" class="action-btn">
+              خانه <i class="fas fa-arrow-left"></i>
+        </a>
+    </div>
+
+</div>
+
+{% endblock %}

@@ -667,11 +667,11 @@
                     <div class="footer-link-box">
                         <h4 class="footer-link-title">سوالات متداول</h4>
                         <ul class="footer-link-list with-arrow">
-                            <li> <a href="#">روش‌های پرداخت</a><i class="fas fa-chevron-left"></i></li>
-                            <li> <a href="#">زمان تحویل سفارش</a><i class="fas fa-chevron-left"></i></li>
-                            <li> <a href="#">هزینه ارسال</a><i class="fas fa-chevron-left"></i></li>
-                            <li> <a href="#">ضمانت بازگشت کالا</a><i class="fas fa-chevron-left"></i></li>
-                            <li> <a href="#">سوالات رایج خرید اینترنتی</a><i class="fas fa-chevron-left"></i></li>
+                            <li> <a href="{% url "payment_intro"%}">روش‌های پرداخت</a><i class="fas fa-chevron-left"></i></li>
+                            <li> <a href="{% url "delivery_info"%}">زمان تحویل سفارش</a><i class="fas fa-chevron-left"></i></li>
+                            <li> <a href="{% url "shipping_cost"%}">هزینه ارسال</a><i class="fas fa-chevron-left"></i></li>
+                            <li> <a href="{% url "return_policy"%}">ضمانت بازگشت کالا</a><i class="fas fa-chevron-left"></i></li>
+                            <li> <a href="{% url "faq"%}">سوالات رایج خرید اینترنتی</a><i class="fas fa-chevron-left"></i></li>
                         </ul>
                     </div>
             
@@ -679,11 +679,11 @@
                     <div class="footer-link-box">
                         <h4 class="footer-link-title">خدمات مشتری</h4>
                         <ul class="footer-link-list">
-                            <li><a href="#">پیگیری سفارش</a></li>
-                            <li><a href="#">شرایط بازگشت کالا</a></li>
-                            <li><a href="#">راهنمای خرید</a></li>
-                            <li><a href="#">پرسش‌های متداول</a></li>
-                            <li><a href="#">قوانین و مقررات</a></li>
+                            <li><a href="{% url 'order_tracking' %}">پیگیری سفارش</a></li>
+                            <li><a href="{% url 'return_policy' %}">شرایط بازگشت کالا</a></li>
+                            <li><a href="{% url 'shopping_guide' %}">راهنمای خرید</a></li>
+                            <li><a href="{% url 'faq' %}">پرسش‌های متداول</a></li>
+                            <li><a href="{% url 'terms' %}">قوانین و مقررات</a></li>
                         </ul>
                     </div>
             
@@ -703,11 +703,11 @@
                     <div class="footer-link-box">
                         <h4 class="footer-link-title">ما را دنبال کنید</h4>
                         <div class="footer-social-new">
-                            <a href="#"><img src="{% static 'images/telegram.jpg' %}" alt="تلگرام"></a>
-                            <a href="#"><img src="{% static 'images/instagram.png' %}" alt="اینستاگرام"></a>
-                            <a href="#"><img src="{% static 'images/bale.png' %}" alt="بله"></a>
-                            <a href="#"><img src="{% static 'images/rubika.png' %}" alt="روبیکا"></a>
-                            <a href="#"><img src="{% static 'images/watsup.png' %}" alt="واتساپ"></a>
+                            <a href="https://t.me/" target="_blank"><img src="{% static 'images/telegram.jpg' %}" alt="تلگرام"></a>
+                            <a href="https://instagram.com/" target="_blank"><img src="{% static 'images/instagram.png' %}" alt="اینستاگرام"></a>
+                            <a href="https://ble.ir/" target="_blank"><img src="{% static 'images/bale.png' %}" alt="بله"></a>
+                            <a href="https://rubika.ir/" target="_blank"><img src="{% static 'images/rubika.png' %}" alt="روبیکا"></a>
+                            <a href="https://wa.me/" target="_blank"><img src="{% static 'images/watsup.png' %}" alt="واتساپ"></a>
                         </div>
                         <!-- ========== بخش خبرنامه ایمیل (تنها اضافه شده) ========== -->
                         <div class="newsletter-box">

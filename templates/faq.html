@@ -1,0 +1,291 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load my_filters %}
+{% block content %}
+
+<style>
+.faq-page {
+    max-width: 900px;
+    margin: 30px auto 60px;
+    padding: 0 15px;
+    direction: rtl;
+}
+
+.faq-header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.faq-header .icon {
+    font-size: 48px;
+    color: var(--clr-primary, #747667);
+    margin-bottom: 10px;
+    display: block;
+}
+
+.faq-header h1 {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--clr-text, #1a1a18);
+    margin-bottom: 6px;
+}
+
+.faq-header p {
+    font-size: 14px;
+    color: var(--clr-text-muted, #72726c);
+}
+
+.faq-category {
+    margin-bottom: 25px;
+}
+
+.faq-category .cat-title {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--clr-text, #1a1a18);
+    padding-bottom: 8px;
+    border-bottom: 2px solid var(--clr-primary, #747667);
+    margin-bottom: 14px;
+}
+
+.faq-category .cat-title i {
+    color: var(--clr-primary, #747667);
+    margin-left: 8px;
+}
+
+.faq-item {
+    background: var(--clr-surface, #ffffff);
+    border: 1px solid var(--clr-border, #e5e5e1);
+    border-radius: 10px;
+    margin-bottom: 10px;
+    overflow: hidden;
+}
+
+.faq-item .question {
+    padding: 14px 18px;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-weight: 600;
+    font-size: 14px;
+    color: var(--clr-text, #1a1a18);
+    transition: 0.2s ease;
+    user-select: none;
+}
+
+.faq-item .question:hover {
+    background: var(--clr-bg, #f5f5f3);
+}
+
+.faq-item .question i {
+    color: var(--clr-primary, #747667);
+    margin-left: 8px;
+}
+
+.faq-item .question .arrow {
+    transition: 0.2s ease;
+    color: var(--clr-text-muted, #72726c);
+}
+
+.faq-item .question .arrow.open {
+    transform: rotate(180deg);
+}
+
+.faq-item .answer {
+    padding: 0 18px 16px;
+    font-size: 14px;
+    color: var(--clr-text-muted, #72726c);
+    line-height: 1.7;
+    display: none;
+}
+
+.faq-item .answer.show {
+    display: block;
+}
+
+.faq-item .answer i {
+    color: #2e7d32;
+    margin-left: 6px;
+}
+
+.contact-box {
+    background: var(--clr-bg, #f5f5f3);
+    border-radius: 12px;
+    padding: 20px 24px;
+    text-align: center;
+    margin-top: 20px;
+}
+
+.contact-box .title {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--clr-text, #1a1a18);
+}
+
+.contact-box .title i {
+    color: var(--clr-primary, #747667);
+    margin-left: 8px;
+}
+
+.contact-box .phone {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--clr-primary, #747667);
+    direction: ltr;
+    display: inline-block;
+    margin: 4px 0;
+}
+
+.contact-box .phone i {
+    margin-left: 8px;
+}
+
+@media (max-width: 480px) {
+    .faq-header h1 {
+        font-size: 20px;
+    }
+    
+    .faq-item .question {
+        font-size: 13px;
+        padding: 12px 14px;
+    }
+    
+    .faq-item .answer {
+        font-size: 13px;
+        padding: 0 14px 14px;
+    }
+    
+    .contact-box .phone {
+        font-size: 17px;
+    }
+}
+</style>
+
+<div class="faq-page">
+
+    <div class="faq-header">
+        <i class="fas fa-question-circle icon"></i>
+        <h1>سوالات متداول</h1>
+        <p>پاسخ به سوالات رایج شما</p>
+    </div>
+
+    <!-- دسته: خرید و سفارش -->
+    <div class="faq-category">
+        <div class="cat-title"><i class="fas fa-shopping-cart"></i> خرید و سفارش</div>
+        
+        <div class="faq-item">
+            <div class="question" onclick="toggleFaq(this)">
+                <span><i class="fas fa-credit-card"></i> چگونه می‌توانم سفارش دهم؟</span>
+                <span class="arrow"><i class="fas fa-chevron-down"></i></span>
+            </div>
+            <div class="answer">
+                <i class="fas fa-check-circle"></i>
+                کافی است محصول مورد نظر را به سبد خرید اضافه کنید و سپس مراحل ثبت سفارش را تکمیل کنید.
+            </div>
+        </div>
+
+        <div class="faq-item">
+            <div class="question" onclick="toggleFaq(this)">
+                <span><i class="fas fa-truck"></i> هزینه ارسال چقدر است؟</span>
+                <span class="arrow"><i class="fas fa-chevron-down"></i></span>
+            </div>
+            <div class="answer">
+                <i class="fas fa-check-circle"></i>
+                هزینه ارسال برای استان تهران <strong>۵۰۰,۰۰۰ تومان</strong> و برای سایر استان‌ها متغیر است. برای استعلام با شماره ۰۲۱-۱۲۳۴۵۶۷۸ تماس بگیرید.
+            </div>
+        </div>
+
+        <div class="faq-item">
+            <div class="question" onclick="toggleFaq(this)">
+                <span><i class="fas fa-clock"></i> زمان ارسال سفارش چقدر است؟</span>
+                <span class="arrow"><i class="fas fa-chevron-down"></i></span>
+            </div>
+            <div class="answer">
+                <i class="fas fa-check-circle"></i>
+                زمان ارسال معمولاً <strong>۷ تا ۱۰ روز کاری</strong> پس از ثبت سفارش است.
+            </div>
+        </div>
+    </div>
+
+    <!-- دسته: پرداخت -->
+    <div class="faq-category">
+        <div class="cat-title"><i class="fas fa-money-bill-wave"></i> پرداخت</div>
+
+        <div class="faq-item">
+            <div class="question" onclick="toggleFaq(this)">
+                <span><i class="fas fa-university"></i> روش‌های پرداخت چیست؟</span>
+                <span class="arrow"><i class="fas fa-chevron-down"></i></span>
+            </div>
+            <div class="answer">
+                <i class="fas fa-check-circle"></i>
+                شما می‌توانید به دو صورت <strong>پرداخت آنلاین</strong> و <strong>پرداخت درب منزل</strong> (با ۱۰% پیش‌پرداخت) سفارش خود را پرداخت کنید.
+            </div>
+        </div>
+
+        <div class="faq-item">
+            <div class="question" onclick="toggleFaq(this)">
+                <span><i class="fas fa-shield-alt"></i> آیا پرداخت اینترنتی امن است؟</span>
+                <span class="arrow"><i class="fas fa-chevron-down"></i></span>
+            </div>
+            <div class="answer">
+                <i class="fas fa-check-circle"></i>
+                بله، تمام پرداخت‌ها از طریق درگاه‌های بانکی معتبر انجام می‌شود و اطلاعات شما محفوظ است.
+            </div>
+        </div>
+    </div>
+
+    <!-- دسته: بازگشت کالا -->
+    <div class="faq-category">
+        <div class="cat-title"><i class="fas fa-undo-alt"></i> بازگشت کالا</div>
+
+        <div class="faq-item">
+            <div class="question" onclick="toggleFaq(this)">
+                <span><i class="fas fa-calendar-day"></i> تا چند روز می‌توانم کالا را برگردانم؟</span>
+                <span class="arrow"><i class="fas fa-chevron-down"></i></span>
+            </div>
+            <div class="answer">
+                <i class="fas fa-check-circle"></i>
+                شما <strong>تا ۷ روز</strong> پس از دریافت کالا فرصت دارید در صورت عدم رضایت، کالا را بازگردانید.
+            </div>
+        </div>
+
+        <div class="faq-item">
+            <div class="question" onclick="toggleFaq(this)">
+                <span><i class="fas fa-box"></i> شرایط بازگشت کالا چیست؟</span>
+                <span class="arrow"><i class="fas fa-chevron-down"></i></span>
+            </div>
+            <div class="answer">
+                <i class="fas fa-check-circle"></i>
+                کالا باید <strong>در بسته‌بندی اصلی</strong>، <strong>همراه با فاکتور</strong> و <strong>استفاده نشده</strong> باشد.
+            </div>
+        </div>
+    </div>
+
+    <!-- جعبه تماس -->
+    <div class="contact-box">
+        <div class="title">
+            <i class="fas fa-phone-alt"></i>
+            سوال دیگری دارید؟ با ما تماس بگیرید
+        </div>
+        <div class="phone">
+            <i class="fas fa-phone"></i>
+            ۰۲۱-۱۲۳۴۵۶۷۸
+        </div>
+        <div style="font-size:13px; color: var(--clr-text-muted, #72726c);">
+            <i class="fas fa-clock"></i> شنبه تا پنجشنبه ۹ الی ۱۷
+        </div>
+    </div>
+
+</div>
+
+<script>
+function toggleFaq(element) {
+    const answer = element.nextElementSibling;
+    const arrow = element.querySelector('.arrow');
+    
+    answer.classList.toggle('show');
+    arrow.classList.toggle('open');
+}
+</script>
+{% endblock %}

@@ -104,8 +104,16 @@
                 {% endif %}
                 
                 <!-- تصویر -->
-                <div class="product-image" style="--img1: url('{{ product.images.first.image.url }}'); --img2: url('{{ product.images.all.1.image.url }}');"></div>
-                
+                <div class="product-image"
+                    style="
+                    {% if product.cached_images %}
+                    --img1: url('{{ product.cached_images.0.image.url }}');
+                    {% endif %}
+                    {% if product.cached_images|length > 1 %}
+                    --img2: url('{{ product.cached_images.1.image.url }}');
+                    {% endif %}
+                    ">
+                </div>                
                 <!-- عنوان -->
                 <h3 class="product-title">{{ product.name }}</h3>
                 

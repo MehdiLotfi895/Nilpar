@@ -336,7 +336,11 @@
             <div style="width:25%; margin-top: 20px;">
                 <div class="order-card" style="position: sticky; top:220px; z-index: 100;">
                     <div style="display: flex; gap:20px; align-items: center;">
-                        <img src="{{ product.images.first.image.url }}" alt="" style="width:50%">
+                        {% with images=product.images.all %}
+                            {% if images %}
+                                <img src="{{ images.0.image.url }}" alt="" style="width:50%">
+                            {% endif %}
+                        {% endwith %}
                         <div style="display: flex; gap:10px; flex-direction: column;">
                             <span style="font-size:14px; color:black">{{ product.name }}</span>
                             <div class="order-price">
@@ -361,13 +365,21 @@
                                    name="color"
                                    value="{% if product.color.first %}{{ product.color.first.id }}{% endif %}">
                             {% else %}
-                            <input type="hidden"
-                                name="body_color"
-                                value="{% if product.body_color.first %}{{ product.body_color.first.id }}{% endif %}">
+                            {% with body_colors=product.body_color.all %}
+                                {% if body_colors %}
+                                    <input type="hidden"
+                                           name="body_color"
+                                           value="{{ body_colors.0.id }}">
+                                {% endif %}
+                            {% endwith %}
 
-                                <input type="hidden"
-                                       name="door_color"
-                                       value="{% if product.door_color.first %}{{ product.door_color.first.id }}{% endif %}">
+                                {% with door_colors=product.door_color.all %}
+                                    {% if door_colors %}
+                                        <input type="hidden"
+                                               name="door_color"
+                                               value="{{ door_colors.0.id }}">
+                                    {% endif %}
+                                {% endwith %}
                             {% endif %}
                         </form>
                     </div>
@@ -439,9 +451,9 @@
     <button class="gallery-nav-btn gallery-prev-btn" id="prevBtn">&#10094;</button>
 
     <div class="gallery-viewer">
-        {% for image in product.images.all %}
-            <img src="{{ image.image.url }}" alt="" class="gallery-main-image {% if forloop.first %}active{% endif %}">
-        {% endfor %}
+        {% for image in product.cached_images %}
+           <img src="{{ image.image.url }}" alt="" class="gallery-main-image {% if forloop.first %}active{% endif %}">
+       {% endfor %}
     </div>
 
     <button class="gallery-nav-btn gallery-next-btn" id="nextBtn">&#10095;</button>

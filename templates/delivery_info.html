@@ -1,0 +1,508 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load my_filters %}
+{% block content %}
+
+<style>
+/* =============================================
+   صفحه زمان ارسال سفارش - ساده و معرفی
+   ============================================= */
+
+.delivery-info-page {
+    max-width: 850px;
+    margin: 30px auto 60px;
+    padding: 0 15px;
+    direction: rtl;
+}
+
+/* هدر */
+.delivery-header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.delivery-header .icon {
+    font-size: 52px;
+    color: var(--clr-primary, #747667);
+    margin-bottom: 10px;
+    display: block;
+}
+
+.delivery-header h1 {
+    font-size: 26px;
+    font-weight: 700;
+    color: var(--clr-text, #1a1a18);
+    margin-bottom: 6px;
+}
+
+.delivery-header p {
+    font-size: 15px;
+    color: var(--clr-text-muted, #72726c);
+}
+
+/* کارت اصلی - زمان تحویل */
+.main-card {
+    background: var(--clr-surface, #ffffff);
+    border: 2px solid var(--clr-primary, #747667);
+    border-radius: 14px;
+    padding: 35px 25px;
+    text-align: center;
+    margin-bottom: 25px;
+    position: relative;
+    overflow: hidden;
+}
+
+.main-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    height: 4px;
+    background: var(--clr-primary, #747667);
+}
+
+.main-card .time-range {
+    font-size: 48px;
+    font-weight: 800;
+    color: var(--clr-text, #1a1a18);
+}
+
+.main-card .time-range span {
+    color: var(--clr-primary, #747667);
+}
+
+.main-card .time-label {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--clr-text-muted, #72726c);
+    margin-top: 2px;
+}
+
+.main-card .time-note {
+    font-size: 14px;
+    color: var(--clr-text-muted, #72726c);
+    background: var(--clr-bg, #f5f5f3);
+    padding: 8px 20px;
+    border-radius: 20px;
+    display: inline-block;
+    margin-top: 12px;
+}
+
+.main-card .time-note i {
+    color: var(--clr-primary, #747667);
+    margin-left: 6px;
+}
+
+/* جعبه توضیحات */
+.info-box {
+    background: var(--clr-bg, #f5f5f3);
+    border-radius: 12px;
+    padding: 20px 24px;
+    margin-bottom: 25px;
+    border-right: 4px solid var(--clr-primary, #747667);
+}
+
+.info-box .title {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--clr-text, #1a1a18);
+    margin-bottom: 6px;
+}
+
+.info-box .title i {
+    color: var(--clr-primary, #747667);
+    margin-left: 8px;
+}
+
+.info-box .desc {
+    font-size: 14px;
+    color: var(--clr-text-muted, #72726c);
+    line-height: 1.8;
+}
+
+.info-box .desc strong {
+    color: var(--clr-text, #1a1a18);
+}
+
+/* سه کارت توضیحی */
+.feature-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-bottom: 25px;
+}
+
+.feature-item {
+    background: var(--clr-surface, #ffffff);
+    border: 1px solid var(--clr-border, #e5e5e1);
+    border-radius: 10px;
+    padding: 18px 14px;
+    text-align: center;
+    transition: 0.2s ease;
+}
+
+.feature-item:hover {
+    border-color: var(--clr-primary, #747667);
+    transform: translateY(-2px);
+}
+
+.feature-item .ico {
+    font-size: 30px;
+    display: block;
+    margin-bottom: 6px;
+}
+
+.feature-item .label {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--clr-text, #1a1a18);
+}
+
+.feature-item .desc {
+    font-size: 12px;
+    color: var(--clr-text-muted, #72726c);
+    margin-top: 2px;
+}
+
+/* مراحل ارسال */
+.steps-card {
+    background: var(--clr-surface, #ffffff);
+    border: 1px solid var(--clr-border, #e5e5e1);
+    border-radius: 12px;
+    padding: 20px 24px;
+    margin-bottom: 25px;
+}
+
+.steps-card .steps-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--clr-text, #1a1a18);
+    text-align: center;
+    margin-bottom: 16px;
+}
+
+.steps-card .steps-title i {
+    color: var(--clr-primary, #747667);
+    margin-left: 8px;
+}
+
+.step-row {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 10px 0;
+    border-bottom: 1px dashed var(--clr-border, #e5e5e1);
+}
+
+.step-row:last-child {
+    border-bottom: none;
+}
+
+.step-row .step-num {
+    width: 32px;
+    height: 32px;
+    background: var(--clr-primary, #747667);
+    color: #fff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    font-weight: 700;
+    flex-shrink: 0;
+}
+
+.step-row .step-text {
+    font-size: 14px;
+    color: var(--clr-text, #1a1a18);
+}
+
+.step-row .step-text .time {
+    color: var(--clr-primary, #747667);
+    font-weight: 600;
+}
+
+/* سوالات متداول */
+.faq-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin-top: 10px;
+}
+
+.faq-item {
+    background: var(--clr-surface, #ffffff);
+    border: 1px solid var(--clr-border, #e5e5e1);
+    border-radius: 10px;
+    padding: 14px 16px;
+}
+
+.faq-item .q {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--clr-text, #1a1a18);
+    margin-bottom: 3px;
+}
+
+.faq-item .q i {
+    color: var(--clr-primary, #747667);
+    margin-left: 6px;
+}
+
+.faq-item .a {
+    font-size: 13px;
+    color: var(--clr-text-muted, #72726c);
+    line-height: 1.6;
+}
+
+.faq-item .a i {
+    color: #2e7d32;
+    margin-left: 6px;
+}
+
+/* دکمه */
+.action-box {
+    text-align: center;
+    margin-top: 30px;
+    padding: 24px;
+    background: var(--clr-bg, #f5f5f3);
+    border-radius: 12px;
+}
+
+.action-box p {
+    font-size: 14px;
+    color: var(--clr-text-muted, #72726c);
+    margin-bottom: 14px;
+}
+
+.action-box .btn {
+    display: inline-block;
+    padding: 12px 36px;
+    background: var(--clr-primary, #747667);
+    color: #fff;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 15px;
+    transition: 0.2s ease;
+}
+
+.action-box .btn:hover {
+    background: var(--clr-primary-dark, #5e5f54);
+    transform: translateY(-2px);
+}
+
+.action-box .btn i {
+    margin-right: 8px;
+}
+
+/* =============================================
+   ریسپانسیو
+   ============================================= */
+@media (max-width: 768px) {
+    .feature-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+    
+    .feature-grid .feature-item:last-child {
+        grid-column: span 2;
+    }
+    
+    .faq-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .main-card .time-range {
+        font-size: 36px;
+    }
+}
+
+@media (max-width: 480px) {
+    .delivery-info-page {
+        padding: 0 10px;
+    }
+    
+    .delivery-header h1 {
+        font-size: 20px;
+    }
+    
+    .main-card {
+        padding: 24px 16px;
+    }
+    
+    .main-card .time-range {
+        font-size: 30px;
+    }
+    
+    .main-card .time-label {
+        font-size: 15px;
+    }
+    
+    .feature-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .feature-grid .feature-item:last-child {
+        grid-column: span 1;
+    }
+    
+    .info-box {
+        padding: 16px;
+    }
+    
+    .steps-card {
+        padding: 16px;
+    }
+    
+    .step-row {
+        gap: 10px;
+        padding: 8px 0;
+    }
+    
+    .step-row .step-num {
+        width: 28px;
+        height: 28px;
+        font-size: 12px;
+    }
+    
+    .step-row .step-text {
+        font-size: 13px;
+    }
+    
+    .action-box .btn {
+        padding: 10px 24px;
+        font-size: 14px;
+        width: 100%;
+    }
+}
+
+</style>
+
+<!-- =============================================
+   محتوای صفحه
+============================================= -->
+<div class="delivery-info-page">
+
+    <!-- هدر -->
+    <div class="delivery-header">
+        <i class="fas fa-truck icon"></i>
+        <h1>زمان ارسال سفارش</h1>
+        <p>اطلاعات کامل درباره زمان تحویل سفارش‌های شما</p>
+    </div>
+
+    <!-- کارت اصلی -->
+    <div class="main-card">
+        <div class="time-range">
+            <span>۷</span> تا <span>۱۰</span>
+        </div>
+        <div class="time-label">روز کاری</div>
+        <div class="time-note">
+            <i class="fas fa-clock"></i>
+            زمان تقریبی ارسال سفارش شما
+        </div>
+    </div>
+
+    <!-- جعبه توضیحی -->
+    <div class="info-box">
+        <div class="title">
+            <i class="fas fa-info-circle"></i>
+            زمان ارسال سفارش‌ها
+        </div>
+        <div class="desc">
+            <strong>سفارش شما بین ۷ تا ۱۰ روز کاری</strong> پس از ثبت نهایی و تأیید پرداخت، 
+            آماده ارسال می‌شود. این زمان با توجه به <strong>تعداد سفارش‌های در حال انجام</strong> 
+            و <strong>فرآیند تولید</strong> تعیین می‌گردد.
+        </div>
+    </div>
+
+    <!-- سه کارت توضیحی -->
+    <div class="feature-grid">
+        <div class="feature-item">
+            <i class="fas fa-check-circle ico" style="color: #2e7d32;"></i>
+            <div class="label">تأیید سفارش</div>
+            <div class="desc">پس از ثبت سفارش</div>
+        </div>
+        <div class="feature-item">
+            <i class="fas fa-cogs ico" style="color: #e65100;"></i>
+            <div class="label">آماده‌سازی</div>
+            <div class="desc">۷ تا ۱۰ روز کاری</div>
+        </div>
+        <div class="feature-item">
+            <i class="fas fa-truck ico" style="color: #0d47a1;"></i>
+            <div class="label">ارسال</div>
+            <div class="desc">پس از آماده‌سازی</div>
+        </div>
+    </div>
+
+    <!-- مراحل ارسال -->
+    <div class="steps-card">
+        <div class="steps-title">
+            <i class="fas fa-list-ol"></i>
+            مراحل ارسال سفارش
+        </div>
+        
+        <div class="step-row">
+            <div class="step-num">۱</div>
+            <div class="step-text">
+                <strong>ثبت سفارش</strong> — پس از ثبت و تأیید نهایی
+            </div>
+        </div>
+        
+        <div class="step-row">
+            <div class="step-num">۲</div>
+            <div class="step-text">
+                <strong>بررسی و آماده‌سازی</strong> — <span class="time">۷ تا ۱۰ روز</span> کاری
+            </div>
+        </div>
+        
+        <div class="step-row">
+            <div class="step-num">۳</div>
+            <div class="step-text">
+                <strong>ارسال به آدرس</strong> — پس از آماده‌سازی، کالا ارسال می‌شود
+            </div>
+        </div>
+        
+        <div class="step-row">
+            <div class="step-num">۴</div>
+            <div class="step-text">
+                <strong>تحویل</strong> — کالا درب منزل شما تحویل داده می‌شود
+            </div>
+        </div>
+    </div>
+
+    <!-- سوالات متداول -->
+    <h3 style="font-size: 18px; font-weight: 700; text-align: center; margin-bottom: 15px;">
+        <i class="fas fa-question-circle" style="color: var(--clr-primary, #747667);"></i>
+        سوالات متداول
+    </h3>
+    <div class="faq-grid">
+        <div class="faq-item">
+            <div class="q"><i class="fas fa-clock"></i> چرا زمان ارسال ۷ تا ۱۰ روز است؟</div>
+            <div class="a"><i class="fas fa-check-circle"></i> به دلیل فرآیند تولید و آماده‌سازی سفارش‌ها.</div>
+        </div>
+        <div class="faq-item">
+            <div class="q"><i class="fas fa-tachometer-alt"></i> آیا امکان ارسال سریع‌تر وجود دارد؟</div>
+            <div class="a"><i class="fas fa-check-circle"></i> زمان ارسال به تعداد سفارش‌های در حال انجام بستگی دارد.</div>
+        </div>
+        <div class="faq-item">
+            <div class="q"><i class="fas fa-calendar-check"></i> زمان دقیق ارسال کی مشخص می‌شود؟</div>
+            <div class="a"><i class="fas fa-check-circle"></i> پس از ثبت سفارش، تاریخ تقریبی به شما اعلام می‌شود.</div>
+        </div>
+        <div class="faq-item">
+            <div class="q"><i class="fas fa-phone-alt"></i> در صورت تأخیر چه باید کرد؟</div>
+            <div class="a"><i class="fas fa-check-circle"></i> تیم پشتیبانی با شما تماس می‌گیرد و هماهنگ می‌کند.</div>
+        </div>
+    </div>
+
+    <!-- دکمه اقدام -->
+    <div class="action-box">
+        <p><i class="fas fa-shopping-cart"></i> برای ثبت سفارش کلیک کنید</p>
+        <a href="{% url 'ordering' %}" class="btn">
+            ثبت سفارش <i class="fas fa-arrow-left"></i>
+        </a>
+    </div>
+
+</div>
+
+{% endblock %}

@@ -118,11 +118,23 @@ class Detail( DetailView):
     template_name = 'detail.html'
     slug_field = 'slug'
     slug_url_kwarg = 'slug'
-    
+
+    def get_queryset(self):
+        return (
+            Product.objects
+            .prefetch_related(
+                'images',
+                'color',
+                'category_main',
+                "door_color",
+                "body_color",
+            )
+        )
+
     def get_context_data(self, **kwargs):
-        product = self.get_object()
         context = super().get_context_data(**kwargs)
-        categories=self.get_object().category_main.all()
+        product = self.object
+        categories = product.category_main.all()
         context['price']=product.old_price * (100 - product.off) / 100
         context['products']=Product.objects.filter(category_main__in= categories).only('name','old_price','off','slug','id').annotate(
             price= F('old_price')*(100-F('off'))/100
@@ -1536,4 +1548,79 @@ class VerifyPaymentView(LoginRequiredMixin,View):
     
     
         
-        
+
+
+def payment_intro(request):
+    return render(request, 'payment_intro.html')
+
+def delivery_info(request):
+    return render(request, 'delivery_info.html')
+
+
+def shipping_cost(request):
+    return render(request, 'shipping_cost.html')
+
+
+
+def return_policy(request):
+    return render(request, 'return_policy.html')
+
+# صفحه سوالات متداول
+def faq(request):
+    return render(request, 'faq.html')
+
+
+
+
+
+@login_required(login_url='login')
+def order_tracking(request):
+    """
+    پیگیری سفارش
+    """
+    tracking_code = request.GET.get('tracking_code')
+    order = None
+    orders = None
+    
+    if tracking_code:
+        # جستجو با کد پیگیری یا شماره سفارش
+        try:
+            if tracking_code.startswith('RK-'):
+                # جستجو با کد پیگیری
+                order = Order.objects.filter(
+                    tracking_code=tracking_code,
+                    user=request.user
+                ).first()
+            else:
+                # جستجو با شماره سفارش
+                order = Order.objects.filter(
+                    id=tracking_code,
+                    user=request.user
+                ).first()
+                
+            # اگر پیدا نشد، همه سفارشات کاربر را نشان بده
+            if not order:
+                orders = Order.objects.filter(user=request.user).order_by('-created_at')
+        except (ValueError, TypeError):
+            orders = Order.objects.filter(user=request.user).order_by('-created_at')
+    else:
+        # نمایش لیست سفارشات کاربر
+        orders = Order.objects.filter(user=request.user).order_by('-created_at')
+    
+    context = {
+        'order': order,
+        'orders': orders,
+    }
+    
+    return render(request, 'order_tracking.html', context)
+
+
+
+# راهنمای خرید
+def shopping_guide(request):
+    return render(request, 'shopping_guide.html')
+
+
+# قوانین و مقررات
+def terms(request):
+    return render(request, 'terms.html')

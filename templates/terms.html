@@ -1,0 +1,211 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load my_filters %}
+{% block content %}
+
+<style>
+.terms-page {
+    max-width: 850px;
+    margin: 30px auto 60px;
+    padding: 0 15px;
+    direction: rtl;
+}
+
+.terms-header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.terms-header .icon {
+    font-size: 48px;
+    color: var(--clr-primary, #747667);
+    margin-bottom: 10px;
+    display: block;
+}
+
+.terms-header h1 {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--clr-text, #1a1a18);
+    margin-bottom: 6px;
+}
+
+.terms-header p {
+    font-size: 14px;
+    color: var(--clr-text-muted, #72726c);
+}
+
+.terms-card {
+    background: var(--clr-surface, #ffffff);
+    border: 1px solid var(--clr-border, #e5e5e1);
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 20px;
+}
+
+.terms-card .title {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--clr-text, #1a1a18);
+    padding-bottom: 10px;
+    border-bottom: 2px solid var(--clr-primary, #747667);
+    margin-bottom: 12px;
+}
+
+.terms-card .title i {
+    color: var(--clr-primary, #747667);
+    margin-left: 8px;
+}
+
+.terms-card .text {
+    font-size: 14px;
+    color: var(--clr-text-muted, #72726c);
+    line-height: 2;
+}
+
+.terms-card .text strong {
+    color: var(--clr-text, #1a1a18);
+}
+
+.terms-card ul {
+    list-style: none;
+    padding: 0;
+    margin: 8px 0;
+}
+
+.terms-card ul li {
+    padding: 6px 0;
+    font-size: 14px;
+    color: var(--clr-text-muted, #72726c);
+    line-height: 1.7;
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+}
+
+.terms-card ul li::before {
+    content: '•';
+    color: var(--clr-primary, #747667);
+    font-weight: 700;
+    font-size: 18px;
+}
+
+.terms-card ul li strong {
+    color: var(--clr-text, #1a1a18);
+}
+
+.update-date {
+    text-align: center;
+    font-size: 13px;
+    color: var(--clr-text-muted, #72726c);
+    margin-top: 10px;
+}
+
+.update-date i {
+    color: var(--clr-primary, #747667);
+}
+
+@media (max-width: 480px) {
+    .terms-header h1 {
+        font-size: 20px;
+    }
+    
+    .terms-card {
+        padding: 16px;
+    }
+    
+    .terms-card .title {
+        font-size: 14px;
+    }
+    
+    .terms-card .text {
+        font-size: 13px;
+    }
+    
+    .terms-card ul li {
+        font-size: 13px;
+    }
+}
+</style>
+
+<div class="terms-page">
+
+    <div class="terms-header">
+        <i class="fas fa-gavel icon"></i>
+        <h1>قوانین و مقررات</h1>
+        <p>شرایط استفاده از فروشگاه اینترنتی ما</p>
+    </div>
+
+    <div class="terms-card">
+        <div class="title"><i class="fas fa-info-circle"></i> کلیات</div>
+        <div class="text">
+            استفاده از فروشگاه اینترنتی به معنای پذیرش کامل <strong>قوانین و مقررات</strong> زیر است. 
+            لطفاً قبل از هرگونه خرید، این قوانین را به دقت مطالعه فرمایید.
+        </div>
+    </div>
+
+    <div class="terms-card">
+        <div class="title"><i class="fas fa-user"></i> ثبت نام و اطلاعات کاربری</div>
+        <ul>
+            <li>کاربران موظف به ارائه <strong>اطلاعات صحیح و کامل</strong> هستند.</li>
+            <li>مسئولیت <strong>حفظ امنیت</strong> رمز عبور بر عهده کاربر است.</li>
+            <li>فروشگاه اطلاعات شخصی کاربران را <strong>محفوظ</strong> نگه می‌دارد.</li>
+        </ul>
+    </div>
+
+    <div class="terms-card">
+        <div class="title"><i class="fas fa-shopping-cart"></i> قوانین خرید</div>
+        <ul>
+            <li>ثبت سفارش به معنای <strong>تعهد به خرید</strong> است.</li>
+            <li>فروشگاه حق <strong>لغو سفارش</strong> در صورت عدم موجودی را دارد.</li>
+            <li>قیمت‌ها <strong>به تومان</strong> و شامل مالیات نمی‌باشد.</li>
+            <li>هزینه ارسال بر اساس <strong>استان مقصد</strong> محاسبه می‌شود.</li>
+        </ul>
+    </div>
+
+    <div class="terms-card">
+        <div class="title"><i class="fas fa-credit-card"></i> قوانین پرداخت</div>
+        <ul>
+            <li>پرداخت از طریق <strong>درگاه‌های بانکی معتبر</strong> انجام می‌شود.</li>
+            <li>در پرداخت درب منزل، <strong>۱۰% پیش‌پرداخت</strong> الزامی است.</li>
+            <li>پس از تأیید پرداخت، <strong>رسید</strong> برای شما ارسال می‌شود.</li>
+            <li>در صورت لغو سفارش، وجه <strong>به حساب شما</strong> بازگشت داده می‌شود.</li>
+        </ul>
+    </div>
+
+    <div class="terms-card">
+        <div class="title"><i class="fas fa-truck"></i> قوانین ارسال و تحویل</div>
+        <ul>
+            <li>زمان ارسال <strong>۷ تا ۱۰ روز کاری</strong> پس از ثبت سفارش است.</li>
+            <li>هزینه ارسال برای تهران <strong>۵۰۰,۰۰۰ تومان</strong> است.</li>
+            <li>ارسال به سایر استان‌ها با <strong>هماهنگی تلفنی</strong> انجام می‌شود.</li>
+            <li>پس از ارسال، <strong>کد پیگیری</strong> برای شما ارسال می‌شود.</li>
+        </ul>
+    </div>
+
+    <div class="terms-card">
+        <div class="title"><i class="fas fa-undo-alt"></i> قوانین بازگشت کالا</div>
+        <ul>
+            <li>امکان بازگشت کالا تا <strong>۷ روز</strong> پس از دریافت وجود دارد.</li>
+            <li>کالا باید <strong>در بسته‌بندی اصلی</strong> و <strong>استفاده نشده</strong> باشد.</li>
+            <li>هزینه ارسال برای بازگشت کالا <strong>به عهده مشتری</strong> است.</li>
+            <li>پس از تأیید، وجه <strong>به حساب شما</strong> واریز می‌شود.</li>
+        </ul>
+    </div>
+
+    <div class="terms-card">
+        <div class="title"><i class="fas fa-shield-alt"></i> قوانین حریم خصوصی</div>
+        <ul>
+            <li>اطلاعات شخصی شما <strong>محفوظ</strong> است و به اشخاص ثالث داده نمی‌شود.</li>
+            <li>از اطلاعات شما فقط برای <strong>ارسال سفارش</strong> و <strong>ارتباط</strong> استفاده می‌شود.</li>
+            <li>شما می‌توانید درخواست <strong>حذف اطلاعات</strong> خود را بدهید.</li>
+        </ul>
+    </div>
+
+    <div class="update-date">
+        <i class="fas fa-calendar-alt"></i>
+        آخرین به‌روزرسانی: <strong>۱۴۰۴/۰۵/۱۰</strong>
+    </div>
+
+</div>
+{% endblock %}

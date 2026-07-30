@@ -1,0 +1,217 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load my_filters %}
+{% block content %}
+
+<style>
+.guide-page {
+    max-width: 850px;
+    margin: 30px auto 60px;
+    padding: 0 15px;
+    direction: rtl;
+}
+
+.guide-header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.guide-header .icon {
+    font-size: 48px;
+    color: var(--clr-primary, #747667);
+    margin-bottom: 10px;
+    display: block;
+}
+
+.guide-header h1 {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--clr-text, #1a1a18);
+    margin-bottom: 6px;
+}
+
+.guide-header p {
+    font-size: 14px;
+    color: var(--clr-text-muted, #72726c);
+}
+
+.step-card {
+    background: var(--clr-surface, #ffffff);
+    border: 1px solid var(--clr-border, #e5e5e1);
+    border-radius: 12px;
+    padding: 20px 24px;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    transition: 0.2s ease;
+}
+
+.step-card:hover {
+    border-color: var(--clr-primary, #747667);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+.step-card .step-num {
+    width: 40px;
+    height: 40px;
+    background: var(--clr-primary, #747667);
+    color: #fff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    font-weight: 700;
+    flex-shrink: 0;
+}
+
+.step-card .step-content {
+    flex: 1;
+}
+
+.step-card .step-content .title {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--clr-text, #1a1a18);
+    margin-bottom: 4px;
+}
+
+.step-card .step-content .title i {
+    color: var(--clr-primary, #747667);
+    margin-left: 8px;
+}
+
+.step-card .step-content .desc {
+    font-size: 14px;
+    color: var(--clr-text-muted, #72726c);
+    line-height: 1.7;
+}
+
+.step-card .step-content .desc strong {
+    color: var(--clr-text, #1a1a18);
+}
+
+.info-box {
+    background: var(--clr-info-bg, #e3f2fd);
+    border-radius: 12px;
+    padding: 18px 22px;
+    margin-top: 20px;
+    border-right: 4px solid #0d47a1;
+}
+
+.info-box .title {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--clr-info-text, #0d47a1);
+    margin-bottom: 4px;
+}
+
+.info-box .title i {
+    margin-left: 8px;
+}
+
+.info-box .desc {
+    font-size: 14px;
+    color: var(--clr-text-muted, #72726c);
+    line-height: 1.7;
+}
+
+@media (max-width: 480px) {
+    .guide-header h1 {
+        font-size: 20px;
+    }
+    
+    .step-card {
+        padding: 16px;
+        gap: 12px;
+    }
+    
+    .step-card .step-num {
+        width: 34px;
+        height: 34px;
+        font-size: 15px;
+    }
+    
+    .step-card .step-content .title {
+        font-size: 14px;
+    }
+    
+    .step-card .step-content .desc {
+        font-size: 13px;
+    }
+    
+    .info-box {
+        padding: 14px 16px;
+    }
+}
+</style>
+
+<div class="guide-page">
+
+    <div class="guide-header">
+        <i class="fas fa-book-open icon"></i>
+        <h1>راهنمای خرید اینترنتی</h1>
+        <p>مراحل ساده خرید از فروشگاه ما</p>
+    </div>
+
+    <div class="step-card">
+        <div class="step-num">۱</div>
+        <div class="step-content">
+            <div class="title"><i class="fas fa-search"></i> انتخاب محصول</div>
+            <div class="desc">محصول مورد نظر خود را از میان دسته‌بندی‌ها پیدا کنید و روی آن کلیک کنید.</div>
+        </div>
+    </div>
+
+    <div class="step-card">
+        <div class="step-num">۲</div>
+        <div class="step-content">
+            <div class="title"><i class="fas fa-cart-plus"></i> اضافه به سبد خرید</div>
+            <div class="desc">پس از مشاهده مشخصات محصول، روی دکمه <strong>«افزودن به سبد خرید»</strong> کلیک کنید.</div>
+        </div>
+    </div>
+
+    <div class="step-card">
+        <div class="step-num">۳</div>
+        <div class="step-content">
+            <div class="title"><i class="fas fa-edit"></i> تکمیل اطلاعات</div>
+            <div class="desc">اطلاعات <strong>آدرس</strong> و <strong>روش ارسال</strong> را وارد کنید.</div>
+        </div>
+    </div>
+
+    <div class="step-card">
+        <div class="step-num">۴</div>
+        <div class="step-content">
+            <div class="title"><i class="fas fa-credit-card"></i> انتخاب روش پرداخت</div>
+            <div class="desc">بین <strong>پرداخت آنلاین</strong> یا <strong>پرداخت درب منزل</strong> یکی را انتخاب کنید.</div>
+        </div>
+    </div>
+
+    <div class="step-card">
+        <div class="step-num">۵</div>
+        <div class="step-content">
+            <div class="title"><i class="fas fa-check-circle"></i> نهایی‌سازی سفارش</div>
+            <div class="desc">سفارش خود را بررسی کنید و روی دکمه <strong>«تأیید و پرداخت»</strong> کلیک کنید.</div>
+        </div>
+    </div>
+
+    <div class="step-card">
+        <div class="step-num">۶</div>
+        <div class="step-content">
+            <div class="title"><i class="fas fa-truck"></i> دریافت سفارش</div>
+            <div class="desc">پس از <strong>۷ تا ۱۰ روز کاری</strong>، سفارش شما درب منزل تحویل داده می‌شود.</div>
+        </div>
+    </div>
+
+    <div class="info-box">
+        <div class="title"><i class="fas fa-info-circle"></i> نکات مهم</div>
+        <div class="desc">
+            <strong>•</strong> قبل از ثبت سفارش، مشخصات محصول را کامل بخوانید.<br>
+            <strong>•</strong> در صورت نیاز به راهنمایی، با شماره <strong>۰۲۱-۱۲۳۴۵۶۷۸</strong> تماس بگیرید.<br>
+            <strong>•</strong> هزینه ارسال برای تهران <strong>۵۰۰,۰۰۰ تومان</strong> است.<br>
+            <strong>•</strong> در صورت عدم رضایت، تا <strong>۷ روز</strong> فرصت بازگشت کالا دارید.
+        </div>
+    </div>
+
+</div>
+{% endblock %}
