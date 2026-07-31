@@ -93,10 +93,13 @@ class Home(ListView):
         # delete_order_basket, add_nubmer_basket, mines_order_basket, add_basket حذف شدند
         
         if request.POST.get('action') == "add_favorite_product":
-            id=request.POST.get('product')
-            product=Product.objects.get(id=id)
-            user=request.user
-            user.favorite_products.add(product)
+            if request.user.is_authenticated:
+                product_id = request.POST.get("product")
+                product = Product.objects.get(id=product_id)
+                request.user.favorite_products.add(product)
+            else:
+                # کاربر لاگین نیست
+                return redirect("send_otp")
         
         # add_basket حذف شد
         
