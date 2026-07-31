@@ -1,0 +1,356 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load my_filters %}
+{% block content %}
+
+<style>
+.about-page {
+    max-width: 950px;
+    margin: 30px auto 60px;
+    padding: 0 15px;
+    direction: rtl;
+}
+
+/* هدر */
+.about-header {
+    text-align: center;
+    margin-bottom: 40px;
+    padding: 10px 0;
+}
+
+.about-header .icon {
+    font-size: 52px;
+    color: var(--clr-primary, #747667);
+    margin-bottom: 12px;
+    display: block;
+}
+
+.about-header h1 {
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--clr-text, #1a1a18);
+    margin-bottom: 8px;
+}
+
+.about-header h1 span {
+    color: var(--clr-primary, #747667);
+}
+
+.about-header p {
+    font-size: 15px;
+    color: var(--clr-text-muted, #72726c);
+    max-width: 550px;
+    margin: 0 auto;
+}
+
+/* کارت اصلی */
+.about-card {
+    background: var(--clr-surface, #ffffff);
+    border: 1px solid var(--clr-border, #e5e5e1);
+    border-radius: 12px;
+    padding: 28px 32px;
+    margin-bottom: 25px;
+    transition: 0.3s ease;
+}
+
+.about-card:hover {
+    border-color: var(--clr-primary, #747667);
+    box-shadow: 0 4px 16px rgba(0,0,0,0.05);
+}
+
+.about-card .title {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--clr-text, #1a1a18);
+    border-bottom: 2px solid var(--clr-primary, #747667);
+    padding-bottom: 12px;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.about-card .title i {
+    color: var(--clr-primary, #747667);
+    font-size: 20px;
+}
+
+.about-card .text {
+    font-size: 15px;
+    color: var(--clr-text-muted, #72726c);
+    line-height: 2.1;
+}
+
+.about-card .text strong {
+    color: var(--clr-text, #1a1a18);
+    font-weight: 700;
+}
+
+.about-card .text .highlight {
+    color: var(--clr-primary, #747667);
+    font-weight: 600;
+}
+
+/* شبکه ویژگی‌ها */
+.features-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+    margin: 10px 0;
+}
+
+.feature-item {
+    background: var(--clr-bg, #f5f5f3);
+    border-radius: 10px;
+    padding: 20px 16px;
+    text-align: center;
+    transition: 0.3s ease;
+    border: 1px solid transparent;
+}
+
+.feature-item:hover {
+    border-color: var(--clr-primary, #747667);
+    transform: translateY(-3px);
+}
+
+.feature-item .ico {
+    font-size: 34px;
+    display: block;
+    margin-bottom: 8px;
+}
+
+.feature-item .label {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--clr-text, #1a1a18);
+}
+
+.feature-item .desc {
+    font-size: 13px;
+    color: var(--clr-text-muted, #72726c);
+    margin-top: 3px;
+}
+
+/* شماره تماس */
+.contact-box {
+    background: var(--clr-bg, #f5f5f3);
+    border-radius: 12px;
+    padding: 24px 28px;
+    text-align: center;
+    border: 1px solid var(--clr-border, #e5e5e1);
+}
+
+.contact-box .phone {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--clr-primary, #747667);
+    direction: ltr;
+}
+
+.contact-box .phone i {
+    margin-left: 8px;
+}
+
+.contact-box .desc {
+    font-size: 14px;
+    color: var(--clr-text-muted, #72726c);
+    margin-top: 6px;
+}
+
+.contact-box .desc i {
+    color: var(--clr-primary, #747667);
+    margin-left: 4px;
+}
+
+/* =============================================
+   ریسپانسیو
+   ============================================= */
+@media (max-width: 768px) {
+    .features-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+    
+    .about-card {
+        padding: 20px 22px;
+    }
+}
+
+@media (max-width: 480px) {
+    .about-header h1 {
+        font-size: 22px;
+    }
+    
+    .features-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .about-card {
+        padding: 16px 18px;
+    }
+    
+    .about-card .text {
+        font-size: 14px;
+    }
+    
+    .about-card .title {
+        font-size: 16px;
+    }
+    
+    .contact-box .phone {
+        font-size: 19px;
+    }
+}
+</style>
+
+<div class="about-page">
+
+    <div class="about-header">
+        <i class="fas fa-store-alt icon"></i>
+        <h1>درباره <span>نیلپر</span></h1>
+        <p>تولیدکننده و عرضه‌کننده محصولات باکیفیت چوبی</p>
+    </div>
+
+    <!-- کارت معرفی -->
+    <div class="about-card">
+        <div class="title"><i class="fas fa-info-circle"></i> معرفی فروشگاه نیل‌پر</div>
+        <div class="text">
+            <strong>فروشگاه نیلپر</strong> با بیش از <span class="highlight">یک دهه تجربه</span> 
+            در زمینه <strong>تولید و عرضه محصولات چوبی</strong>، همواره تلاش کرده است تا 
+            بهترین و باکیفیت‌ترین محصولات را به مشتریان عزیز ارائه دهد. 
+            <br><br>
+            ما با استفاده از <strong>مرغوب‌ترین چوب‌های طبیعی</strong>، 
+            <strong>تکنولوژی روز دنیا</strong> و <strong>تیمی مجرب و متخصص</strong>، 
+            محصولاتی <span class="highlight">زیبا، مقاوم و بادوام</span> تولید می‌کنیم 
+            که می‌تواند سال‌ها همراه شما باشد.
+            <br><br>
+            تمامی محصولات ما با <strong>دقت بالا</strong> و <strong>نظارت مستمر</strong> 
+            بر کیفیت، تولید و آماده‌سازی می‌شوند تا بتوانند نیازهای شما را به بهترین شکل 
+            برآورده سازند.
+        </div>
+    </div>
+
+    <!-- کارت هدف و رسالت -->
+    <div class="about-card">
+        <div class="title"><i class="fas fa-bullseye"></i> هدف و رسالت نیلپر</div>
+        <div class="text">
+            هدف اصلی ما <strong>رضایت کامل</strong> شما عزیزان است. ما معتقدیم که 
+            <span class="highlight">کیفیت، صداقت و اعتماد</span> سه اصل اساسی در ارتباط 
+            با مشتریان هستند.
+            <br><br>
+            <strong>رسالت ما:</strong>
+            <br>
+            • ارائه محصولات با <strong>بالاترین کیفیت</strong> و قیمت مناسب<br>
+            • ایجاد تجربه‌ای <strong>لذت‌بخش و آسان</strong> از خرید اینترنتی<br>
+            • ارائه <strong>خدمات پس از فروش</strong> حرفه‌ای و پاسخگویی سریع<br>
+            • بهبود مستمر در <strong>کیفیت محصولات</strong> و خدمات<br>
+            • ایجاد <strong>ارتباط پایدار</strong> با مشتریان و جلب اعتماد آنها
+            <br><br>
+            ما همواره در تلاشیم تا با <span class="highlight">نوآوری</span> و 
+            <span class="highlight">خلاقیت</span>، محصولاتی منحصر‌به‌فرد و متناسب با 
+            سلیقه شما طراحی و تولید کنیم.
+        </div>
+    </div>
+
+    <!-- کارت چرا نیل‌پر؟ -->
+    <div class="about-card">
+        <div class="title"><i class="fas fa-star"></i> چرا نیلپر را انتخاب کنیم؟</div>
+        <div class="text" style="margin-bottom: 16px;">
+            ما در نیلپر به <strong>کیفیت، مشتری‌مداری و تعهد</strong> پایبند هستیم. 
+            دلایل انتخاب ما:
+        </div>
+        <div class="features-grid">
+            <div class="feature-item">
+                <i class="fas fa-check-circle ico" style="color: #2e7d32;"></i>
+                <div class="label">کیفیت بی‌نظیر</div>
+                <div class="desc">استفاده از بهترین و مرغوب‌ترین چوب‌های طبیعی با دوام بالا</div>
+            </div>
+            <div class="feature-item">
+                <i class="fas fa-truck ico" style="color: #0d47a1;"></i>
+                <div class="label">ارسال سریع و مطمئن</div>
+                <div class="desc">تحویل سفارش‌ها در کوتاه‌ترین زمان ممکن با بسته‌بندی حرفه‌ای</div>
+            </div>
+            <div class="feature-item">
+                <i class="fas fa-shield-alt ico" style="color: #e65100;"></i>
+                <div class="label">ضمانت بازگشت کالا</div>
+                <div class="desc">امکان بازگشت کالا تا ۷ روز در صورت عدم رضایت کامل</div>
+            </div>
+            <div class="feature-item">
+                <i class="fas fa-headset ico" style="color: #6a1b9a;"></i>
+                <div class="label">پشتیبانی حرفه‌ای</div>
+                <div class="desc">پاسخگویی سریع به سوالات و مشکلات مشتریان عزیز</div>
+            </div>
+            <div class="feature-item">
+                <i class="fas fa-hand-holding-usd ico" style="color: #2e7d32;"></i>
+                <div class="label">قیمت‌های رقابتی</div>
+                <div class="desc">ارائه بهترین محصولات با قیمت‌های منصفانه و اقتصادی</div>
+            </div>
+            <div class="feature-item">
+                <i class="fas fa-award ico" style="color: #e65100;"></i>
+                <div class="label">تضمین اصالت</div>
+                <div class="desc">تمامی محصولات دارای ضمانت اصالت و کیفیت هستند</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- کارت محصولات ما -->
+    <div class="about-card">
+        <div class="title"><i class="fas fa-tree"></i> محصولات ما</div>
+        <div class="text">
+            در فروشگاه نیلپر، <span class="highlight">طیف گسترده‌ای</span> از محصولات چوبی 
+            باکیفیت را برای شما فراهم کرده‌ایم:
+            <br><br>
+            <strong>• مبلمان چوبی:</strong> انواع مبل، صندلی، نیمکت و میزهای چوبی با طراحی‌های مدرن و کلاسیک<br>
+            <strong>• دکوراسیون داخلی:</strong> قفسه‌ها، آینه‌ها، تابلوها و اکسسوری‌های چوبی زیبا<br>
+            <strong>• محصولات آشپزخانه:</strong> تخته‌های برش، ظروف چوبی، جا ادویه‌جات و...<br>
+            <strong>• محصولات دکوراتیو:</strong> مجسمه‌های چوبی، جعبه‌های تزئینی، گلدان‌ها و...<br>
+            <strong>• محصولات سفارشی:</strong> امکان <span class="highlight">ساخت سفارشی</span> محصولات بر اساس سلیقه شما
+            <br><br>
+            تمامی محصولات ما با <strong>دقت و ظرافت</strong> خاصی طراحی و تولید می‌شوند 
+            تا بتوانند <span class="highlight">زیبایی و گرما</span> را به فضای زندگی شما 
+            هدیه دهند.
+        </div>
+    </div>
+
+    <!-- کارت تعهدات -->
+    <div class="about-card">
+        <div class="title"><i class="fas fa-handshake"></i> تعهدات نیلپر به شما</div>
+        <div class="text">
+            ما در نیلپر به مشتریان خود <strong>تعهدات زیر</strong> را داریم:
+            <br><br>
+            <strong>۱. کیفیت تضمینی:</strong> تمامی محصولات ما قبل از ارسال، 
+            <span class="highlight">بازرسی کیفی</span> می‌شوند.
+            <br><br>
+            <strong>۲. قیمت منصفانه:</strong> بهترین محصولات را با <span class="highlight">منصفانه‌ترین قیمت</span> 
+            به شما ارائه می‌دهیم.
+            <br><br>
+            <strong>۳. ارسال به موقع:</strong> سفارش شما در <span class="highlight">کوتاه‌ترین زمان</span> 
+            ممکن ارسال خواهد شد.
+            <br><br>
+            <strong>۴. پاسخگویی ۲۴ ساعته:</strong> تیم پشتیبانی ما در <span class="highlight">همه روزهای هفته</span> 
+            پاسخگوی شما هستند.
+            <br><br>
+            <strong>۵. حفظ حریم خصوصی:</strong> اطلاعات شخصی شما <span class="highlight">کاملاً محرمانه</span> 
+            نگهداری می‌شود.
+        </div>
+    </div>
+
+    <!-- تماس -->
+    <div class="contact-box">
+        <div class="phone">
+            <i class="fas fa-phone"></i>
+            ۰۲۱-۱۲۳۴۵۶۷۸
+        </div>
+        <div class="desc">
+            <i class="fas fa-clock"></i>
+            شنبه تا پنجشنبه ۹ الی ۱۷
+            <span style="margin: 0 10px;">|</span>
+            <i class="fas fa-envelope"></i>
+            info@nilpar.com
+            <span style="margin: 0 10px;">|</span>
+            <i class="fas fa-map-marker-alt"></i>
+            تهران، خیابان ولیعصر
+        </div>
+    </div>
+
+</div>
+{% endblock %}

@@ -1624,3 +1624,11 @@ def shopping_guide(request):
 # قوانین و مقررات
 def terms(request):
     return render(request, 'terms.html')
+
+
+
+def about_us(request):
+    """
+    صفحه درباره ما
+    """
+    return render(request, 'about_us.html')

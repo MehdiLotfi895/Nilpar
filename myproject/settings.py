@@ -338,7 +338,7 @@ KAVENEGAR_SENDER = os.getenv("KAVENEGAR_SENDER")
 
 
 CSRF_TRUSTED_ORIGINS = [
-    "https://rumor-roving-goldfish.ngrok-free.dev",
+    "https://traction-reload-album.ngrok-free.dev",
 ]
 
 STATICFILES_STORAGE = (

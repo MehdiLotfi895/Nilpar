@@ -8,9 +8,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>صنایع چوبی نیلپر</title>
     {% comment %} <link rel="icon" type="image/png" href="{% static 'images/new_ai/icone1/icon_multi_size.ico' %}" />  {% endcomment %}
-    <link rel="apple-touch-icon" sizes="180x180" href="{% static 'images/new_ai/icone/apple-touch-icon.png' %}">
+    {% comment %} <link rel="apple-touch-icon" sizes="180x180" href="{% static 'images/new_ai/icone/apple-touch-icon.png' %}">
     <link rel="icon" type="image/png" sizes="32x32" href="{% static 'images/new_ai/icone/favicon-32x32.png' %}">
-    <link rel="icon" type="image/png" sizes="16x16" href="{% static 'images/new_ai/icone/favicon-16x16.png' %}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{% static 'images/new_ai/icone/favicon-16x16.png' %}"> {% endcomment %}
+    <link rel="icon" type="image/svg+xml" href="{% static 'images/logo.svg' %}">
     <link rel="manifest" href="/site.webmanifest"> 
     <link rel="stylesheet" href="{% static 'css/checkout_steps.css' %}">
 
@@ -478,7 +479,13 @@
                                             <div class="product-section-title">نوع {{category.title}}</div>
                                             <div class="products-grid-mega">
                                                 {% for item in category.secondary_category.all %}
-                                                    <div class="product-card-mega"><img src="{% if item.image%}{{item.image.url}}{% else %}{% endif %}" alt=""><span>{{item.title}}</span></div>
+                                                    <div class="product-card-mega">
+                                                        {% if item.image %}
+                                                            <img src="{{ item.image.url }}" alt="">
+                                                        {% else %}
+                                                            <i class="fa-solid fa-image" style="font-size:40px;"></i>
+                                                        {% endif %}
+                                                        <span>{{item.title}}</span></div>
                                                 {% endfor%}
                                             </div>
                                         </div>
@@ -492,11 +499,11 @@
                     
                     <!-- لینک‌ها -->
                     <div class="nav-links">
-                        <a href="#">سوالات متداول</a>
-                        <a href="#">تماس با ما</a>
-                        <a href="#">درباره ما</a>
-                        <a href="#">بلاگ ها</a>
-                        <a href="#">مشاهده محصولات</a>
+                        <a href="{% url "faq"%}">سوالات متداول</a>
+                        <a href="#footersection">تماس با ما</a>
+                        <a href="{% url "about_us"%}">درباره ما</a>
+                        <a href="{% url "blog_list"%}">بلاگ ها</a>
+                        <a href="{% url "products"%}">مشاهده محصولات</a>
                     </div>
                 </div>
             </div>
@@ -660,7 +667,7 @@
     
     <!-- فوتر -->
     <footer>
-        <div class="container">
+        <div class="container" id="footersection">
             <div class="footer-links-section">
                 <div class="footer-links-grid">
                     <!-- سوالات متداول (با فلش) -->

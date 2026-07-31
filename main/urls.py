@@ -114,9 +114,9 @@ path(
     
     # قوانین و مقررات
     path('terms/', views.terms, name='terms'),
-    
-    # سوالات متداول
-    path('faq/', views.faq, name='faq'),
+
+     path('about-us/', views.about_us, name='about_us'),
+   
 
 
 ]
