@@ -451,7 +451,7 @@
     <button class="gallery-nav-btn gallery-prev-btn" id="prevBtn">&#10094;</button>
 
     <div class="gallery-viewer">
-        {% for image in product.cached_images %}
+        {% for image in product.images.all %}
            <img src="{{ image.image.url }}" alt="" class="gallery-main-image {% if forloop.first %}active{% endif %}">
        {% endfor %}
     </div>
