@@ -1,0 +1,13 @@
+LOAD DATABASE
+    FROM mysql://root:m.L%404121017447@host.docker.internal:3306/mydb
+    INTO postgresql://kabinet_db_user:5E8oLTGsYk0x7IwGr6PWIhHmgfTJ21Wq@dpg-d9mf1d3l550s73d351bg-a.oregon-postgres.render.com:5432/kabinet_db?sslmode=require
+
+WITH
+    create tables,
+    create indexes,
+    reset sequences,
+    foreign keys,
+    include no drop
+
+SET PostgreSQL PARAMETERS
+    sslmode to 'require';
