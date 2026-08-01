@@ -128,7 +128,7 @@ class Product(models.Model):
         verbose_name=_('weight')
     )
     dimensions = models.CharField(
-        max_length=150,
+        max_length=1500,
         verbose_name=_('dimensions')
     )
     category_main = models.ManyToManyField(
@@ -861,7 +861,8 @@ class Blog(models.Model):
     slug = models.SlugField(
         unique=True,
         null=True,
-        blank=True
+        blank=True,
+        max_length=300,
     )
 
     views = models.PositiveIntegerField(
